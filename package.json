@@ -1,0 +1,35 @@
+{
+  "name": "97",
+  "version": "0.1.0",
+  "type": "module",
+  "main": ".opencode/plugins/97.js",
+  "description": "OpenCode plugin: behavior-shaping skills distilled from '97 Things Every Programmer Should Know'.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oribarilan/97.git"
+  },
+  "bin": {
+    "97": "./bin/update.mjs"
+  },
+  "files": [
+    ".opencode/",
+    "skills/",
+    "scripts/",
+    "bin/",
+    "AGENTS.md",
+    "CHANGELOG.md",
+    "CONTENT-LICENSE.md",
+    "CONTRIBUTE.md",
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "lint": "node scripts/lint-skills.mjs",
+    "smoke": "node scripts/smoke-load.mjs",
+    "test": "npm run lint && npm run smoke"
+  }
+}

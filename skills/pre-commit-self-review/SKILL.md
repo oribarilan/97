@@ -1,0 +1,108 @@
+---
+name: pre-commit-self-review
+description: Use when about to commit, finish a task, open a PR, summarize work for the human partner, or when the human partner asks for a review or hand-off — NOT just on autonomous commits, which are rare in OpenCode usage
+---
+
+# Pre-Commit Self-Review
+
+## Overview
+
+Before you hand work back — to a commit, a PR, a teammate, or your future self — pause and read what you wrote as a stranger would. **Most defects you would catch in your own code are still in your own code because you never looked.** This skill is the deliberate stop between "I think I'm done" and "I am telling someone I'm done." It draws on nine contributors to *97 Things Every Programmer Should Know* (CC-BY-3.0; see `principles.md` for citations and links).
+
+This is a **rigid** skill. Run the checklist in order. If you can't satisfy a step, fix it or call it out explicitly in your hand-off.
+
+## When to invoke
+
+Invoke when you're about to:
+
+- Run `git commit` (autonomous or otherwise)
+- Tell your human partner "I'm done" or "ready for review"
+- Open or update a pull request
+- Summarize a chunk of work, hand off to another agent, or close out a task
+- Be asked by your human partner to review, sanity-check, or hand off the change
+
+In OpenCode, commits are usually initiated by the human partner, not the agent. The trigger is therefore **the moment of completion or hand-off**, not specifically the moment of `git commit` — whichever comes first.
+
+### Non-triggers — do NOT invoke for
+
+- Mid-implementation edits: this skill fires at the end of a unit of work, not in the middle of one
+- Single-line fixes — typo, comment, formatter-only change — where there is no review surface
+- Exploratory or read-only tasks (reading code, answering a question, writing a summary with no code change)
+- Routine save points during a long task where you are not yet claiming completion
+- Reverts and mechanical undo operations
+
+If the change is small but introduces real logic, **invoke anyway** — the checklist is short.
+
+## Precedence
+
+- `superpowers/verification-before-completion` runs first. That skill answers "did the change actually work" — tests pass, build is green, the thing does what it claims. It is the verification gate.
+- This skill runs second, on top of a verified change. It answers a broader question: "is this change well-considered, well-named, well-bounded for the next reader." Self-review presumes the code works; it asks whether the code is one a future maintainer can live with.
+- If verification fails, stop and fix that first. Self-review on broken code is wasted motion.
+
+## A Message to the Future
+
+Linda Rising (#58) frames the underlying motivation. Every line you are about to commit is a message to a future programmer — often a smarter, less-context-rich version of you, six months on, paged at 3am. The work of self-review is the work of writing that message clearly. Cleverness that only the present author can decode is a debt the future reader pays. The aspiration is the future reader saying "I can see exactly what was done here, and it's clear" — not "betcha can't guess what this does."
+
+Hold that frame while running the checklist below.
+
+## Self-review checklist
+
+Run every step before you commit, hand off, or claim completion.
+
+1. **Re-read the diff as a stranger.** Open the diff fresh and read it top to bottom without context. If a section needs you to remember what you were thinking yesterday to make sense of it, the next reader will not have that memory. Rename, comment, or restructure until the diff explains itself. *(Rising, #58.)*
+2. **Suspect your own code first.** Before you blame the framework, the library, or the flaky test, assume the bug is yours. It almost always is. Walk the code path with the failing input in mind; confirm assumptions about types, ordering, null cases, and shared state. Reach for "compiler bug" only after you have ruled out yours. *(Kelly, #9.)*
+3. **Know what your next commit is.** State, in one sentence, what this commit does. If the sentence contains "and also" or "various", the commit is two commits. Split it. If you cannot name a clear, bounded change, you are committing speculation — throw the speculative parts away and re-scope. *(Bergh Johnsson, #47.)*
+4. **Check for deliberate technical debt.** Did you take a shortcut to ship? Name it. File a follow-up note (issue, todo, line in the hand-off) so the debt is visible. Untracked debt accrues silent interest. *(Rose, #1.)*
+5. **Clean the build before you leave it.** New compiler warnings, lint errors, or deprecation notices introduced by this change get fixed now, not later. A noisy build hides the warning that actually matters. *(Brodwall, #42.)*
+6. **Audit the logs you added.** Every new log line: is its level right? Will it fire once per significant event, or per inner-loop iteration? Would you want to be paged for an ERROR-level message you wrote? If not, downgrade it. *(Brodwall, #90.)*
+7. **Re-read the comments.** Header comments should let the next reader use the code without reading the body. Inline comments should explain *why*, not narrate *what*. Delete comments that have drifted from the code. Never paste anything into a comment you would not want quoted back in a meeting. *(Evans, #16.)*
+8. **Step away if you're stuck on a smell.** If something feels off but you can't say why, stop typing. Walk, switch tasks, sleep on it. The creative side surfaces the problem once the logical side stops talking. Do not commit a change you are uneasy about because you are tired. *(Hufnagel, #69.)*
+9. **Frame the hand-off as a review, not a defense.** When you summarize for your human partner, mention the trade-offs, the parts you are least sure about, and any debt you incurred. Reviews exist for knowledge sharing, not for catching you out — invite scrutiny rather than deflect it. *(Karlsson, #14.)*
+
+## Red Flags
+
+These thoughts mean STOP — do not commit yet:
+
+| Thought | Reality |
+|---|---|
+| "It works on my machine — shipping it." | "Works" is the verification gate, not the review gate. Re-read the diff as a stranger before claiming done. (#58) |
+| "Must be a bug in the library." | Mature libraries used by many people are usually fine. Suspect your code first; reach for "library bug" only after ruling yours out. (#9) |
+| "I'll squash this giant commit and figure out the message later." | If you can't state the commit in one sentence now, the commit is speculation. Split it or throw the speculative parts away. (#47) |
+| "I took a shortcut, I'll come back and fix it." | The promise is sincere and rarely kept. Track the debt explicitly — issue, todo, hand-off note — or pay it now. (#1) |
+| "There are a few new warnings, but the build still passes." | Today's ignored warning hides tomorrow's real one. Fix warnings as they appear, not in a future cleanup pass. (#42) |
+| "More logging is safer." | A log flooded with INFO drowns the ERROR that wakes you at 3am. Audit log levels before committing. (#90) |
+| "The code is obvious, no comments needed." | Obvious to you today is opaque to the next reader. Header comment for *how to use*, inline comment for *why*. (#16) |
+| "I'm tired but let me push this through." | Tired commits are the ones you regret. Step away; the answer is usually obvious after a break. (#69) |
+| "I'll just downplay the messy parts in the summary." | Hand-off is for knowledge sharing, not self-defense. Name the trade-offs and the parts you're unsure about. (#14) |
+
+## What "done" looks like
+
+You are done when **all** of the following are true:
+
+- [ ] You re-read the full diff as a stranger and it explains itself.
+- [ ] You ruled out your own code as the source of any unresolved oddness before blaming external systems.
+- [ ] The commit (or hand-off) can be described in one sentence with no "and also."
+- [ ] Any shortcut taken is named in a tracked follow-up.
+- [ ] Build is clean — no new warnings, lint errors, or deprecation notices introduced.
+- [ ] New log lines have correct levels and reasonable volume.
+- [ ] Comments help the next reader; none are stale, snarky, or career-limiting.
+- [ ] Nothing in the change is something you'd want to undo after a night's sleep.
+- [ ] The hand-off names trade-offs and uncertainties rather than hiding them.
+
+If any box is unchecked, you are not done — you are mid-review. Either finish the review, or hand back with the gaps named explicitly.
+
+## Principles in this skill
+
+| # | Principle | Author |
+|---|---|---|
+| #1 | Act with Prudence | Seb Rose |
+| #9 | Check Your Code First Before Looking to Blame Others | Allan Kelly |
+| #14 | Code Reviews | Mattias Karlsson |
+| #16 | A Comment on Comments | Cal Evans |
+| #42 | Keep the Build Clean | Johannes Brodwall |
+| #47 | Know Your Next Commit | Dan Bergh Johnsson |
+| #58 | A Message to the Future | Linda Rising |
+| #69 | Put the Mouse Down and Step Away from the Keyboard | Burk Hufnagel |
+| #90 | Verbose Logging Will Disturb Your Sleep | Johannes Brodwall |
+
+See `principles.md` for the long-form distillations, citations, and source links.
