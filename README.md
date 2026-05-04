@@ -1,10 +1,11 @@
 # 97
 
-> An OpenCode plugin that distills selected principles discussed in
-> *97 Things Every Programmer Should Know: Collective Wisdom from the Experts*
-> into trigger-based skills your coding agent invokes automatically when relevant.
+> A multi-harness coding-agent plugin that distills selected principles
+> discussed in *97 Things Every Programmer Should Know: Collective Wisdom
+> from the Experts* into trigger-based skills your agent invokes
+> automatically when relevant.
 
-**Status:** early beta
+**Status:** early beta · works on **Claude Code**, **GitHub Copilot CLI**, and **OpenCode**
 
 ## What this is
 
@@ -23,6 +24,28 @@ its editorial selection.
 
 ## Install
 
+Three supported harnesses. Pick the one you use.
+
+### Claude Code
+
+```
+/plugin marketplace add oribarilan/97
+/plugin install 97@97-marketplace
+```
+
+Updates ship via the marketplace; run `/plugin update 97` when a new version is available.
+
+### GitHub Copilot CLI
+
+```sh
+copilot plugin marketplace add oribarilan/97
+copilot plugin install 97@97-marketplace
+```
+
+Updates ship via the marketplace; run `copilot plugin update 97` when a new version is available.
+
+### OpenCode
+
 Add to your OpenCode config file. Location varies by platform:
 
 | Platform | Default location |
@@ -31,45 +54,32 @@ Add to your OpenCode config file. Location varies by platform:
 | macOS | `~/.config/opencode/opencode.jsonc` |
 | Windows | `%APPDATA%\opencode\opencode.jsonc` |
 
-Add (or merge into your existing config):
-
 ```jsonc
 {
   "plugin": [
-    "97@git+https://github.com/oribarilan/97.git#v0.1.0"
+    "97@git+https://github.com/oribarilan/97.git"
   ]
 }
 ```
 
-Restart OpenCode. The `skill` tool will list `using-97` plus the nine themed
-skills (see "What's inside" below). Pin to the `#v0.1.0` tag rather than
-floating `main` so behavior stays stable across sessions.
+Restart OpenCode. The plugin pulls the latest commit on each restart.
 
-Works on Linux, macOS, and Windows. Node 18+.
+**Advanced — pinned install.** For reproducible behavior across sessions,
+pin to a specific tag (`#vX.Y.Z`):
 
-## Updating
-
-When a new release ships, the plugin prints a one-line notice in your
-session pointing to the update command. To upgrade:
-
-```sh
-npx github:oribarilan/97 update
+```jsonc
+{
+  "plugin": [
+    "97@git+https://github.com/oribarilan/97.git#v0.2.0"
+  ]
+}
 ```
 
-This bumps the pinned `#vX.Y.Z` in your `opencode.jsonc` to the latest
-GitHub Release. Restart OpenCode to apply. To pin to a specific older
-version, pass `--version vX.Y.Z`. Run `npx github:oribarilan/97 update --help`
-for all options.
+Trade-off: pinning means you don't get fixes automatically; unpinned means a
+bad commit reaches you on next restart. CI gates merges to `main` across
+Linux, macOS, and Windows × Node 18/20/22 to keep that risk low.
 
-To disable the version-check notice:
-
-| Shell | Command |
-|---|---|
-| bash / zsh | `export NINETYSEVEN_DISABLE_VERSION_CHECK=1` |
-| Windows cmd | `set NINETYSEVEN_DISABLE_VERSION_CHECK=1` |
-| PowerShell | `$env:NINETYSEVEN_DISABLE_VERSION_CHECK = "1"` |
-
-Full mechanism docs in [`CONTRIBUTE.md` §9](./CONTRIBUTE.md#9-auto-update-mechanism).
+Works on Linux, macOS, and Windows. Node 18+.
 
 ## What's inside
 
@@ -97,7 +107,7 @@ Full mechanism docs in [`CONTRIBUTE.md` §9](./CONTRIBUTE.md#9-auto-update-mecha
 - Birat Rai's
   [97-day Medium walkthrough](https://biratkirat.medium.com/97-journey-every-programmer-should-accomplish-a0c53dbbfd47)
   of every essay (used as a reading aid)
-- [`superpowers`](https://github.com/obra/superpowers) by Jesse Vincent for its distribution pattern
+- [`superpowers`](https://github.com/obra/superpowers) by Jesse Vincent for the multi-harness distribution pattern
 
 ## Licensing
 
@@ -110,14 +120,28 @@ Full mechanism docs in [`CONTRIBUTE.md` §9](./CONTRIBUTE.md#9-auto-update-mecha
 
 ## Development
 
+We use [`just`](https://github.com/casey/just) as the local task runner.
+Run `just` with no args to list recipes:
+
 ```sh
-npm test          # runs lint + smoke
-npm run lint      # structural lint of skills/
-npm run smoke     # imports the plugin and exercises hooks
+just            # list available recipes
+just check      # everything CI runs: lint + format-check + smoke
+just lint       # structural lint of skills/
+just format     # prettier --write on JS/JSON/YAML
 ```
 
-Zero runtime deps. Both scripts use Node built-ins only.
+CI uses `npm test` directly (which is the same as `just check`), so
+contributors who prefer npm don't need to install `just`:
+
+```sh
+npm test          # same as `just check`
+npm run lint      # same as `just lint`
+npm run smoke     # same as `just test`
+```
+
+One devDependency: `prettier`. Zero runtime deps.
 
 For the full contributor guide — repo layout, changelog discipline, release
-process, CI/CD, and auto-update mechanism — see [`CONTRIBUTE.md`](./CONTRIBUTE.md).
-For agent-specific conventions, see [`AGENTS.md`](./AGENTS.md).
+process, CI/CD, and the multi-harness adapter pattern — see
+[`CONTRIBUTE.md`](./CONTRIBUTE.md). For agent-specific conventions, see
+[`AGENTS.md`](./AGENTS.md).

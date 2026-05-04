@@ -1,0 +1,29 @@
+# Prettier scope: JS / JSON / YAML only.
+#
+# Markdown is intentionally NOT formatted by Prettier in this repo:
+#   - skills/**/*.md have lint-enforced line budgets (scripts/lint-skills.mjs)
+#     and careful prose layout that Prettier would re-flow.
+#   - Root *.md files (README, CONTRIBUTE, AGENTS, CLAUDE, CHANGELOG) are
+#     hand-managed for clarity. CLAUDE.md must stay byte-identical to
+#     AGENTS.md (smoke check) — letting Prettier near them adds drift risk.
+#
+# Add markdown back to scope deliberately, with adjustments to the lint
+# rules first, never as an offhand change.
+
+node_modules/
+package-lock.json
+
+# Spec/reference material under .todo/ is hand-managed and may include
+# vendored reference snippets we don't want to reformat.
+.todo/
+
+# Markdown — hand-managed (see comment above)
+*.md
+**/*.md
+
+# Hook scripts are bash/cmd polyglot; not Prettier's concern
+hooks/run-hook.cmd
+hooks/session-start
+
+# License files
+LICENSE

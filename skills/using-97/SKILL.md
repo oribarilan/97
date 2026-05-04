@@ -29,7 +29,7 @@ If even a 1% chance the trigger applies, invoke the skill. Loading is cheap; ski
 
 ## How to invoke
 
-Use OpenCode's `skill` tool with the **bare skill name** — `before-you-refactor`, not `97/before-you-refactor`. Skill names are flat across all installed plugins. The skill's content is then loaded into context; follow it as written.
+Use the `Skill` tool with the **bare skill name** — `before-you-refactor`, not `97/before-you-refactor`. Skill names are flat across all installed plugins. The skill's content is then loaded into context; follow it as written.
 
 ## Priority
 

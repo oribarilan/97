@@ -11,6 +11,88 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [Unreleased]
 
+## [0.2.0] — 2026-05-04
+
+Multi-harness release. The same `skills/` directory now loads in **Claude
+Code**, **GitHub Copilot CLI**, and **OpenCode** from a single repo, mirroring
+the [`superpowers`](https://github.com/obra/superpowers) adapter pattern.
+
+### Added
+
+- Claude Code support via `.claude-plugin/plugin.json` and
+  `.claude-plugin/marketplace.json`. Install with
+  `/plugin marketplace add oribarilan/97` then `/plugin install 97@97-marketplace`.
+- GitHub Copilot CLI support — uses the same `.claude-plugin/` manifests
+  Claude Code reads. Install with `copilot plugin marketplace add oribarilan/97`
+  then `copilot plugin install 97@97-marketplace`.
+- `hooks/hooks.json`, `hooks/session-start`, and `hooks/run-hook.cmd` —
+  SessionStart bootstrap injector for Claude Code and Copilot CLI. The
+  hook reads `skills/using-97/SKILL.md` and emits the platform-appropriate
+  context-injection JSON (Cursor / Claude Code / Copilot CLI / SDK
+  standard). `run-hook.cmd` is a polyglot batch/bash shim that locates Git
+  for Windows bash on Windows hosts.
+- `CLAUDE.md` — a real file (not a symlink) byte-identical to `AGENTS.md`,
+  enforced by the smoke check.
+- `scripts/smoke-load.mjs` now also: JSON-parses
+  `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`,
+  asserts version equality across `package.json`, `plugin.json`, and
+  `marketplace.json[plugins[0]]`, asserts byte-equality of `AGENTS.md`
+  and `CLAUDE.md`, and verifies the hooks files are present.
+- `.github/workflows/release.yml` now asserts version equality across all
+  three manifests before tagging.
+- `justfile` — local task runner with `just` (default lists recipes), `just
+  check`, `just test`, `just lint`, `just format`, `just format-check`,
+  `just clean`. CI continues to use `npm test` so contributors don't need
+  `just` installed.
+- Prettier as a `devDependency` — formats `**/*.{js,mjs,cjs,json,yml,yaml}`.
+  `.prettierrc.json` and `.prettierignore` define the scope. Markdown is
+  intentionally excluded (skill files have lint-enforced line budgets;
+  root docs are hand-managed; `AGENTS.md` / `CLAUDE.md` must stay
+  byte-identical). `npm test` now includes `format:check` so unformatted
+  code fails CI.
+- AGENTS.md / CLAUDE.md add a seventh rule: "No OpenCode-isms outside
+  `.opencode/`" — `skills/` and `using-97/SKILL.md` are harness-neutral
+  and use Claude Code-native tool names.
+- CONTRIBUTE.md documents the multi-harness adapter pattern, the
+  three-place version-bump checklist, the `Release vX.Y.Z: <summary>`
+  commit message convention, the asymmetric distribution model
+  (continuous on OpenCode vs version-bump-gated on Claude/Copilot), and
+  the rollback playbook.
+
+### Changed
+
+- `using-97/SKILL.md` rewritten to be harness-neutral. It uses Claude Code
+  tool names (`Read`, `Write`, `Edit`, `Bash`, `Task`, `TodoWrite`,
+  `Skill`) directly. The OpenCode plugin's tool-mapping appendix
+  (`.opencode/plugins/97.js`) translates them to OpenCode equivalents at
+  injection time. One source of truth for the bootstrap.
+- README install section now documents three install paths inline (Claude
+  Code, Copilot CLI, OpenCode) as the single source of truth for install
+  instructions.
+- OpenCode default install switched from `97@git+...#v0.1.0` (pinned) to
+  `97@git+...` (floating on `main`). Pinning is documented as an advanced
+  option for users who want reproducibility. Marketplaces handle update
+  cadence for Claude Code and Copilot CLI.
+- `package.json` `description` reworded to mention all three harnesses;
+  `files` array includes `.claude-plugin/`, `hooks/`, and `CLAUDE.md`.
+
+### Removed
+
+- `bin/update.mjs` and the `bin` field in `package.json`. The `npx
+  github:oribarilan/97 update` flow is gone — OpenCode users float on
+  `main`, marketplace users update through their harness's native
+  `/plugin update` command.
+- Auto-update notice infrastructure in `.opencode/plugins/97.js`: the
+  cached version check, the `~/.cache/97/` cache, the GitHub Releases
+  API call, and the `NINETYSEVEN_DISABLE_VERSION_CHECK` environment
+  variable. The plugin no longer makes network calls on session start.
+
+### Documentation
+
+- README, CONTRIBUTE, and AGENTS rewritten end-to-end for the multi-harness
+  shape. Treats v0.2.0 as the first public release; no migration notes,
+  no "previously" framing, no deprecation references.
+
 ## [0.1.0] — 2026-05-04
 
 First public release. The plugin ships nine themed skills plus the `using-97`
@@ -68,5 +150,6 @@ your coding agent invokes automatically.
 - Per-skill `principles.md` — long-form distillations with author
   attribution and links to the canonical CC-BY-3.0 source mirror.
 
-[Unreleased]: https://github.com/oribarilan/97/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/oribarilan/97/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/oribarilan/97/releases/tag/v0.2.0
 [0.1.0]: https://github.com/oribarilan/97/releases/tag/v0.1.0

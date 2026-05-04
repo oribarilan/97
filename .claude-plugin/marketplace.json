@@ -1,0 +1,18 @@
+{
+  "name": "97-marketplace",
+  "description": "Marketplace for the 97 plugin — behavior-shaping skills distilled from '97 Things Every Programmer Should Know'.",
+  "owner": {
+    "name": "Ori Barilan"
+  },
+  "plugins": [
+    {
+      "name": "97",
+      "description": "Behavior-shaping skills distilled from '97 Things Every Programmer Should Know'. Trigger-based skills your coding agent invokes automatically when refactoring, writing tests, designing APIs, committing, and more.",
+      "version": "0.2.0",
+      "source": "./",
+      "author": {
+        "name": "Ori Barilan"
+      }
+    }
+  ]
+}

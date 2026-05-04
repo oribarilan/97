@@ -25,16 +25,52 @@ const skillsDir = path.join(root, 'skills');
 // Per-skill budgets (lines) and required principle numbers.
 // Source of truth: .todo/US-97-mvp/main.md "Skill grouping" table.
 const SKILL_RULES = {
-  'using-97':                  { maxLines: 100, sections: ['Overview', 'Red Flags'], principles: [] },
-  'before-you-refactor':       { maxLines: 200, sections: ['Overview', 'When to invoke', 'Red Flags'], principles: [6, 8, 24, 31, 74] },
-  'writing-clean-code':        { maxLines: 250, sections: ['Overview', 'When to invoke', 'Red Flags'], principles: [5, 13, 15, 17, 30, 39, 62, 75, 76, 91, 93, 94] },
-  'testing-discipline':        { maxLines: 250, sections: ['Overview', 'When to invoke', 'Red Flags'], principles: [25, 60, 80, 81, 82, 83, 92, 95] },
-  'api-and-interface-design':  { maxLines: 250, sections: ['Overview', 'When to invoke', 'Red Flags'], principles: [7, 19, 32, 35, 55, 59, 65, 66, 84] },
-  'pre-commit-self-review':    { maxLines: 250, sections: ['Overview', 'When to invoke', 'Red Flags'], principles: [1, 9, 14, 16, 42, 47, 58, 69, 90] },
-  'error-and-correctness-traps':{ maxLines: 250, sections: ['Overview', 'When to invoke', 'Red Flags'], principles: [21, 26, 29, 33, 41, 46, 57, 73, 89] },
-  'build-deploy-and-tooling':  { maxLines: 250, sections: ['Overview', 'When to invoke', 'Red Flags'], principles: [4, 10, 20, 38, 40, 61, 63, 68, 78, 79, 88] },
-  'domain-modeling':           { maxLines: 200, sections: ['Overview', 'When to invoke', 'Red Flags'], principles: [2, 11, 12, 23, 48] },
-  'working-with-users-and-team':{ maxLines: 250, sections: ['Overview', 'When to invoke', 'Red Flags'], principles: [3, 36, 50, 64, 77, 85, 86, 87, 96, 97] },
+  'using-97': { maxLines: 100, sections: ['Overview', 'Red Flags'], principles: [] },
+  'before-you-refactor': {
+    maxLines: 200,
+    sections: ['Overview', 'When to invoke', 'Red Flags'],
+    principles: [6, 8, 24, 31, 74],
+  },
+  'writing-clean-code': {
+    maxLines: 250,
+    sections: ['Overview', 'When to invoke', 'Red Flags'],
+    principles: [5, 13, 15, 17, 30, 39, 62, 75, 76, 91, 93, 94],
+  },
+  'testing-discipline': {
+    maxLines: 250,
+    sections: ['Overview', 'When to invoke', 'Red Flags'],
+    principles: [25, 60, 80, 81, 82, 83, 92, 95],
+  },
+  'api-and-interface-design': {
+    maxLines: 250,
+    sections: ['Overview', 'When to invoke', 'Red Flags'],
+    principles: [7, 19, 32, 35, 55, 59, 65, 66, 84],
+  },
+  'pre-commit-self-review': {
+    maxLines: 250,
+    sections: ['Overview', 'When to invoke', 'Red Flags'],
+    principles: [1, 9, 14, 16, 42, 47, 58, 69, 90],
+  },
+  'error-and-correctness-traps': {
+    maxLines: 250,
+    sections: ['Overview', 'When to invoke', 'Red Flags'],
+    principles: [21, 26, 29, 33, 41, 46, 57, 73, 89],
+  },
+  'build-deploy-and-tooling': {
+    maxLines: 250,
+    sections: ['Overview', 'When to invoke', 'Red Flags'],
+    principles: [4, 10, 20, 38, 40, 61, 63, 68, 78, 79, 88],
+  },
+  'domain-modeling': {
+    maxLines: 200,
+    sections: ['Overview', 'When to invoke', 'Red Flags'],
+    principles: [2, 11, 12, 23, 48],
+  },
+  'working-with-users-and-team': {
+    maxLines: 250,
+    sections: ['Overview', 'When to invoke', 'Red Flags'],
+    principles: [3, 36, 50, 64, 77, 85, 86, 87, 96, 97],
+  },
 };
 
 const errors = [];
@@ -46,7 +82,11 @@ function parseFrontmatter(content) {
   const fm = {};
   for (const line of m[1].split('\n')) {
     const i = line.indexOf(':');
-    if (i > 0) fm[line.slice(0, i).trim()] = line.slice(i + 1).trim().replace(/^["']|["']$/g, '');
+    if (i > 0)
+      fm[line.slice(0, i).trim()] = line
+        .slice(i + 1)
+        .trim()
+        .replace(/^["']|["']$/g, '');
   }
   return { frontmatter: fm, body: m[2] };
 }
@@ -74,13 +114,18 @@ function lintSkill(skillName) {
   }
   const raw = fs.readFileSync(skillFile, 'utf8');
   const parsed = parseFrontmatter(raw);
-  if (!parsed) { fail(skillName, `frontmatter does not parse`); return; }
+  if (!parsed) {
+    fail(skillName, `frontmatter does not parse`);
+    return;
+  }
   const { frontmatter: fm, body } = parsed;
 
   if (!fm.name) fail(skillName, `frontmatter missing 'name'`);
-  if (fm.name && fm.name !== skillName) fail(skillName, `frontmatter name="${fm.name}" does not match dir name`);
+  if (fm.name && fm.name !== skillName)
+    fail(skillName, `frontmatter name="${fm.name}" does not match dir name`);
   if (!fm.description) fail(skillName, `frontmatter missing 'description'`);
-  if (fm.description && !/^use when/i.test(fm.description)) fail(skillName, `description must start with "Use when"`);
+  if (fm.description && !/^use when/i.test(fm.description))
+    fail(skillName, `description must start with "Use when"`);
 
   for (const section of rules.sections) {
     if (!hasSection(body, section)) fail(skillName, `missing required section: ${section}`);
@@ -91,7 +136,8 @@ function lintSkill(skillName) {
   }
 
   const lines = raw.split('\n').length;
-  if (lines > rules.maxLines) fail(skillName, `line count ${lines} exceeds budget ${rules.maxLines}`);
+  if (lines > rules.maxLines)
+    fail(skillName, `line count ${lines} exceeds budget ${rules.maxLines}`);
 
   if (rules.principles.length > 0) {
     const principlesFile = path.join(skillsDir, skillName, 'principles.md');
@@ -99,8 +145,12 @@ function lintSkill(skillName) {
       const text = fs.readFileSync(principlesFile, 'utf8');
       const found = new Set();
       for (const m of text.matchAll(/#(\d+)\b/g)) found.add(Number(m[1]));
-      const missing = rules.principles.filter(n => !found.has(n));
-      if (missing.length) fail(skillName, `principles.md missing principle numbers: ${missing.map(n => '#'+n).join(', ')}`);
+      const missing = rules.principles.filter((n) => !found.has(n));
+      if (missing.length)
+        fail(
+          skillName,
+          `principles.md missing principle numbers: ${missing.map((n) => '#' + n).join(', ')}`
+        );
     }
   }
 }
@@ -110,8 +160,10 @@ function main() {
     console.error(`no skills/ directory at ${skillsDir}`);
     process.exit(1);
   }
-  const skills = fs.readdirSync(skillsDir, { withFileTypes: true })
-    .filter(d => d.isDirectory()).map(d => d.name);
+  const skills = fs
+    .readdirSync(skillsDir, { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => d.name);
 
   if (skills.length === 0) {
     console.log('lint-skills: no skills present yet (empty bundle) — OK');

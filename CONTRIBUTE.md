@@ -2,7 +2,7 @@
 
 This document covers everything past the README: how the repo is laid out,
 how to develop locally, the changelog discipline, the release process, the
-CI/CD pipeline, and how the auto-update mechanism works for end users.
+CI/CD pipeline, and the multi-harness adapter pattern.
 
 If you're an AI agent (Claude Code, Copilot CLI, OpenCode subagent, etc.),
 read [`AGENTS.md`](./AGENTS.md) first — it's the short imperative version of
@@ -12,20 +12,21 @@ the rules in this document.
 
 ## 1. What this repo is
 
-`97` is an **OpenCode plugin** that ships behavior-shaping skills distilled
-from *97 Things Every Programmer Should Know* (O'Reilly, ed. Kevlin Henney).
-It is not an installer or configurator — it is loaded by OpenCode at runtime
-from a git URL pin in the user's `opencode.jsonc`.
+`97` is a multi-harness coding-agent plugin that ships behavior-shaping
+skills distilled from *97 Things Every Programmer Should Know* (O'Reilly,
+ed. Kevlin Henney). The same `skills/` directory is loaded by three
+supported harnesses today:
 
-This is a deliberate design choice. The reference distribution model
-([`oh-my-opencode-slim`](https://github.com/alvinunreal/oh-my-opencode-slim))
-takes a different shape — it publishes to npm and runs an imperative
-installer that mutates `opencode.json` and `tui.json`. We chose the plugin
-model instead because it follows the
-[`superpowers`](https://github.com/obra/superpowers) pattern: declarative,
-loaded at runtime, no config-file mutation. Both models are valid; ours is
-lighter-weight for a content-only plugin that ships skills rather than agent
-configuration.
+- **Claude Code** — via the [Claude Code plugin format](https://docs.claude.com/en/docs/claude-code/plugins) (`.claude-plugin/`)
+- **GitHub Copilot CLI** — uses Claude Code's plugin format directly
+- **OpenCode** — via the OpenCode plugin API (`.opencode/plugins/`)
+
+This is the multi-harness adapter pattern pioneered by
+[`superpowers`](https://github.com/obra/superpowers): a single
+harness-neutral `skills/` directory at the source of truth, with thin
+per-harness adapter manifests at the repo root. Adding a new harness
+(Cursor, Codex, Gemini) is an additive change — drop in a new manifest and
+bootstrap-injection mechanism, leave `skills/` alone.
 
 ---
 
@@ -35,16 +36,21 @@ configuration.
 97/
 ├── .github/
 │   └── workflows/
-│       ├── test.yml       # CI: lint + smoke on push/PR
+│       ├── test.yml       # CI: lint + smoke on push/PR (Linux/macOS/Windows × Node 18/20/22)
 │       └── release.yml    # CI: GitHub Release on v* tag
+├── .claude-plugin/        # Claude Code + Copilot CLI manifests
+│   ├── plugin.json
+│   └── marketplace.json
 ├── .opencode/
 │   └── plugins/
-│       └── 97.js          # OpenCode plugin entry; ~150 lines, zero deps
-├── bin/
-│   └── update.mjs         # npx-runnable update script for end users
+│       └── 97.js          # OpenCode plugin entry; ~130 lines, zero deps
+├── hooks/                 # SessionStart bootstrap injector for Claude Code / Copilot CLI
+│   ├── hooks.json
+│   ├── session-start      # POSIX bash; emits JSON context injection
+│   └── run-hook.cmd       # Windows polyglot shim (cmd.exe ↔ bash)
 ├── scripts/
 │   ├── lint-skills.mjs    # Structural lint for skills/*
-│   └── smoke-load.mjs     # Imports the plugin, exercises hooks
+│   └── smoke-load.mjs     # Imports the plugin, exercises hooks, parses manifests
 ├── skills/
 │   ├── using-97/          # Bootstrap (always loaded)
 │   ├── before-you-refactor/
@@ -56,7 +62,8 @@ configuration.
 │   ├── error-and-correctness-traps/
 │   ├── build-deploy-and-tooling/
 │   └── working-with-users-and-team/
-├── AGENTS.md
+├── AGENTS.md              # short imperative rules for agents
+├── CLAUDE.md              # byte-identical copy of AGENTS.md (Claude Code reads this name)
 ├── CHANGELOG.md
 ├── CONTENT-LICENSE.md
 ├── CONTRIBUTE.md          # ← you are here
@@ -70,31 +77,65 @@ agent context when the trigger fires) and `principles.md` (long-form
 reference, loaded only when the agent needs the deep cut on a specific
 principle).
 
+`AGENTS.md` and `CLAUDE.md` are **two real files with byte-identical
+content** — not a symlink. Git on Windows defaults to
+`core.symlinks=false`, which would check out a symlink as a 9-byte text
+file containing the literal string `AGENTS.md` and silently break Claude
+Code on Windows. The smoke check enforces byte equality.
+
 ---
 
 ## 3. Local development
 
+We use [`just`](https://github.com/casey/just) as the local task runner.
+Run `just` (no args) to list available recipes:
+
 ```sh
-npm test          # lint + smoke
-npm run lint      # structural lint of skills/
-npm run smoke     # imports the plugin and exercises hooks
+just            # list available recipes
+just check      # everything CI runs: lint + format-check + smoke
+just test       # smoke test only (loads plugin, asserts manifest invariants)
+just lint       # structural lint of skills/
+just format     # prettier --write on JS/JSON/YAML
+just format-check  # prettier --check (non-mutating)
+just clean      # remove node_modules and prettier cache
 ```
 
-Zero runtime dependencies. Both scripts use Node built-ins only. Node ≥ 18.
+CI uses `npm test` directly so it doesn't need `just` installed; the
+`justfile` recipes are thin wrappers over the same `npm` scripts. If you
+prefer npm:
+
+```sh
+npm test                 # same as `just check`
+npm run lint             # same as `just lint`
+npm run smoke            # same as `just test`
+npm run format           # same as `just format`
+npm run format:check     # same as `just format-check`
+```
+
+One devDependency: `prettier`. Zero runtime dependencies. Both lint and
+smoke scripts use Node built-ins only. Node ≥ 18.
+
+### Prettier scope
+
+Prettier formats `**/*.{js,mjs,cjs,json,yml,yaml}`. Markdown is **not**
+formatted automatically:
+
+- `skills/**/*.md` have lint-enforced line budgets (`scripts/lint-skills.mjs`)
+  and careful prose layout that Prettier would re-flow.
+- Root `*.md` files (README, CONTRIBUTE, AGENTS, CLAUDE, CHANGELOG) are
+  hand-managed for clarity. `CLAUDE.md` must stay byte-identical to
+  `AGENTS.md` (smoke check) — letting Prettier near them adds drift risk.
+
+`.prettierignore` is the source of truth for what's excluded.
 
 ### Cross-platform support
 
 CI runs the test suite on Ubuntu, macOS, and Windows across Node 18, 20, and
 22 (matrix in `.github/workflows/test.yml`). Code paths that touch the
-filesystem use platform-aware resolution:
-
-- The plugin's version-check cache lives at `$XDG_CACHE_HOME/97/`,
-  `~/Library/Caches/97/`, or `%LOCALAPPDATA%\97\Cache\` depending on platform.
-- `bin/update.mjs` searches platform-appropriate locations for
-  `opencode.jsonc` (see §9).
-- `npx github:oribarilan/97 update` works on all three platforms — npm's
-  `bin` field generates a `.cmd` shim on Windows so the missing shebang
-  isn't an issue.
+filesystem use platform-aware resolution. `hooks/run-hook.cmd` is the
+reference cross-platform pattern: a polyglot file that's a Windows batch
+script in one frame and a bash no-op in the other, locating Git for
+Windows bash on Windows hosts and exiting silently if no bash is available.
 
 If you add code that touches the filesystem, an environment variable, or a
 shell command, make sure it works on all three platforms or branch on
@@ -119,7 +160,14 @@ truth. To add a new skill, add an entry there.
 
 `scripts/smoke-load.mjs` imports `.opencode/plugins/97.js`, asserts the
 named export exists, calls the plugin factory, and verifies the `config`
-hook registers the skills directory.
+hook registers the skills directory. It also:
+
+- JSON-parses `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`
+- Asserts version equality across `package.json`, `plugin.json`, and `marketplace.json[plugins[0]]`
+- Asserts byte-equality of `AGENTS.md` and `CLAUDE.md`
+
+These invariants are load-bearing: drift breaks at least one harness
+silently. The smoke check turns drift into a CI failure.
 
 ---
 
@@ -149,16 +197,6 @@ same PR** as the change:
 - Name skills and files in backticks.
 - One bullet per logical change. Don't pad.
 
-```markdown
-### Added
-- `error-and-correctness-traps` now covers `0.1 + 0.2 != 0.3` as a worked
-  example for the Numerics sub-section.
-
-### Changed
-- `writing-clean-code` trigger description now includes "naming a new entity"
-  to fire on rename-across-files of a public symbol.
-```
-
 ### When you don't need a changelog entry
 
 Pure internal refactors, dependency-free reorganizations, and CI tweaks that
@@ -168,23 +206,31 @@ don't change behavior do not need entries. When in doubt, add one.
 
 ## 5. Versioning (SemVer)
 
-`package.json` `version` is the source of truth. Git tags are `v` + the
-package version (e.g., `v0.1.0`).
+Three places carry the plugin version, all of which must stay in sync:
 
-We follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html):
+1. `package.json` `version`
+2. `.claude-plugin/plugin.json` `version`
+3. `.claude-plugin/marketplace.json` `plugins[0].version`
 
-- **PATCH** (`0.1.0` → `0.1.1`): Bug fixes, doc-only changes, internal
+`scripts/smoke-load.mjs` enforces equality on every `npm test`. The
+`release.yml` workflow re-asserts equality before tagging. Drift is a CI
+failure, not a runtime bug.
+
+Git tags are `v` + the package version (e.g., `v0.2.0`). We follow
+[Semantic Versioning](https://semver.org/spec/v2.0.0.html):
+
+- **PATCH** (`0.2.0` → `0.2.1`): Bug fixes, doc-only changes, internal
   refactors that don't affect a user observing the plugin from outside.
-- **MINOR** (`0.1.0` → `0.2.0`): New skills, new principles within an
-  existing skill, new triggers, new opt-in features. Backward compatible.
-- **MAJOR** (`0.1.0` → `1.0.0`): Removed skills, renamed skills, changed
+- **MINOR** (`0.2.0` → `0.3.0`): New skills, new principles within an
+  existing skill, new triggers, new harnesses, new opt-in features.
+  Backward compatible.
+- **MAJOR** (`0.2.0` → `1.0.0`): Removed skills, renamed skills, changed
   trigger descriptions in ways that break existing user expectations,
   loader API changes, breaking config changes.
 
 A skill that ships fewer principles than before is a **MAJOR** bump. A
 skill whose trigger fires in fewer situations than before is a **MAJOR**
-bump. We err on the side of MAJOR for anything user-visible that an
-existing pin would notice.
+bump. We err on the side of MAJOR for anything user-visible.
 
 ---
 
@@ -211,41 +257,43 @@ perform releases.
    ```
 
    Keep `[Unreleased]` empty (it stays at the top, ready for the next round).
-   Update the link references at the bottom of the file:
+   Update the link references at the bottom of the file.
 
-   ```markdown
-   [Unreleased]: https://github.com/oribarilan/97/compare/vX.Y.Z...HEAD
-   [X.Y.Z]: https://github.com/oribarilan/97/releases/tag/vX.Y.Z
-   [previous]: ...unchanged...
-   ```
+4. **Bump the version in all three places, in lockstep.** They must match
+   exactly or `npm test` will fail:
 
-4. **Bump `package.json` version.**
+   - `package.json` `version`
+   - `.claude-plugin/plugin.json` `version`
+   - `.claude-plugin/marketplace.json` `plugins[0].version`
 
    ```sh
-   npm version X.Y.Z --no-git-tag-version
+   npm version X.Y.Z --no-git-tag-version    # bumps package.json only
+   # then hand-edit the two .claude-plugin/*.json files to match
    ```
-
-   `--no-git-tag-version` is important — we tag manually after committing
-   the changelog so both land in the same commit.
 
 5. **Run the full test suite.**
 
    ```sh
-   npm test
+   just check    # or: npm test
    ```
 
-6. **Commit, tag, push.**
+   This asserts version equality across the three manifests, byte-equality
+   of `AGENTS.md` / `CLAUDE.md`, structural lint, and Prettier formatting.
+
+6. **Commit, tag, push.** Use the `Release vX.Y.Z: <one-line summary>`
+   commit message convention (mirrors superpowers; the commit message is
+   how downstream readers spot release commits at a glance):
 
    ```sh
-   git add CHANGELOG.md package.json package-lock.json
-   git commit -m "release: vX.Y.Z"
+   git add CHANGELOG.md package.json .claude-plugin/
+   git commit -m "Release vX.Y.Z: <one-line summary>"
    git tag vX.Y.Z
    git push origin main vX.Y.Z
    ```
 
 7. **CI takes over.** The `release.yml` workflow triggers on the tag push,
-   runs the test suite once more for safety, and creates a GitHub Release
-   with notes pulled from the matching `CHANGELOG.md` section.
+   re-asserts version equality, runs the test suite, and creates a GitHub
+   Release with notes pulled from the matching `CHANGELOG.md` section.
 
 8. **Verify the release.** Visit
    `https://github.com/oribarilan/97/releases` and confirm the `vX.Y.Z`
@@ -258,10 +306,9 @@ features:
 
 1. Branch from the latest tag (`git checkout -b hotfix/X.Y.Z+1 vX.Y.Z`).
 2. Cherry-pick or write the fix.
-3. Bump PATCH version.
-4. Add a `### Fixed` entry directly under a new `## [X.Y.Z+1]` heading
-   (skip Unreleased for hotfixes — they're surgical).
-5. Commit, tag, push as above.
+3. Bump PATCH version in all three places.
+4. Add a `### Fixed` entry directly under a new `## [X.Y.Z+1]` heading.
+5. Commit (using the `Release vX.Y.Z+1: <summary>` convention), tag, push.
 6. Merge the hotfix branch back into `main`.
 
 ---
@@ -277,163 +324,93 @@ Jobs:
 - Checkout
 - Set up Node (matrix: 18, 20, 22 — the OpenCode-supported range)
 - `npm ci` (zero deps, but ensures clean state)
-- `npm test` (lint + smoke)
+- `npm test` (lint + smoke, including manifest version equality and `AGENTS.md` / `CLAUDE.md` byte equality)
 
-A red CI job blocks merge to `main`.
+Matrix: Ubuntu, macOS, Windows. A red CI job on any platform blocks merge to
+`main`.
 
 ### `.github/workflows/release.yml` — runs on `v*` tag push
 
-Triggers: push of any tag matching `v*` (e.g., `v0.1.0`, `v1.2.3`).
+Triggers: push of any tag matching `v*` (e.g., `v0.2.0`).
 Jobs:
 - Checkout (with full history so the changelog parser can read old tags)
 - Run `npm test` once more as a safety gate
-- Extract the matching section from `CHANGELOG.md` (the section whose
-  heading matches the tag, e.g., `## [0.1.0]`)
+- Verify tag matches `package.json` `version`
+- Verify version equality across `package.json`, `.claude-plugin/plugin.json`,
+  and `.claude-plugin/marketplace.json[plugins[0]]`
+- Extract the matching section from `CHANGELOG.md`
 - Create a GitHub Release with that text as the body, marking it as the
   latest release
 
 ### What CI does NOT do
 
-- **No publish to npm.** We distribute via git tag only (see §8). If we
-  ever publish to npm, that becomes a third workflow with manual
-  `workflow_dispatch` trigger, NPM_TOKEN secret, and explicit `npm publish`.
+- **No publish to npm.** We distribute via git tag (OpenCode) and via the
+  in-repo Claude Code marketplace.
 - **No auto-tagging.** Tags are created by humans during the release
   process. CI never bumps versions on its own.
-- **No auto-merging.** Dependabot or similar bots are not enabled. There
-  are zero runtime dependencies to update.
+- **No auto-merging.** Dependabot is not enabled. Zero runtime dependencies.
 
 ---
 
 ## 8. Distribution
 
-We distribute via **git tag only**. Users add this to their OpenCode config
-file (`~/.config/opencode/opencode.jsonc` on Linux/macOS,
-`%APPDATA%\opencode\opencode.jsonc` on Windows):
+### Per-harness install paths
 
-```jsonc
-{
-  "plugin": [
-    "97@git+https://github.com/oribarilan/97.git#v0.1.0"
-  ]
-}
-```
-
-OpenCode resolves the URL, fetches the repo at the pinned tag, and loads
-`.opencode/plugins/97.js`. The pin (`#v0.1.0`) is what makes behavior
-reproducible across sessions — without it, OpenCode would float on `main`
-and any commit could ship to users immediately.
-
-### Why not npm?
-
-`oh-my-opencode-slim` distributes via npm and runs an imperative installer.
-That model fits a configurator that owns parts of `opencode.json`. It
-doesn't fit a plugin that's loaded declaratively by OpenCode itself. Going
-to npm would also add publish friction (account, 2FA, namespace) without
-giving users a meaningfully better experience. We can revisit if a real
-need appears.
-
-### Pinning recommendations for users
-
-| Pin style | Use when |
+| Harness | Install command(s) |
 |---|---|
-| `#v0.1.0` (specific tag) | Default. Reproducible. **Recommended.** |
-| `#main` | Active local development of the plugin itself. Not for production use. |
-| No `#` (floating) | Don't. OpenCode's behavior depends on the latest commit, which makes session behavior unpredictable. |
+| Claude Code | `/plugin marketplace add oribarilan/97` then `/plugin install 97@97-marketplace` |
+| GitHub Copilot CLI | `copilot plugin marketplace add oribarilan/97` then `copilot plugin install 97@97-marketplace` |
+| OpenCode | Add `"97@git+https://github.com/oribarilan/97.git"` to `opencode.jsonc` `plugin` array |
+
+### Marketplace strategy
+
+`.claude-plugin/marketplace.json` lives in this repo (named
+`97-marketplace`) and lists this repo as the marketplace source. We do
+**not** maintain a sibling `oribarilan/97-marketplace` repo. Single source
+of truth, single repo to keep in sync. Users `marketplace add oribarilan/97`
+and that pulls both the marketplace listing and the plugin from the same
+checkout.
+
+### Asymmetric distribution model
+
+This produces a deliberate asymmetry, accepted as the model:
+
+| Harness | What "an update" means |
+|---|---|
+| OpenCode | Any commit on `main`. Users get it on next restart. |
+| Claude Code | A version bump in `marketplace.json`. Users get it on `/plugin update 97`. |
+| Copilot CLI | Same as Claude Code. |
+
+A typo-fix commit reaches OpenCode users immediately but is invisible to
+Claude/Copilot users until the next tagged release. That's fine — the
+release commit is the unit of distribution for the marketplace harnesses,
+and we batch accumulated changes into one tagged release commit (cadence
+similar to superpowers: weekly to monthly).
+
+The trade-off: a bad commit on `main` ships immediately to all OpenCode
+users on next restart. Mitigation: CI gates merges to `main` across
+Linux/macOS/Windows × Node 18/20/22, and every release commit
+re-runs the full test suite before tagging.
 
 ---
 
-## 9. Auto-update mechanism
+## 9. Rollback playbook
 
-The plugin checks GitHub Releases on session start (cached for 24 hours)
-and prints a one-line notice when a newer release is available. The notice
-points users at the update command. **The plugin never modifies the user's
-`opencode.jsonc` on its own** — auto-update is opt-in, manual, one command.
+If a bad commit lands on `main`:
 
-This is structurally similar to `oh-my-opencode-slim`'s "re-run the
-installer" UX, adapted for our plugin model. omo-slim users update by
-re-running `bunx oh-my-opencode-slim@latest install`. Our users update by
-running `npx github:oribarilan/97 update`.
+1. **Revert it on `main`.** `git revert <bad-sha>` and merge. OpenCode
+   users get the fix on next restart.
+2. **For Claude Code / Copilot CLI users**, the bad commit was only
+   visible if it was part of a tagged release. If it was, cut a new
+   release (PATCH bump) with the revert included. Marketplace users get
+   the fix via `/plugin update 97`.
+3. **There is no canary, no release branch, no staged rollout.** Recovery
+   is forward-only. Don't try to retroactively un-publish a tagged
+   release; cut a new one.
 
-### How the version check works
-
-1. On the first user message of a session, the plugin's
-   `experimental.chat.messages.transform` hook runs.
-2. After injecting the bootstrap, the hook calls a `checkForUpdate()`
-   helper that:
-   - Reads `~/.cache/97/version-check.json` if it exists.
-   - If the cache is younger than 24 hours, uses its `latestVersion` value.
-   - Otherwise, makes one HTTPS GET to
-     `https://api.github.com/repos/oribarilan/97/releases/latest`,
-     extracts `tag_name`, writes the cache file, and uses that value.
-3. If `latestVersion` is greater than `package.json` `version` (semver
-   comparison), the bootstrap text gains one extra line:
-
-   ```
-   📦 97 v0.2.0 is available (you're on v0.1.0). Run
-   `npx github:oribarilan/97 update` to upgrade.
-   ```
-
-### Failure modes — all silent
-
-- **Offline.** Fetch fails. No notice, no error. Cache file isn't updated.
-  Next session retries.
-- **GitHub API rate-limited.** Fetch returns 403. Same as offline.
-- **Cache file unreadable.** Treated as cache miss; fetch as normal.
-- **`package.json` unreadable.** Skip the check entirely.
-
-### How to disable the version check
-
-Set the environment variable `NINETYSEVEN_DISABLE_VERSION_CHECK=1`. The
-plugin still loads normally; only the network call and the notice are
-skipped. Per-shell syntax:
-
-| Shell | Command |
-|---|---|
-| bash / zsh | `export NINETYSEVEN_DISABLE_VERSION_CHECK=1` |
-| Windows cmd | `set NINETYSEVEN_DISABLE_VERSION_CHECK=1` |
-| PowerShell | `$env:NINETYSEVEN_DISABLE_VERSION_CHECK = "1"` |
-
-### Cache file location
-
-The 24-hour cache is platform-aware:
-
-| Platform | Cache path |
-|---|---|
-| Linux | `$XDG_CACHE_HOME/97/version-check.json` or `~/.cache/97/version-check.json` |
-| macOS | `~/Library/Caches/97/version-check.json` |
-| Windows | `%LOCALAPPDATA%\97\Cache\version-check.json` (falls back to `%APPDATA%\97\Cache\` if `LOCALAPPDATA` is unset) |
-
-Delete the cache file to force a fresh check on the next session.
-
-### How the update command works
-
-`npx github:oribarilan/97 update` runs `bin/update.mjs`, which:
-
-1. Locates the user's `opencode.jsonc`. Searches in order:
-   - `$OPENCODE_CONFIG_DIR/opencode.jsonc`
-   - `$XDG_CONFIG_HOME/opencode/opencode.jsonc`
-   - `~/.config/opencode/opencode.jsonc` (Linux/macOS default)
-   - `~/.opencode/opencode.jsonc`
-   - macOS: `~/Library/Application Support/opencode/opencode.jsonc`
-   - Windows: `%APPDATA%\opencode\opencode.jsonc`
-   - Or `--config <path>` if specified.
-2. Finds the line matching `97@git+https://github.com/oribarilan/97.git#...`
-   using a regex (the file is JSONC, so we don't try to JSON.parse — that
-   would strip comments).
-3. Fetches the latest release tag via the GitHub API.
-4. If the pinned tag matches the latest, exits with "Already up to date."
-5. Otherwise, replaces the pinned tag with the new one, writes the file
-   back, and prints a diff plus "Restart OpenCode to apply."
-
-### Update command flags
-
-```
---config <path>   Override the opencode.jsonc location.
---dry-run         Show what would change, don't write anything.
---version <tag>   Pin to a specific version (e.g., --version v0.1.0).
-                  Useful for downgrades or specific-version testing.
---help            Print usage.
-```
+This is the same model superpowers uses, and it works because the test
+suite running against three OSes × three Node versions before merge
+catches almost everything that would warrant a rollback.
 
 ---
 
@@ -475,14 +452,14 @@ source mirror.
 
 | Task | Command |
 |---|---|
-| Run tests | `npm test` |
-| Lint only | `npm run lint` |
-| Smoke only | `npm run smoke` |
-| Bump version (no tag) | `npm version X.Y.Z --no-git-tag-version` |
+| List recipes | `just` |
+| Run all checks | `just check` (= `npm test`) |
+| Lint only | `just lint` |
+| Smoke only | `just test` |
+| Format JS/JSON/YAML | `just format` |
+| Check formatting | `just format-check` |
+| Bump version (no tag) | `npm version X.Y.Z --no-git-tag-version` then update `.claude-plugin/*.json` |
 | Tag a release | `git tag vX.Y.Z && git push origin vX.Y.Z` |
-| Update an installed plugin | `npx github:oribarilan/97 update` |
-| Disable version check (bash/zsh) | `export NINETYSEVEN_DISABLE_VERSION_CHECK=1` |
-| Disable version check (PowerShell) | `$env:NINETYSEVEN_DISABLE_VERSION_CHECK = "1"` |
 
 For agent-specific conventions, see [`AGENTS.md`](./AGENTS.md).
 For licensing and attribution, see [`CONTENT-LICENSE.md`](./CONTENT-LICENSE.md).

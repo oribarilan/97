@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# SessionStart hook for 97 plugin.
+# Injects the using-97 bootstrap into Claude Code / Copilot CLI / Cursor sessions.
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+# Read using-97 SKILL.md content (frontmatter and all — Claude reads the body).
+using_97_content=$(cat "${PLUGIN_ROOT}/skills/using-97/SKILL.md" 2>&1 || echo "Error reading using-97 skill")
+
+# Escape for JSON embedding (single-pass bash parameter substitution).
+escape_for_json() {
+    local s="$1"
+    s="${s//\\/\\\\}"
+    s="${s//\"/\\\"}"
+    s="${s//$'\n'/\\n}"
+    s="${s//$'\r'/\\r}"
+    s="${s//$'\t'/\\t}"
+    printf '%s' "$s"
+}
+
+using_97_escaped=$(escape_for_json "$using_97_content")
+
+session_context="<EXTREMELY_IMPORTANT>\nYou have 97.\n\n**IMPORTANT: The using-97 skill content is included below. It is ALREADY LOADED — you are currently following it. Do NOT use the Skill tool to load \"using-97\" again — that would be redundant.**\n\n${using_97_escaped}\n</EXTREMELY_IMPORTANT>"
+
+# Output context injection as JSON.
+# Cursor expects additional_context (snake_case).
+# Claude Code expects hookSpecificOutput.additionalContext (nested).
+# Copilot CLI (v1.0.11+) and others expect additionalContext (top-level, SDK standard).
+if [ -n "${CURSOR_PLUGIN_ROOT:-}" ]; then
+  printf '{\n  "additional_context": "%s"\n}\n' "$session_context"
+elif [ -n "${CLAUDE_PLUGIN_ROOT:-}" ] && [ -z "${COPILOT_CLI:-}" ]; then
+  printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$session_context"
+else
+  printf '{\n  "additionalContext": "%s"\n}\n' "$session_context"
+fi
+
+exit 0

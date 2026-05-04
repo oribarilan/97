@@ -28,15 +28,25 @@ jobs:
       - name: Run tests (release safety gate)
         run: npm test
 
-      - name: Verify tag matches package.json version
+      - name: Verify tag matches all manifest versions
         run: |
           TAG="${GITHUB_REF_NAME#v}"
           PKG_VERSION=$(node -p "require('./package.json').version")
+          PLUGIN_VERSION=$(node -p "require('./.claude-plugin/plugin.json').version")
+          MARKETPLACE_VERSION=$(node -p "require('./.claude-plugin/marketplace.json').plugins[0].version")
           if [ "$TAG" != "$PKG_VERSION" ]; then
             echo "::error::Tag v$TAG does not match package.json version v$PKG_VERSION"
             exit 1
           fi
-          echo "Tag and package.json version both v$TAG ✓"
+          if [ "$TAG" != "$PLUGIN_VERSION" ]; then
+            echo "::error::Tag v$TAG does not match .claude-plugin/plugin.json version v$PLUGIN_VERSION"
+            exit 1
+          fi
+          if [ "$TAG" != "$MARKETPLACE_VERSION" ]; then
+            echo "::error::Tag v$TAG does not match .claude-plugin/marketplace.json plugins[0].version v$MARKETPLACE_VERSION"
+            exit 1
+          fi
+          echo "Tag and all three manifest versions agree on v$TAG ✓"
 
       - name: Extract changelog section for this release
         id: changelog
