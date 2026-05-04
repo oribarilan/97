@@ -66,11 +66,9 @@ jobs:
             echo "::warning::No CHANGELOG.md section found for v$TAG. Release notes will be empty."
             NOTES="See CHANGELOG.md for details."
           fi
-          {
-            echo 'notes<<EOF'
-            echo "$NOTES"
-            echo 'EOF'
-          } >> "$GITHUB_OUTPUT"
+          # Write to a file so backticks/dollar signs in the changelog don't get
+          # shell-interpolated when we hand the notes to gh release create.
+          printf '%s\n' "$NOTES" > release-notes.md
 
       - name: Create GitHub Release
         env:
@@ -78,5 +76,5 @@ jobs:
         run: |
           gh release create "$GITHUB_REF_NAME" \
             --title "$GITHUB_REF_NAME" \
-            --notes "${{ steps.changelog.outputs.notes }}" \
+            --notes-file release-notes.md \
             --latest
