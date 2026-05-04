@@ -238,8 +238,10 @@ Err on the side of MAJOR for anything user-visible.
 
 ## 6. The release process
 
-Releases are deliberate, human-driven, and never automatic. Agents must not
-perform releases.
+Releases are deliberate and never automatic. They must be carried out
+manually — either by a human following the steps below, or by an agent
+explicitly instructed to perform a release using these steps. Don't bump
+versions or tag as part of unrelated feature work.
 
 ### Step-by-step
 
@@ -348,7 +350,7 @@ Jobs:
 
 - **No publish to npm.** We distribute via git tag (OpenCode) and via the
   in-repo Claude Code marketplace.
-- **No auto-tagging.** Tags are created by humans during the release
+- **No auto-tagging.** Tags are created manually during the release
   process. CI never bumps versions on its own.
 - **No auto-merging.** Dependabot is not enabled. Zero runtime dependencies.
 

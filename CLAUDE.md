@@ -190,13 +190,15 @@ Windows defaults to `core.symlinks=false` and would check out a symlink
 as a 9-byte text file). `npm test` enforces byte-equality. When you edit
 one, edit both.
 
-## Releases (orchestrator-only)
+## Releases (manual only)
 
-Releases are NOT something an agent should perform autonomously. The release
-process is documented in `CONTRIBUTE.md` and requires a human partner to
-review the changelog, decide the semver bump, bump all three manifest
-versions in lockstep, tag the commit, and push. Agents should propose a
-release in a comment or message, not execute one.
+Releases are NOT automatic. The release process is documented in
+`CONTRIBUTE.md` and must be carried out manually — either by a human
+following the steps, or by an agent explicitly instructed to perform a
+release using those steps. The release commit reviews the changelog,
+decides the semver bump, bumps all three manifest versions in lockstep,
+tags the commit, and pushes. Don't take any of those steps as part of
+unrelated feature work.
 
 ## Where the deeper rules live
 
