@@ -5,22 +5,21 @@
 > from the Experts* into trigger-based skills your agent invokes
 > automatically when relevant.
 
-**Status:** early beta · works on **Claude Code**, **GitHub Copilot CLI**, and **OpenCode**
+**Status:** early beta. Works on Claude Code, GitHub Copilot CLI, and OpenCode.
 
 ## What this is
 
 The book *97 Things Every Programmer Should Know* (O'Reilly, edited by Kevlin
-Henney) collects short essays from 73 expert contributors — Uncle Bob, Kevlin
-Henney, Michael Feathers, Linda Rising, and many others. Each essay distills
-one piece of wisdom about writing software.
+Henney) collects short essays from 73 expert contributors. Each essay
+distills one piece of wisdom about writing software.
 
 This plugin curates a subset of those principles around its own trigger
-taxonomy and ships them as skills your coding agent invokes automatically:
-when it's about to refactor, when it's writing tests, when it's designing an
-API, when it's about to commit. Same shape as
-[`superpowers`](https://github.com/obra/superpowers), narrower in scope and
-book-inspired rather than book-derived. It does not reproduce the book or
-its editorial selection.
+taxonomy and ships them as skills the agent invokes when relevant: when
+it's about to refactor, when it's writing tests, when designing an API,
+when about to commit. Same shape as
+[`superpowers`](https://github.com/obra/superpowers), narrower in scope,
+and book-inspired rather than book-derived. It does not reproduce the book
+or its editorial selection.
 
 ## Install
 
@@ -64,7 +63,7 @@ Add to your OpenCode config file. Location varies by platform:
 
 Restart OpenCode. The plugin pulls the latest commit on each restart.
 
-**Advanced — pinned install.** For reproducible behavior across sessions,
+**Advanced: pinned install.** For reproducible behavior across sessions,
 pin to a specific tag (`#vX.Y.Z`):
 
 ```jsonc
@@ -75,9 +74,10 @@ pin to a specific tag (`#vX.Y.Z`):
 }
 ```
 
-Trade-off: pinning means you don't get fixes automatically; unpinned means a
-bad commit reaches you on next restart. CI gates merges to `main` across
-Linux, macOS, and Windows × Node 18/20/22 to keep that risk low.
+The trade-off: pinning means you don't get fixes automatically. Unpinned
+means a bad commit reaches you on next restart. CI runs the test suite on
+Linux, macOS, and Windows across Node 18, 20, and 22 before any merge to
+`main`, which is what makes floating viable.
 
 Works on Linux, macOS, and Windows. Node 18+.
 
@@ -96,7 +96,10 @@ Works on Linux, macOS, and Windows. Node 18+.
 | `pre-commit-self-review` | About to commit, finish a task, open a PR, summarize work, or when asked for a review or hand-off |
 | `working-with-users-and-team` | Designing UX, gathering/interpreting requirements, estimating effort, or communicating with stakeholders about what to build |
 
-10 skills total. 78 of the book's 97 principles are distilled across the 9 themed skills (the remaining 19 are pure career/mindset essays — not agent-actionable). Per-skill contributor attributions live in each skill's `principles.md`.
+10 skills total. 78 of the book's 97 principles are distilled across the 9
+themed skills. The remaining 19 are pure career/mindset essays and aren't
+agent-actionable. Per-skill contributor attributions live in each skill's
+`principles.md`.
 
 ## Credits
 

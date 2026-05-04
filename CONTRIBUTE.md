@@ -21,12 +21,12 @@ supported harnesses today:
 - **GitHub Copilot CLI** — uses Claude Code's plugin format directly
 - **OpenCode** — via the OpenCode plugin API (`.opencode/plugins/`)
 
-This is the multi-harness adapter pattern pioneered by
+This is the multi-harness adapter pattern from
 [`superpowers`](https://github.com/obra/superpowers): a single
 harness-neutral `skills/` directory at the source of truth, with thin
 per-harness adapter manifests at the repo root. Adding a new harness
-(Cursor, Codex, Gemini) is an additive change — drop in a new manifest and
-bootstrap-injection mechanism, leave `skills/` alone.
+(Cursor, Codex, Gemini) is an additive change. Drop in a new manifest and
+a bootstrap-injection mechanism. Leave `skills/` alone.
 
 ---
 
@@ -228,9 +228,11 @@ Git tags are `v` + the package version (e.g., `v0.2.0`). We follow
   trigger descriptions in ways that break existing user expectations,
   loader API changes, breaking config changes.
 
-A skill that ships fewer principles than before is a **MAJOR** bump. A
-skill whose trigger fires in fewer situations than before is a **MAJOR**
-bump. We err on the side of MAJOR for anything user-visible.
+- A skill that ships fewer principles than before is a **MAJOR** bump.
+- A skill whose trigger fires in fewer situations than before is a **MAJOR**
+  bump.
+
+Err on the side of MAJOR for anything user-visible.
 
 ---
 
@@ -373,7 +375,7 @@ checkout.
 
 ### Asymmetric distribution model
 
-This produces a deliberate asymmetry, accepted as the model:
+The result is a deliberate asymmetry, which we accept:
 
 | Harness | What "an update" means |
 |---|---|
@@ -382,15 +384,15 @@ This produces a deliberate asymmetry, accepted as the model:
 | Copilot CLI | Same as Claude Code. |
 
 A typo-fix commit reaches OpenCode users immediately but is invisible to
-Claude/Copilot users until the next tagged release. That's fine — the
+Claude/Copilot users until the next tagged release. That's fine. The
 release commit is the unit of distribution for the marketplace harnesses,
 and we batch accumulated changes into one tagged release commit (cadence
 similar to superpowers: weekly to monthly).
 
 The trade-off: a bad commit on `main` ships immediately to all OpenCode
-users on next restart. Mitigation: CI gates merges to `main` across
-Linux/macOS/Windows × Node 18/20/22, and every release commit
-re-runs the full test suite before tagging.
+users on next restart. The mitigation is CI. Every PR runs the full test
+suite on Linux, macOS, and Windows across Node 18, 20, and 22, and every
+release commit re-runs it before tagging.
 
 ---
 
@@ -406,11 +408,11 @@ If a bad commit lands on `main`:
    the fix via `/plugin update 97`.
 3. **There is no canary, no release branch, no staged rollout.** Recovery
    is forward-only. Don't try to retroactively un-publish a tagged
-   release; cut a new one.
+   release. Cut a new one.
 
-This is the same model superpowers uses, and it works because the test
-suite running against three OSes × three Node versions before merge
-catches almost everything that would warrant a rollback.
+This is the model superpowers uses. It works because the test matrix
+(three OSes × three Node versions, run before merge) catches almost
+everything that would warrant a rollback.
 
 ---
 

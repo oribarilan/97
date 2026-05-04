@@ -13,9 +13,9 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [0.2.0] — 2026-05-04
 
-Multi-harness release. The same `skills/` directory now loads in **Claude
-Code**, **GitHub Copilot CLI**, and **OpenCode** from a single repo, mirroring
-the [`superpowers`](https://github.com/obra/superpowers) adapter pattern.
+Multi-harness release. The same `skills/` directory now loads in Claude
+Code, GitHub Copilot CLI, and OpenCode from one repo. Same adapter pattern
+as [`superpowers`](https://github.com/obra/superpowers).
 
 ### Added
 
