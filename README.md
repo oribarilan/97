@@ -1,5 +1,7 @@
 # 97
 
+[![CI](https://github.com/oribarilan/97/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/oribarilan/97/actions/workflows/test.yml)
+
 > A multi-harness coding-agent plugin that distills selected principles
 > discussed in *97 Things Every Programmer Should Know: Collective Wisdom
 > from the Experts* into trigger-based skills your agent invokes
