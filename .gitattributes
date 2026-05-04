@@ -1,0 +1,31 @@
+# Force LF line endings in the repo for all text files. This is critical for:
+#   - skills/**/*.md frontmatter regex matching (--- delimiters)
+#   - hooks/session-start (bash; CRLF breaks the shebang and `set -euo pipefail`)
+#   - hooks/run-hook.cmd polyglot (the bash half requires LF; cmd.exe tolerates LF)
+#
+# Without this, Git on Windows checks out CRLF by default and skill lint
+# explodes on every checkout. Defense in depth is in the parsers themselves
+# (they tolerate \r?\n now), but pinning EOL at checkout is the right fix.
+
+* text=auto eol=lf
+
+# Explicit pins for files where line endings matter most.
+*.md         text eol=lf
+*.js         text eol=lf
+*.mjs        text eol=lf
+*.cjs        text eol=lf
+*.json       text eol=lf
+*.yml        text eol=lf
+*.yaml       text eol=lf
+justfile     text eol=lf
+.prettierrc.json text eol=lf
+.prettierignore  text eol=lf
+
+hooks/session-start  text eol=lf
+hooks/run-hook.cmd   text eol=lf
+
+# Binaries (none today, but future-proof).
+*.png  binary
+*.jpg  binary
+*.gif  binary
+*.ico  binary

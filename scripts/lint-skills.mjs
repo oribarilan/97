@@ -77,10 +77,12 @@ const errors = [];
 const fail = (skill, msg) => errors.push(`  [${skill}] ${msg}`);
 
 function parseFrontmatter(content) {
-  const m = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  // Tolerate CRLF: Git on Windows checks out .md files with CRLF unless
+  // .gitattributes pins eol=lf. Defense in depth — match either.
+  const m = content.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
   if (!m) return null;
   const fm = {};
-  for (const line of m[1].split('\n')) {
+  for (const line of m[1].split(/\r?\n/)) {
     const i = line.indexOf(':');
     if (i > 0)
       fm[line.slice(0, i).trim()] = line
@@ -135,7 +137,7 @@ function lintSkill(skillName) {
     fail(skillName, `'Red Flags' heading present but no markdown table follows it`);
   }
 
-  const lines = raw.split('\n').length;
+  const lines = raw.split(/\r?\n/).length;
   if (lines > rules.maxLines)
     fail(skillName, `line count ${lines} exceeds budget ${rules.maxLines}`);
 
