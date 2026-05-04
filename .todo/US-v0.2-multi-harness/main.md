@@ -59,8 +59,47 @@ The story is complete when **all** of the following are true:
       (CI matrix already covers this).
 - [ ] `package.json` `version` is `0.2.0`. Git tag `v0.2.0` exists and the
       `release.yml` workflow has fired successfully on push.
+- [ ] Greenfield audit: a fresh `rg -i 'v0\.1|legacy|deprecat|migrat|backward'
+      README.md CONTRIBUTE.md AGENTS.md CHANGELOG.md skills/using-97/`
+      returns nothing except the historical `[0.1.0]` section in
+      CHANGELOG.md. No deprecation notices, no migration mentions, no
+      "previously" or "old install" references in user-facing docs.
 
 ## Cross-Cutting Concerns
+
+### No legacy compatibility (greenfield mandate)
+
+**There are zero users of v0.1.0.** The v0.1.0 commit exists in the repo's
+git history as a milestone marker, but the tag was never pushed publicly,
+no one has installed it, and there is no install base to protect.
+
+This means v0.2.0 is, in practice, the first public release. The repo is
+greenfield. We design forward, not for compatibility with a past that
+nobody is living in.
+
+**Concrete anti-goals derived from this:**
+
+- **No migration shims.** Don't write code that detects "user is on v0.1.0,
+  do the old thing." There are no users on v0.1.0.
+- **No deprecation warnings.** Don't print "this is deprecated, please
+  upgrade." Just delete the old thing.
+- **No "old install path" docs.** README/CONTRIBUTE describe the v0.2.0
+  way only. The v0.1.0 way is gone, not "still supported."
+- **No compatibility branches in the plugin code.** No `if (version < 0.2.0)`
+  paths. Code reflects the current design, period.
+- **No vestigial files.** If `bin/update.mjs` is no longer in the design,
+  delete the file. Don't leave it as "for users who want the old behavior."
+- **Don't reframe v0.1.0 in the changelog as "deprecated."** The `[0.1.0]`
+  CHANGELOG section stands as the historical record of what shipped at
+  that point. We don't go back and edit it.
+- **Future framings.** v0.2.0 release notes should describe what 97 IS,
+  not "what changed since v0.1.0." Treat the README, CONTRIBUTE, and
+  AGENTS as if a new contributor is reading them for the first time and
+  has never seen the v0.1.0 shape.
+
+The v0.1.0 git tag (if it ever gets pushed) and the `[0.1.0]` CHANGELOG
+section are the only acknowledgement of v0.1.0's existence in v0.2.0+.
+Everything else operates as if v0.2.0 is "how 97 has always worked."
 
 ### Architecture: per-harness manifests at root (mirror superpowers)
 
@@ -171,9 +210,10 @@ Explicitly out of scope, deferred to later versions:
   in v0.2.0. Per-harness tests come in v0.3.0+.
 - **Cross-platform polyglot hooks** — superpowers' `hooks/run-hook.cmd`
   is clever but we don't have hooks. Add when we add hooks.
-- **Migration helper for v0.1.0 users** — anyone who installed `#v0.1.0`
-  will continue to work (the tag still exists). Future-mode is
-  documented; no migration script needed.
+
+(Note: there is deliberately no "migration helper for v0.1.0 users" entry
+here, because per the greenfield mandate above, there are no v0.1.0 users
+to migrate. We delete v0.1.0 paths, we don't preserve them.)
 
 ## Task Priority
 
@@ -266,14 +306,18 @@ recognizes 97, the agent invokes skills on relevant prompts."
 - This story is a structural pivot but not a content pivot. The 9 themed
   skills' SKILL.md and principles.md files are NOT touched. Only:
   - `using-97/SKILL.md` (rewritten to Claude-native)
-  - `.opencode/plugins/97.js` (version-check stripped)
-  - `package.json` (version bump, `bin` removed)
-  - `bin/`, `.cache/`-related code (deleted)
+  - `.opencode/plugins/97.js` (version-check stripped — code that no
+    longer matches the design is deleted, not commented out)
+  - `package.json` (version bump, `bin` field removed)
+  - `bin/`, `~/.cache/97/`-related code (deleted entirely — files removed,
+    not just unused)
   - Docs (README, CONTRIBUTE, CHANGELOG, AGENTS)
   - NEW: `.claude-plugin/`, `docs/README.*.md`, `CLAUDE.md` symlink
-- v0.1.0 install paths (`#v0.1.0` pin) continue to work for the lifetime
-  of that tag. We don't break existing users; we change the recommended
-  install for new ones.
+- v0.2.0 is, in practice, the first public release of 97. v0.1.0 was a
+  local milestone that was never published to a marketplace, never tagged
+  on the public remote, and has zero install base. Treat v0.2.0 docs and
+  code as if v0.1.0 never existed externally — see "No legacy
+  compatibility" in Cross-Cutting Concerns.
 - Open question to revisit during work: does Copilot CLI actually accept
   the same `.claude-plugin/plugin.json` schema unchanged, or does it have
   quirks? Task 6 will surface this.
