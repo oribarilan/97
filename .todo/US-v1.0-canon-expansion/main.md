@@ -79,7 +79,11 @@ The story is complete when **all** of the following hold:
       silent-application rule from `0b-citation-scheme-migration.md`.
 - [ ] At least 6 existing skills have `principles.md` enriched with
       new canonical principles, surfaced in `SKILL.md` checklist or
-      Red Flags where they change agent behavior.
+      Red Flags where they change agent behavior. **All 6 enrichment
+      tasks listed in this story are expected to succeed.** "At least
+      6" is wording slack only — there is no fallback to ship v1.0
+      with fewer enriched skills. If an enrichment task is genuinely
+      blocked, defer the story rather than ship a partial set.
 - [ ] One new themed skill exists: `observability`, structured in the
       `error-and-correctness-traps` template, with the new trigger
       row added to `using-97/SKILL.md`.
@@ -93,7 +97,9 @@ The story is complete when **all** of the following hold:
       reframing in this story** — that is deferred to v2.0.
 - [ ] `README.md` "What's inside" table updates to include the new
       `observability` skill row; total skill count reflects the new
-      addition. **No "What this is" reframing.**
+      addition (post-v0.3 baseline of 11 → 12). **No "What this is"
+      reframing.** Owned by `add-observability-skill.md`; `0b` no
+      longer touches `README.md`.
 - [ ] `scripts/lint-skills.mjs` `SKILL_RULES` entries reflect new
       principle IDs and the new skill, all in
       `<source-key>/<principle-key>` string-ID format.
@@ -102,7 +108,21 @@ The story is complete when **all** of the following hold:
       `99b-voice-review-pass.md` task confirms voice consistency
       across all enriched skills.
 - [ ] `CHANGELOG.md` `[Unreleased]` reflects every user-visible
-      change.
+      change, **consolidated into a coherent release narrative
+      shape** before the release author takes over. Twelve tasks each
+      append `### Added` / `### Changed` entries; the integrator
+      passes once at the end to merge near-duplicate entries, group
+      enrichments under a single bullet per skill where helpful, and
+      ensure the consolidated `[Unreleased]` reads as one release
+      story rather than a sequential task log.
+- [ ] **External-anchor compatibility documented in CHANGELOG.**
+      GitHub anchors derive from heading text, so renaming
+      `## #74 — …` to `## 97/74 — …` breaks every external link to
+      the old anchor (`#74-the-road-to-performance...`). The
+      `0b-citation-scheme-migration` `### Changed` entry calls this
+      out explicitly so external linkers know to update; the broken
+      anchors are accepted as the cost of the ID format change. No
+      HTML anchor-tag retention pass is in scope for v1.0.
 - [ ] Release process for the next version follows the manual procedure
       in `CONTRIBUTE.md` — version bump in lockstep across the three
       manifests, tagged commit, etc. (Out of scope for this story;
@@ -151,6 +171,28 @@ string ID of the form `<source-key>/<principle-key>` (e.g. `97/74`,
 of accepted source keys lives in the Sources table of
 `CITATION-SCHEME.md`; new sources require an edit to that table in the
 same PR as the first enrichment that uses them.
+
+### Canonical homes are decided in `0a`, not `99a`
+
+`CITATION-SCHEME.md` carries a **Canonical-home table** listing each
+cross-cutting principle and its owning skill, settled before any
+enrichment runs. ID uniqueness is enforced (a given principle ID
+appears in exactly one `SKILL_RULES.principles` array;
+cross-referencing skills surface it in `SKILL.md` with a backtick
+ID reference but do not own it).
+
+Consequences:
+- Enrichment tasks add IDs only to the canonical home from day one.
+- The closing audit `99a-overlap-matrix-audit` is a **verification
+  pass**, not a remediation pass — it confirms every ID lives in
+  exactly one home and that the Canonical-home table covers every
+  cross-cutting principle that surfaced.
+- v0.3's cross-listing of `97/26` and `97/29` in
+  `security-and-trust-boundaries` is resolved during
+  `0b-citation-scheme-migration` per the table's decision (canonical
+  home: `error-and-correctness-traps`).
+- New cross-cutting principles surfaced mid-enrichment **update the
+  table in the same PR**, not in `99a`.
 
 Heading + unified 5-field metadata block in `principles.md`:
 
@@ -258,7 +300,7 @@ this ledger first.
 | `skills/build-deploy-and-tooling/SKILL.md` | `add-stakes-calibration` (Overview + Non-triggers), `enrich-build-deploy-twelve-factor` (new principles) |
 | `skills/security-and-trust-boundaries/SKILL.md` | `add-stakes-calibration` (Overview + Non-triggers); no enrichment in this story |
 | `scripts/lint-skills.mjs` | `0b-citation-scheme-migration` (schema/regex), every enrichment task (append IDs), `add-observability-skill` (new entry) |
-| `README.md` | `0b-citation-scheme-migration` (drops "78 of 97" sentence), `add-observability-skill` (skill-table row + count) |
+| `README.md` | `add-observability-skill` (skill-table row + count). `0b` does not touch README; the previously-targeted "78 of 97" sentence no longer exists in `main`. |
 | `CHANGELOG.md` | every task |
 | `CONTENT-LICENSE.md` | `0b-citation-scheme-migration` (principle-ID paragraph), every enrichment task (per-source attribution lines), `add-observability-skill` (new-skill paragraph) |
 | Every `skills/*/principles.md` | `0b-citation-scheme-migration` (mechanical heading rewrite + metadata trim once), then its own enrichment task |

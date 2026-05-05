@@ -154,16 +154,26 @@ in dev and inert in prod (no tracing, no metrics, unstructured logs).
 - Manual read-through: every principle has a concrete example, not
   just a category name. Compare line-by-line density to
   `error-and-correctness-traps` and `security-and-trust-boundaries`.
-- Spot-check in one harness: ask the agent to "write a Python HTTP
-  handler that fetches user data and returns JSON." Verify it adds
-  a structured log entry with a request id, propagates a trace
-  context if a tracer is in scope, and does **not** log the user's
-  auth token. (Cross-validates with the security skill.)
-- Spot-check the cardinality rule: ask the agent to "add a metric
-  for failed login attempts, broken down by user." Verify it pushes
-  back: per-user failure counts belong in logs/traces, not metric
-  labels. A metric for "failed login attempts" with no per-user
-  cardinality is the right answer.
+
+### Reviewer notes (not acceptance gates)
+
+The two harness spot-checks below are non-deterministic across
+harnesses, model versions, and temperature settings. They are
+*reviewer-confidence checks*, not pass/fail acceptance criteria.
+Run them and use judgement; if a check misfires, investigate as a
+follow-up rather than blocking the task:
+
+- Ask the agent: *"Write a Python HTTP handler that fetches user
+  data and returns JSON."* Confidence signal: it adds a structured
+  log entry with a request id, propagates a trace context if a
+  tracer is in scope, and does **not** log the user's auth token
+  (cross-validates with the security skill).
+- Ask the agent: *"Add a metric for failed login attempts, broken
+  down by user."* Confidence signal: it pushes back — per-user
+  failure counts belong in logs/traces, not metric labels. The right
+  answer is a metric for "failed login attempts" with no per-user
+  cardinality. **This is the highest-signal cardinality-discipline
+  check; if only one spot-check is run, run this one.**
 
 ## Notes
 

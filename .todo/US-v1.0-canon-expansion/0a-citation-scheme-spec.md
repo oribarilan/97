@@ -79,15 +79,27 @@ comment.
       | `King` | "Parse, don't validate", Alexis King, 2019 (lexi-lambda.github.io) | fair-use commentary |
       | `12F` | The Twelve-Factor App, Wiggins / Heroku 2011 (12factor.net) | fair-use commentary |
       | `CD` | *Continuous Delivery*, Humble & Farley, Addison-Wesley 2010 | fair-use commentary |
-      | `DORA` | *Accelerate*, Forsgren/Humble/Kim, IT Revolution 2018 | fair-use commentary |
       | `GOOS` | *Growing Object-Oriented Software, Guided by Tests*, Freeman & Pryce, Addison-Wesley 2009 | fair-use commentary |
       | `xUnit` | *xUnit Test Patterns*, Meszaros, Addison-Wesley 2007 | fair-use commentary |
       | `SRE` | *Site Reliability Engineering*, ed. Beyer/Jones/Petoff/Murphy, O'Reilly 2016 | fair-use commentary |
       | `OE` | *Observability Engineering*, Majors et al., O'Reilly 2022 | fair-use commentary |
       | `OTel` | OpenTelemetry semantic conventions, opentelemetry.io | Apache 2.0 / CC-BY-4.0 |
       | `Liskov` | Liskov, "Data Abstraction and Hierarchy", CACM 1987 | fair-use commentary |
-      | `Hyrum` | Hyrum's Law, hyrumslaw.com | informal canon |
+      | `Hyrum` | Hyrum's Law, hyrumslaw.com | informal canon (cross-reference target only; no principle row) |
       | `Ousterhout` | *A Philosophy of Software Design* (2nd ed.), Ousterhout, Yaknyam Press 2021 | fair-use commentary |
+
+      **`DORA` is not registered in v1.0.** *Accelerate* / DORA's four
+      key metrics were considered and explicitly cut from v1.0 (see
+      `main.md` Source list locked + `enrich-build-deploy-twelve-factor.md`
+      Notes). Pre-registering an unused source key invites the next
+      contributor to use it. When/if v1.x or v2.x revisits, the
+      enrichment task adds the row in the same PR.
+
+      **`Hyrum/Law` does not have a principle row.** Hyrum is
+      registered so cross-references in Red Flags rows resolve, but
+      no `## Hyrum/Law — …` heading exists in any `principles.md`.
+      See `enrich-api-design-ousterhout-liskov-king.md` for the
+      Red-Flag pattern.
 
       **Pre-registered sources only.** Sources whose enrichment tasks
       are still under review (e.g. Martin's *Clean Code*, *Pragmatic
@@ -95,6 +107,51 @@ comment.
       **not** pre-registered. If a future enrichment task confirms one
       of those sources is in scope, that task adds the source key to
       this table in the same PR.
+
+- [ ] **ID uniqueness rule.** A given principle ID appears in exactly
+      one skill's `SKILL_RULES.principles` array. Each `principles.md`
+      file may have a `## <id> —` heading only for IDs that skill owns
+      canonically; cross-referencing skills surface the principle in
+      `SKILL.md` (Red Flags row, checklist item) using the bare ID in
+      backticks but do **not** add it to their `SKILL_RULES.principles`
+      and do **not** add a `## <id>` heading in their `principles.md`.
+
+      **v0.3 carryover to resolve.** Today `97/26` and `97/29` appear
+      in both `error-and-correctness-traps/SKILL_RULES.principles` and
+      `security-and-trust-boundaries/SKILL_RULES.principles`, with
+      different distillation framings in each `principles.md`. Under
+      this rule that is a violation. Resolution lands in
+      `0b-citation-scheme-migration.md` (which decides canonical home
+      = `error-and-correctness-traps`; `security-and-trust-boundaries`
+      keeps a Red Flags surfacing + bare-ID cross-reference and drops
+      the IDs from its `SKILL_RULES.principles`). The Canonical-home
+      table below documents the decision.
+
+- [ ] **Canonical-home table.** Cross-cutting principles that could
+      validly fire under more than one skill's trigger get their owning
+      skill named here, up front, before any enrichment runs. Each
+      enrichment task adds its assigned IDs to that skill's
+      `SKILL_RULES.principles` and `principles.md`; cross-referencing
+      skills surface the rule but do not own it. New cross-cutting
+      principles surfaced during enrichment update this table in the
+      same PR (not in the closing audit).
+
+      | Principle ID | Canonical home | Cross-references | Note |
+      |---|---|---|---|
+      | `97/26` (Don't Ignore That Error!) | `error-and-correctness-traps` | `security-and-trust-boundaries` | Resolves v0.3 cross-listing in `0b`. |
+      | `97/29` (Don't Rely on "Magic Happens Here") | `error-and-correctness-traps` | `security-and-trust-boundaries` | Resolves v0.3 cross-listing in `0b`. |
+      | `Fowler/PrimitiveObsession` | `domain-modeling` | `before-you-refactor`, `api-and-interface-design`, `writing-clean-code` | Closest trigger: introducing a domain concept. |
+      | `King/ParseDontValidate` | `api-and-interface-design` | `domain-modeling`, `security-and-trust-boundaries` | Boundary parsing is contract design. |
+      | `Wlaschin/InvalidStatesUnrepresentable` | `domain-modeling` | `api-and-interface-design` | Internal-invariant counterpart to `King/ParseDontValidate`. |
+      | `12F/XI` (logs as event streams) | `build-deploy-and-tooling` | `error-and-correctness-traps`, `observability` | Owns log *transport*; trap skill owns *what not to log*; observability owns *content shape*. |
+      | `OTel/StructuredLogs` | `observability` | `build-deploy-and-tooling`, `error-and-correctness-traps` | Log *content shape*. |
+      | `RI/CircuitBreaker` | `error-and-correctness-traps` | `observability` (open-circuit events should be observable) | Distinct from existing `97/9` retry/backoff territory. |
+      | `97/8` (Boy Scout Rule) | `before-you-refactor` | none | Already canonical here; verify no enrichment duplicates. |
+      | `97/30` (Don't Repeat Yourself) | `writing-clean-code` | none | Already canonical here; verify no enrichment duplicates. |
+
+      Other potential collisions surfaced during enrichment add a row
+      here in the same PR. The closing audit (`99a-overlap-matrix-audit`)
+      *verifies* this table; it does not *create* it.
 
 - [ ] **Heading format in `principles.md`.** Every principle starts with:
       ```markdown
@@ -282,6 +339,14 @@ comment.
   metadata block has no field for "verbatim excerpt" — that is
   intentional. If an enrichment task author finds themselves wanting
   one, the answer is "rewrite in own words."
+- **Naming a smell or pattern is not quotation.** Fowler's smell
+  names ("Long Method", "Feature Envy", "Shotgun Surgery"), Nygard's
+  pattern names ("Circuit Breaker", "Bulkhead"), and similar
+  descriptive labels are English category names, not protectable
+  text. Using them as principle keys (`Fowler/LongMethod`,
+  `RI/CircuitBreaker`) and in heading titles is fine. The
+  no-quoted-source-text rule applies to **distillation prose**, not
+  category vocabulary.
 - **Why the metadata block is lean.** Earlier `principles.md` files in
   the repo carried 7 fields per principle (Author, Source primary,
   Source reading aid, Source used, Access date, Gaps, Distillation,

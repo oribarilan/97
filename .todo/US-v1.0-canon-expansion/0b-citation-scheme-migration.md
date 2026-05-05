@@ -41,9 +41,13 @@ agent context cost on demand-loaded reference material.
 - `skills/build-deploy-and-tooling/principles.md`
 - `skills/domain-modeling/principles.md`
 - `skills/working-with-users-and-team/principles.md`
-- `README.md` — replace the "78 of 97" sentence
 - `CONTENT-LICENSE.md` — paragraph noting the new ID convention
 - `CHANGELOG.md` — `### Changed` entry
+
+**Not edited in this task:** `README.md`. The previously-targeted
+"78 of 97" sentence no longer exists in `README.md`. Skill-count and
+table-row updates for the new `observability` skill are owned by
+`add-observability-skill.md`.
 
 ## Dependencies
 
@@ -52,6 +56,21 @@ agent context cost on demand-loaded reference material.
 - v0.3 (`US-v0.3-council-feedback`) in `done/` (story-level dep).
 - **Must run before any enrichment task.** Enrichments append IDs to a
   `string[]` field; pre-migration that field is `number[]`.
+
+## Atomicity constraint
+
+**This entire migration lands in one commit.** The new lint regex
+matches *only* the new heading format; the old regex matches *only*
+the old format. There is no overlap window where both shapes lint
+clean. If the heading rewrite, `SKILL_RULES` rewrite, and lint regex
+flip land in separate commits, `npm test` is red mid-sequence — and
+CI runs on three OS × three Node combos, so a partial push paints
+the matrix red for every contributor.
+
+- Author all edits locally.
+- Run `npm test` once, against the full diff, before pushing.
+- One commit, one push. Do not split into "structural prep" and
+  "format flip" commits.
 
 ## Acceptance Criteria
 
@@ -69,28 +88,86 @@ agent context cost on demand-loaded reference material.
       ```
 - [ ] `scripts/lint-skills.mjs` `SKILL_RULES` `principles` arrays
       converted from `number[]` to `string[]`. Every existing entry
-      maps as `N → "97/N"`. Concretely, after migration:
+      maps as `N → "97/N"`. **Regenerate this list by reading the
+      current `scripts/lint-skills.mjs` at execution time** — do not
+      copy from this planning doc verbatim. v0.3 pruned several
+      entries (`tighten-writing-clean-code`, `prune-working-with-users-and-team`)
+      and added `security-and-trust-boundaries`; the snapshot below
+      reflects the post-v0.3 baseline at the time of writing but may
+      have drifted further. Concretely, the expected post-migration
+      shape is:
       ```js
-      'before-you-refactor':       principles: ['97/6', '97/8', '97/24', '97/31', '97/74']
-      'writing-clean-code':        principles: ['97/5', '97/13', '97/15', '97/17', '97/30',
-                                                '97/39', '97/62', '97/75', '97/76', '97/91',
-                                                '97/93', '97/94']
-      'testing-discipline':        principles: ['97/25', '97/60', '97/80', '97/81', '97/82',
-                                                '97/83', '97/92', '97/95']
-      'api-and-interface-design':  principles: ['97/7', '97/19', '97/32', '97/35', '97/55',
-                                                '97/59', '97/65', '97/66', '97/84']
-      'pre-commit-self-review':    principles: ['97/1', '97/9', '97/14', '97/16', '97/42',
-                                                '97/47', '97/58', '97/69', '97/90']
-      'error-and-correctness-traps': principles: ['97/21', '97/26', '97/29', '97/33', '97/41',
-                                                  '97/46', '97/57', '97/73', '97/89']
-      'build-deploy-and-tooling':  principles: ['97/4', '97/10', '97/20', '97/38', '97/40',
-                                                '97/61', '97/63', '97/68', '97/78', '97/79',
-                                                '97/88']
-      'domain-modeling':           principles: ['97/2', '97/11', '97/12', '97/23', '97/48']
-      'working-with-users-and-team': principles: ['97/3', '97/36', '97/50', '97/64', '97/77',
-                                                  '97/85', '97/86', '97/87', '97/96', '97/97']
-      'using-97':                  principles: []
+      'using-97':                    principles: []
+      'before-you-refactor':         principles: ['97/6', '97/8', '97/24', '97/31', '97/74']
+      'writing-clean-code':          principles: ['97/13', '97/15', '97/17', '97/30',
+                                                  '97/75', '97/76', '97/91', '97/94']
+      'testing-discipline':          principles: ['97/25', '97/60', '97/80', '97/81',
+                                                  '97/82', '97/83', '97/92', '97/95']
+      'api-and-interface-design':    principles: ['97/7', '97/19', '97/32', '97/35',
+                                                  '97/55', '97/59', '97/65', '97/66',
+                                                  '97/84']
+      'pre-commit-self-review':      principles: ['97/1', '97/9', '97/14', '97/16',
+                                                  '97/42', '97/47', '97/58', '97/69',
+                                                  '97/90']
+      'error-and-correctness-traps': principles: ['97/21', '97/26', '97/29', '97/33',
+                                                  '97/41', '97/46', '97/57', '97/73',
+                                                  '97/89']
+      'build-deploy-and-tooling':    principles: ['97/4', '97/10', '97/20', '97/38',
+                                                  '97/40', '97/61', '97/63', '97/68',
+                                                  '97/78', '97/79', '97/88']
+      'domain-modeling':             principles: ['97/2', '97/11', '97/12', '97/23',
+                                                  '97/48']
+      'working-with-users-and-team': principles: ['97/3', '97/36', '97/50', '97/77',
+                                                  '97/97']
+      'security-and-trust-boundaries': principles: []  // see v0.3 cross-listing resolution below
       ```
+      **Pre-flight check:** before editing, diff every quoted
+      `SKILL_RULES.principles` array above against current
+      `scripts/lint-skills.mjs`. If any array does not match, regenerate
+      the migration table from `HEAD` and refuse to proceed with the
+      stale snapshot.
+
+### v0.3 cross-listing resolution (97/26 and 97/29)
+
+Per `0a-citation-scheme-spec.md`'s ID-uniqueness rule and Canonical-home
+table, `97/26` (Don't Ignore That Error!) and `97/29` (Don't Rely on
+"Magic Happens Here") must appear in exactly one
+`SKILL_RULES.principles` array each. v0.3 left them in both
+`error-and-correctness-traps` and `security-and-trust-boundaries`. The
+canonical home is `error-and-correctness-traps` (matches the trigger:
+*the call can fail*). Resolution lands in this migration:
+
+- [ ] **Drop `97/26` and `97/29`** from
+      `SKILL_RULES['security-and-trust-boundaries'].principles` —
+      ending up at `principles: []` (the skill carries no canonical
+      `97/*` IDs of its own; security-specific principles are
+      original commentary surfaced in `SKILL.md` directly).
+- [ ] **Keep** the existing Red Flags rows / checklist entries in
+      `security-and-trust-boundaries/SKILL.md` that surface error-
+      handling and magic-behavior concerns. Convert any prose mention
+      of `#26`/`#29` to backtick cross-references: `` `97/26` `` and
+      `` `97/29` `` per `CITATION-SCHEME.md`.
+- [ ] **Trim** `security-and-trust-boundaries/principles.md`: the two
+      `## #26 — Don't Ignore That Error! (generalized)` and
+      `## #29 — Don't Rely on "Magic Happens Here" (generalized)`
+      headings get **deleted**. Replace each with a one-line
+      cross-reference paragraph:
+      ```markdown
+      ## (cross-reference) 97/26 — Don't Ignore That Error!
+
+      Canonical entry in `error-and-correctness-traps/principles.md`.
+      Surfaced here in `SKILL.md` because untrusted-input handling
+      routinely produces ignored errors at the boundary.
+      ```
+      The "(generalized)" framing previously distinct to this skill
+      can stay as a one-paragraph note under the cross-reference if
+      it adds value the canonical entry does not already carry; if it
+      duplicates the canonical entry, drop it.
+- [ ] After the resolution, `security-and-trust-boundaries/principles.md`
+      contains zero `## 97/N — …` headings. The skill is essentially
+      original commentary at the principles-file level. This is
+      consistent with `CONTENT-LICENSE.md`'s existing note that the
+      skill "is mostly original commentary."
 - [ ] Header comments in `scripts/lint-skills.mjs` (lines 5–14, 25–38)
       updated:
       - "if principles.md exists, contains every #NN principle for that skill"
@@ -113,7 +190,14 @@ text are unchanged.
 - [ ] `**Author:** <Name>` — keep verbatim.
 - [ ] `**Source (primary):** <URL>` — rename to `**Source:** <URL>`,
       keep URL byte-identical.
-- [ ] `**Source (reading aid):** <URL>` — **delete this line.**
+- [ ] `**Source (reading aid):** <URL>` — **delete this line.** Today
+      every principle carries a Birat Rai Medium walkthrough URL in
+      this field. Removing the field removes those URLs from
+      `principles.md`. **This is deliberate**, not a side effect: the
+      reading-aid URLs are contributor-hygiene notes, not
+      CC-BY-3.0 obligations, and the README credit to Birat Rai's
+      97-day walkthrough remains in place. Document the removal
+      explicitly in the `CHANGELOG.md` entry below.
 - [ ] `**Source used:** <text>` — **delete this line.** The license
       identifier moves to a new `**License:**` field below.
 - [ ] `**Access date:** <date>` — **delete this line.** Provenance is
@@ -156,19 +240,14 @@ This is a pure shape refactor.
 
 ### `README.md`
 
-- [ ] Replace the sentence (currently ~line 101):
-      > 10 skills total. 78 of the book's 97 principles are distilled across the 9 themed skills. The remaining 19 are pure career/mindset essays and aren't agent-actionable. Per-skill contributor attributions live in each skill's `principles.md`.
-
-      With:
-      > 10 skills total. Trigger-based skills distilled from *97 Things*
-      > and adjacent canonical sources. Per-skill `principles.md` files
-      > list every source. Per-skill contributor attributions live in
-      > each skill's `principles.md`.
-
-      v1.0 does not reframe the rest of the README's "What this is"
-      section. A larger reposition is deferred to v2.0; this migration
-      only removes the count-coupled sentence per the spec's README
-      phrasing rule.
+**No README edits in this task.** The migration spec previously
+targeted a "10 skills total. 78 of the book's 97 principles…"
+sentence; that phrasing was removed pre-v1.0 and current `README.md`
+already reads "11 skills total (the bootstrap plus 10 themed skills)…"
+The skill-count + table-row update for the new `observability` skill
+is owned by `add-observability-skill.md`. v1.0 does not reframe
+"What this is" beyond that count update; broader repositioning is
+deferred to v2.0.
 
 ### `CONTENT-LICENSE.md`
 
@@ -202,8 +281,8 @@ in the bootstrap touched.
 ### Changelog & verification
 
 - [ ] `CHANGELOG.md` `[Unreleased]` `### Changed` entry, past tense:
-      > Migrated principle IDs from `#NN` to `<source-key>/<principle-key>` format (e.g. `#74` → `97/74`) and trimmed per-principle metadata blocks to the unified 5-field shape (Author, Source, License, Distillation, Agent application). Hygiene fields (Source reading aid, Source used, Access date, Gaps) dropped — provenance is recoverable from `git log`. No content change to distillations or agent-application notes; preparation for canon expansion. Lint regex and `SKILL_RULES.principles` updated.
-- [ ] `npm test` passes. Lint must report all 10 skills OK against the
+      > Migrated principle IDs from `#NN` to `<source-key>/<principle-key>` format (e.g. `#74` → `97/74`) and trimmed per-principle metadata blocks to the unified 5-field shape (Author, Source, License, Distillation, Agent application). Hygiene fields (Source reading aid, Source used, Access date, Gaps) dropped — provenance is recoverable from `git log`. Per-principle Birat Rai Medium walkthrough URLs (previously in the dropped `Source (reading aid)` field) are removed from `principles.md` files; the README credit to Birat Rai's 97-day walkthrough remains in place. No content change to distillations or agent-application notes; preparation for canon expansion. Lint regex and `SKILL_RULES.principles` updated. Per `0a`'s ID-uniqueness rule, the v0.3 cross-listing of `97/26` and `97/29` in `security-and-trust-boundaries` is resolved: canonical home is `error-and-correctness-traps`; `security-and-trust-boundaries` keeps `SKILL.md` Red Flags surfacing with bare-ID cross-references.
+- [ ] `npm test` passes. Lint must report all 11 skills OK against the
       new ID scheme.
 - [ ] Smoke test passes (bundle still loads, harnesses unaffected).
 
@@ -213,27 +292,52 @@ in the bootstrap touched.
 - `npm test` (lint + format-check + smoke). Lint failure = migration
   is incomplete or inconsistent.
 
+**Pre-flight (run before editing):**
+- Diff every quoted snippet in this task (the `SKILL_RULES.principles`
+  arrays, the `scripts/lint-skills.mjs` regex, the
+  `using-97/SKILL.md` Priority section, the `principles.md` 7-field
+  metadata template) against `HEAD`. Refuse to start if any quote no
+  longer matches; regenerate the migration table from `HEAD` first.
+
+**Content-preservation snapshot test:**
+- Before editing, snapshot every `**Distillation.**` and
+  `**Agent application.**` paragraph block from every
+  `skills/*/principles.md` to `/tmp/97-pre-migration.txt` (one block
+  per file region, separated by file-name headers). After editing,
+  produce the same snapshot to `/tmp/97-post-migration.txt`. `diff`
+  the two — output must be empty. If non-empty, a distillation or
+  agent-application paragraph was inadvertently edited; revert and
+  re-do.
+
 **Ad-hoc — pure-refactor checks:**
 - `git diff --stat` shows changes only in: `scripts/lint-skills.mjs`,
-  9 `principles.md` files, `README.md`, `CONTENT-LICENSE.md`,
-  `CHANGELOG.md`.
-- No `SKILL.md` file is touched. (Cross-references inside `SKILL.md`
-  files use `#NN` only in author-credit footers; if any such reference
-  exists, update it — but verify by `git grep '#[0-9]'` first to
-  confirm scope.)
-- `git grep -E '##\s+#[0-9]+\s+—'` returns zero matches across
+  9 `principles.md` files, `CONTENT-LICENSE.md`, `CHANGELOG.md`,
+  and `skills/using-97/SKILL.md` (one Priority rule).
+- `README.md` is **not** touched in this task.
+- No `SKILL.md` file other than `using-97/SKILL.md` is touched.
+  (Cross-references inside `SKILL.md` files use `#NN` only in
+  author-credit footers; if any such reference exists, update it —
+  but verify by `git grep "#[0-9]"` first to confirm scope. Note
+  shell quoting: use double quotes, not the `**…**` glob pattern in
+  earlier draft revisions.)
+- `git grep -E "^##\s+#[0-9]+\s+—"` returns zero matches across
   `skills/`. Every old-style heading is gone.
-- `git grep -E '##\s+97/[0-9]+\s+—'` returns exactly the count of
+- `git grep -E "^##\s+97/[0-9]+\s+—"` returns exactly the count of
   principles previously listed in all `SKILL_RULES.principles` arrays
-  combined.
+  combined, **minus 2** (the `97/26` and `97/29` headings dropped from
+  `security-and-trust-boundaries/principles.md` per the v0.3
+  cross-listing resolution).
 - For each of the 9 enriched skills, every ID listed in
   `SKILL_RULES.principles` appears as a `## <id> —` heading in the
   matching `principles.md`. (Lint enforces this.)
-- `git grep 'Source (primary):'`, `git grep 'Source (reading aid):'`,
-  `git grep 'Source used:'`, `git grep 'Access date:'`, `git grep 'Gaps:'`
-  all return zero matches across `skills/`. The hygiene fields are gone.
-- `git grep '**License:** CC-BY-3.0' skills/` returns one hit per
-  principle (count matches the SKILL_RULES total).
+- `git grep "Source (primary):"`, `git grep "Source (reading aid):"`,
+  `git grep "Source used:"`, `git grep "Access date:"`,
+  `git grep "Gaps:"` all return zero matches across `skills/`. The
+  hygiene fields are gone.
+- `git grep -F "**License:** CC-BY-3.0" skills/` returns one hit per
+  remaining principle (count matches the `SKILL_RULES` total minus
+  the two dropped from `security-and-trust-boundaries`). Note the
+  `-F` (fixed-string) flag — `**` is shell glob otherwise.
 
 **Ad-hoc — content-preservation checks:**
 - Pick three random principles across three skills. For each:

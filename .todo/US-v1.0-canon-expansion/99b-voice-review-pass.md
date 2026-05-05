@@ -45,11 +45,23 @@ moving from `before-you-refactor` to `domain-modeling` to
 
 ### Read-pass
 
-- [ ] One reviewer reads every `SKILL.md` and `principles.md` in the
-      bundle in **one sitting** (estimated 1–2 hours). The single-
-      sitting constraint is load-bearing — voice drift is only
-      visible across files in close temporal sequence. Splitting
-      across days defeats the purpose.
+- [ ] One reviewer reads the **enriched + new files** end-to-end in
+      one sitting. The single-sitting constraint is load-bearing —
+      voice drift is only visible across files in close temporal
+      sequence. Splitting across days defeats the purpose.
+- [ ] **Scope (what counts as "the read-pass")** — reading every file
+      end-to-end is unrealistic in one sitting (24 files × ~12 min ≈
+      5 hours focused). The honest scope:
+  - **Full read (mandatory):** every `SKILL.md` + `principles.md`
+    touched by an enrichment task or the new `observability` skill —
+    7 enriched skills + 1 new skill = ~16 files.
+  - **Sampling read (mandatory):** for each non-enriched skill,
+    read its `SKILL.md` Overview + Red Flags table + one randomly-
+    chosen `principles.md` entry. Drift surfaces fastest in those
+    surfaces. If sampling flags drift, escalate that skill to a full
+    read.
+  - **Bootstrap read (mandatory):** `skills/using-97/SKILL.md` end-
+    to-end (it's short and load-bearing).
 - [ ] Reviewer is familiar with both the `humanizer` skill and the
       existing v0.x voice. (If the reviewer is also the author of
       most enrichments, suggest a fresh pair of eyes.)
@@ -142,9 +154,13 @@ For each `principles.md`:
 - **Voice fixes only.** No new principles, no removed principles, no
   reorganization. The overlap-matrix audit already happened in
   `99a`. This is a polish pass.
-- **Time budget.** Plan ~10–15 minutes per file at minimum, more for
-  the enriched skills and the new `observability` skill. Total
-  budget: 1.5–2.5 hours of focused reading + edits.
+- **Time budget.** Honest estimate: full reads at ~12 min/file ×
+  16 files ≈ 3.2 hours; sampling reads at ~5 min/skill × ~5 non-
+  enriched skills ≈ 25 min; bootstrap ~10 min; inline edits ~30–60
+  min. **Total: 4–5 hours focused.** Plan a single block, take one
+  break midway. If the reviewer cannot do it in one sitting, defer.
+  The 1.5–2.5 hour estimate from earlier drafts assumed a much
+  smaller bundle and underestimates the per-file load.
 - **Voice baseline is the v0.x bundle.** Pre-v1.0 skills are the
   reference. New canon material must read continuous with that
   baseline; if a fix would break the baseline's voice, the baseline

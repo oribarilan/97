@@ -2,56 +2,64 @@
 
 ## Context
 
-Closing audit task. After every enrichment is in `done/` and the new
-`observability` skill has shipped, walk every pair of skills to
-identify and resolve duplicate coverage. With ~25 new principles
-distributed across 7 skills, principle overlap is inevitable. This
-task makes overlap visible and forces a canonical-home decision for
-each duplicate so the agent does not see the same rule three times
-under three different names.
+Closing **verification audit**. After every enrichment is in `done/`
+and the new `observability` skill has shipped, walk every pair of
+skills to confirm the Canonical-home table in `CITATION-SCHEME.md`
+covers every cross-cutting principle that surfaced and that ID
+uniqueness holds (each principle ID appears in exactly one
+`SKILL_RULES.principles` array).
 
-Without this audit, known duplications will leak into v1.0:
-- **Primitive Obsession** appears in `writing-clean-code` (97/94),
-  `api-and-interface-design` (97/65), `domain-modeling`
-  (97/2 territory), and now `before-you-refactor` if any Fowler
-  Primitive-Obsession smell was added — that is **four** locations
-  for one rule.
-- **Logs** are touched by `error-and-correctness-traps` (what to log /
-  what not to), `build-deploy-and-tooling` (12F XI transport), and
-  the new `observability` skill (content shape) — three skills, three
-  framings.
-- **Parse-don't-validate** vs **make-invalid-states-unrepresentable**
-  resolved in plan to api-design vs domain-modeling respectively;
-  this audit confirms the resolution stuck.
-- **Boundary handling** appears in `api-and-interface-design`,
-  `security-and-trust-boundaries` (v0.3), and via parse-don't-validate.
+**Per `0a`, canonical homes are decided up front, not here.** The
+Canonical-home table in `CITATION-SCHEME.md` lists known cross-cutting
+principles and their owning skills before any enrichment runs.
+Enrichment tasks add IDs only to canonical homes; the v0.3
+cross-listing of `97/26` and `97/29` is resolved during `0b`. This
+audit's job is to **verify the discipline held**, not to make new
+canonical-home decisions retroactively.
 
-**Value delivered:** the bundle reads as one coherent product instead
-of as a stitched-together compilation. Each principle has one
-canonical home; cross-references replace duplications.
+If a new cross-cutting principle was surfaced mid-enrichment without
+the responsible task updating `CITATION-SCHEME.md`'s Canonical-home
+table, this audit catches it and either (a) confirms the table needs
+a row added (file the row in this audit's PR) or (b) confirms the
+duplicate is a content drift to consolidate.
+
+**Value delivered:** the bundle reads as one coherent product. Every
+principle has one canonical home; every cross-reference resolves
+correctly; the Canonical-home table is complete.
 
 ## Related Files (read-only inputs)
 
 - Every `skills/*/SKILL.md`
 - Every `skills/*/principles.md`
 - `scripts/lint-skills.mjs` `SKILL_RULES`
+- `CITATION-SCHEME.md` Canonical-home table
 
 ## Related Files (edited)
 
-- `skills/*/principles.md` — for any duplicate principle: keep
-  canonical entry; replace duplicates with cross-reference lines.
-- `skills/*/SKILL.md` — for any duplicate Red Flag or checklist item:
-  keep canonical surface; cross-reference from secondary skills.
-- `scripts/lint-skills.mjs` `SKILL_RULES.principles` arrays update
-  to remove principle IDs from non-canonical homes.
-- New file `OVERLAP-MATRIX.md` at repo root — the artifact this task
-  produces. (See acceptance criteria.)
-- `CHANGELOG.md` — `### Changed` entry summarizing the resolutions.
+- `CITATION-SCHEME.md` — add new Canonical-home rows for any
+  cross-cutting principle surfaced mid-enrichment that the table did
+  not anticipate.
+- `skills/*/principles.md` — only if a duplicate `## <id> —` heading
+  is found that violates ID uniqueness; replace the non-canonical
+  heading with a one-line cross-reference.
+- `skills/*/SKILL.md` — only if a Red Flags row or checklist item
+  uses a long-form name where a backtick ID cross-reference would be
+  clearer.
+- `scripts/lint-skills.mjs` `SKILL_RULES.principles` — only if a
+  non-canonical `SKILL_RULES.principles` array has the same ID as a
+  canonical home (uniqueness violation); remove from non-canonical.
+- New file `.todo/done/US-v1.0-canon-expansion/OVERLAP-MATRIX.md` —
+  the audit artifact. **Lives under `.todo/done/`, not at repo
+  root**, because it is internal reference (not user-facing) and
+  belongs with the story it summarizes.
+- `CHANGELOG.md` — `### Changed` entry summarizing the audit (likely
+  brief if the up-front discipline held; longer if remediation was
+  needed).
 
 ## Dependencies
 
 - All enrichment tasks in `.todo/done/US-v1.0-canon-expansion/`:
-  - `0a-citation-scheme-spec.md`
+  - `0a-citation-scheme-spec.md` (which carries the Canonical-home table)
   - `0b-citation-scheme-migration.md`
   - `enrich-before-you-refactor-fowler.md`
   - `enrich-domain-modeling-wlaschin.md`
@@ -63,111 +71,141 @@ canonical home; cross-references replace duplications.
 
 ## Acceptance Criteria
 
-### Produce the overlap matrix
+### Produce the verification matrix
 
-- [ ] Create `OVERLAP-MATRIX.md` at repo root. The doc is **internal
-      reference**, not user-facing. It is a snapshot of the bundle's
-      coverage map at v1.0 release time.
+- [ ] Create `.todo/done/US-v1.0-canon-expansion/OVERLAP-MATRIX.md`.
+      The doc is **internal reference**, not user-facing. It is a
+      snapshot of the bundle's coverage map at v1.0 release time and
+      lives with the story.
 - [ ] The doc contains a table with one row per principle ID and
       columns for: principle ID, canonical-home skill, cross-referenced
       skills (skills that mention the principle but do not own it),
       brief one-line summary.
-- [ ] The doc contains a section listing every principle ID that
-      appears in more than one skill's `SKILL_RULES.principles`
-      before this audit, and the resolution applied to each (which
-      skill kept it; which skills now cross-reference).
+- [ ] The doc contains an "Audit results" section listing:
+      - Canonical-home table coverage: every cross-cutting principle
+        in the bundle has a row in `CITATION-SCHEME.md`'s table.
+      - ID-uniqueness check: every principle ID appears in exactly one
+        `SKILL_RULES.principles` array.
+      - Heading-uniqueness check: every principle ID has a
+        `## <id> —` heading in exactly one `principles.md` file
+        (cross-references in other `principles.md` files use the
+        `## (cross-reference) <id> —` form per `0b`).
+      - Any new cross-cutting principles surfaced mid-enrichment
+        whose canonical home was missing from the table — and the
+        decision applied (which task should have added the row;
+        whether to file as a follow-up or fix here).
 
-### Apply resolutions
+### Verification (the audit pass)
 
-For each duplicate identified:
+For each potential overlap:
 
-- [ ] **Pick a canonical home** based on the trigger that fires the
-      principle most directly. Decision rule of thumb:
-  - Trigger fires when *designing a contract* → `api-and-interface-design`.
-  - Trigger fires when *modeling a new type or invariant* → `domain-modeling`.
-  - Trigger fires when *changing existing code* → `before-you-refactor`.
-  - Trigger fires when *adding new code* → `writing-clean-code`.
-  - Trigger fires when *the call can fail* → `error-and-correctness-traps`.
-  - Trigger fires when *parsing untrusted input* →
-    `security-and-trust-boundaries` (v0.3) **then**
-    `api-and-interface-design`.
-  - Trigger fires when *adding diagnosability* → `observability`.
-- [ ] **Keep the canonical entry** in the chosen skill's
-      `principles.md` and `SKILL_RULES.principles`.
-- [ ] **Replace duplicate entries** in other skills' `principles.md`
-      with a one-line cross-reference, e.g.:
+- [ ] **Confirm canonical home matches `CITATION-SCHEME.md` Canonical-
+      home table.** The decision was made in `0a`; this step verifies
+      enrichment tasks honored it.
+- [ ] **Confirm ID uniqueness.** Run:
+      ```
+      git grep -h -E "^##\s+[A-Za-z0-9]+/[A-Za-z0-9]+\s+—" skills/*/principles.md \
+        | sort | uniq -c | awk '$1 > 1'
+      ```
+      Output should be empty (no ID appears as a `##` heading in more
+      than one `principles.md`). Cross-reference headings of the form
+      `## (cross-reference) <id>` are excluded by the regex.
+- [ ] **Confirm `SKILL_RULES` uniqueness.** Run a Node one-liner over
+      `scripts/lint-skills.mjs` to flatten every
+      `SKILL_RULES.principles` array and count duplicates. Output
+      should be empty.
+- [ ] **Cross-reference IDs in `SKILL.md`.** For each Red Flags row
+      or checklist item that mentions a principle owned by another
+      skill, confirm it uses the bare ID in backticks (per
+      `CITATION-SCHEME.md`'s cross-reference convention) rather than
+      a long-form name or file path.
+
+### Remediation (only if verification fails)
+
+This task is a quality gate. If verification passes — likely if 0a's
+discipline held — the audit is largely a nominal pass with the
+matrix doc as the deliverable. If verification fails, remediate:
+
+- [ ] **Surfaced cross-cutting principle missing from
+      `CITATION-SCHEME.md` table:** add the row in this PR. Decide
+      canonical home using the trigger rule of thumb (see "Decision
+      rule of thumb" below). Move IDs to canonical home if needed.
+- [ ] **Heading-uniqueness violation:** keep the canonical entry in
+      the chosen skill's `principles.md`; replace duplicate entries
+      with a cross-reference of the form:
       ```markdown
       ## (cross-reference) Fowler/PrimitiveObsession
 
-      See `Fowler/PrimitiveObsession` in `domain-modeling/principles.md`
-      for the canonical entry. This skill cross-references it because
-      [reason].
+      Canonical entry in `domain-modeling/principles.md`. Surfaced
+      here in `SKILL.md` because [reason].
       ```
-- [ ] Remove the duplicate principle ID from the non-canonical
-      skills' `SKILL_RULES.principles` array. Lint will then enforce
-      the principle exists *only* in its canonical home.
-- [ ] Cross-reference principles in `SKILL.md` (Red Flags rows or
-      checklist) by ID where they are mentioned but not owned. Use
-      the format defined in `CITATION-SCHEME.md`.
+- [ ] **`SKILL_RULES` uniqueness violation:** remove the duplicate
+      ID from the non-canonical skill's `SKILL_RULES.principles`
+      array. Lint will then enforce uniqueness going forward.
+- [ ] **Cross-reference IDs in `SKILL.md`** by ID where they are
+      mentioned but not owned. Use the format defined in
+      `CITATION-SCHEME.md`.
 
-### Specific known duplications to resolve
+#### Decision rule of thumb (only when adding a new row to the table)
 
-The audit is open-ended (every pair of skills); the planner identified
-these in advance and the audit must resolve them at minimum:
+The Canonical-home table covers known overlaps. If a previously-
+unanticipated overlap surfaces during enrichment, this rule of thumb
+helps choose the home. Several principles validly fire under more
+than one trigger; pick the **most specific**:
 
-- [ ] **Primitive Obsession** — canonical home decision documented in
-      `OVERLAP-MATRIX.md`. Recommended: `domain-modeling` (closest
-      trigger: introducing a domain concept). Other skills
-      cross-reference.
-- [ ] **Parse, don't validate** vs **Make invalid states
-      unrepresentable** — confirm api-design owns
-      `King/ParseDontValidate`; domain-modeling owns
-      `Wlaschin/InvalidStatesUnrepresentable`; cross-references in
-      both.
-- [ ] **Logs** (what to log / transport / content shape) — three-way
-      split confirmed: `error-and-correctness-traps` owns *what not
-      to log*; `build-deploy-and-tooling` owns *transport* (`12F/XI`);
-      `observability` owns *content shape* (`OTel/StructuredLogs`).
-      Each skill's `principles.md` cross-references the other two.
-- [ ] **Boy Scout Rule** — already in `before-you-refactor`. If any
-      enrichment surfaced it elsewhere, remove.
-- [ ] **DRY** — already in `writing-clean-code`. Confirm no enrichment
-      duplicated it.
-- [ ] **Retry / backoff** — `error-and-correctness-traps` (existing)
-      and the new `RI/CircuitBreaker` need clear precedence. Recommended:
-      retry/backoff is the existing 97/9 territory; circuit breaker
-      is a separate higher-level pattern. No deletion; cross-reference
-      in both directions.
+- Trigger fires when *designing a contract* → `api-and-interface-design`.
+- Trigger fires when *modeling a new type or invariant* → `domain-modeling`.
+- Trigger fires when *changing existing code* → `before-you-refactor`.
+- Trigger fires when *adding new code* → `writing-clean-code`.
+- Trigger fires when *the call can fail* → `error-and-correctness-traps`.
+- Trigger fires when *parsing untrusted input* →
+  `security-and-trust-boundaries` first; otherwise
+  `api-and-interface-design`.
+- Trigger fires when *adding diagnosability* → `observability`.
+
+If two rules tie, pick the skill that has fewer owned principles in
+that area (avoids piling onto already-dense skills) and document the
+tie-break in `OVERLAP-MATRIX.md`.
 
 ### Verification
 
-- [ ] `npm test` passes after all resolutions.
+- [ ] `npm test` passes after any remediation.
 - [ ] `git grep` for each duplicated principle ID returns its canonical
       home as the only `## <id> —` heading; all other appearances are
-      cross-references.
+      `## (cross-reference) <id>` headings or backtick references in
+      `SKILL.md`.
 - [ ] `OVERLAP-MATRIX.md` is consistent with `SKILL_RULES.principles`
-      (every entry in the matrix matches a SKILL_RULES entry, and
+      (every entry in the matrix matches a `SKILL_RULES` entry, and
       vice versa).
+- [ ] `CITATION-SCHEME.md` Canonical-home table is consistent with
+      `OVERLAP-MATRIX.md` (every cross-cutting principle in the matrix
+      has a row in the table).
 - [ ] `CHANGELOG.md` `### Changed` entry summarizes the audit:
-      number of duplications resolved; principles whose canonical
-      home changed; any cross-references added.
+      verification result (passed / N remediations applied);
+      principles whose canonical home changed (if any); cross-references
+      added (if any).
 
 ## Notes
 
-- **This task is a quality gate, not new content.** No principle is
-  added; no distillation is rewritten. Existing distillations may be
-  trimmed where one becomes a cross-reference.
-- **Audit format is informal.** `OVERLAP-MATRIX.md` is internal
-  reference, not user-facing documentation. Aim for readable, not
-  beautiful.
+- **Verification audit, not remediation audit.** If the up-front
+  Canonical-home table in `CITATION-SCHEME.md` worked as intended,
+  this task is largely a nominal pass with the matrix doc as the
+  deliverable. Significant remediation here means an enrichment task
+  did not honor the canonical-home discipline; that's a process bug
+  to capture as a lesson, not a sign 99a should have been bigger.
+- **`OVERLAP-MATRIX.md` placement.** Lives under
+  `.todo/done/US-v1.0-canon-expansion/`, not at repo root.
+  `CITATION-SCHEME.md` at repo root is the contributor-facing spec
+  (referenced from `AGENTS.md`); `OVERLAP-MATRIX.md` is the audit
+  artifact and belongs with the story it summarizes.
 - **Skip any duplicate that is genuinely intentional.** Some overlap
   is fine if each skill frames the principle differently for its
   trigger. The bar: would the agent benefit from seeing the principle
   surfaced from two different angles, or would it just see the same
   rule twice? If the latter, consolidate.
-- **Trigger map updates if needed.** If the resolution shifts which
+- **Trigger map updates if needed.** If remediation shifts which
   skill owns a principle that was driving a `using-97/SKILL.md`
   trigger row, update the trigger row to point at the new owner.
-- **Time budget.** Single-pass audit; aim for one focused session.
-  If new duplications surface mid-audit that were not in the planner's
-  list, document them in `OVERLAP-MATRIX.md` and resolve them.
+- **Time budget.** If verification passes cleanly, single focused
+  hour for the matrix doc + checks. If meaningful remediation is
+  needed, budget 2–3 hours and be honest about scope creep.

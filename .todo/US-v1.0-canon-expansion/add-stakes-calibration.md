@@ -124,20 +124,19 @@ and `security-and-trust-boundaries`:
 
 ### Cross-task coordination
 
-- [ ] `add-observability-skill.md` Acceptance Criteria are updated
-      (in this same task's PR, since both files are in this story) to
-      include: "Skill Overview includes the stakes-calibration
-      sentence per `add-stakes-calibration.md`. Non-triggers section
-      includes MVP/dev-tool/prototype/script exclusions per the same
-      pattern."
-- [ ] `enrich-error-and-correctness-release-it.md`,
-      `enrich-build-deploy-twelve-factor.md` Acceptance Criteria each
-      gain a one-line note: "New principles authored against the
-      stakes-calibrated skill from `add-stakes-calibration.md`. No new
-      Overview or Non-triggers calibration edits in this task."
-      (Belt-and-suspenders: if the production-enrichment task
-      accidentally adds a duplicate calibration, lint or review
-      catches it.)
+The calibration pattern is documented in `main.md`'s Cross-cutting
+Concerns (per the story-level documentation step above). Downstream
+tasks reference `main.md`; this task does **not** edit other task
+files in `.todo/`. Editing `add-observability-skill.md`,
+`enrich-error-and-correctness-release-it.md`, or
+`enrich-build-deploy-twelve-factor.md` from here would create
+`.todo/`-merge-conflict bait without adding value the `main.md`
+section doesn't already provide.
+
+If a downstream task accidentally adds a duplicate calibration block,
+review catches it (the calibration sentence will appear twice in the
+same Overview, or Non-triggers will list MVP exclusions twice). Lint
+does not enforce this — it's a review-time check.
 
 ### Verification
 
@@ -145,14 +144,6 @@ and `security-and-trust-boundaries`:
 - [ ] `git grep` for the calibration pattern (e.g. "fires hardest" or
       "MVPs, prototypes") returns matches in 3 skills + the bootstrap
       Priority rule.
-- [ ] Spot-check in one harness: ask the agent "I'm prototyping a
-      Python script that calls a local Ollama instance to summarize
-      text. Should I add a circuit breaker?" Verify the agent **does
-      not** propose Nygard's circuit breaker (correctly recognizing
-      MVP / dev-tool context). Then ask "I'm building a production
-      web service that calls Stripe's payment API for live customer
-      transactions. Should I add a circuit breaker?" Verify the agent
-      **does** propose one.
 - [ ] `CHANGELOG.md` `### Changed` entry, past tense:
       > Added stakes calibration to the bundle. Production-shaped
       > skills (`error-and-correctness-traps`,
@@ -162,6 +153,25 @@ and `security-and-trust-boundaries`:
       > production guidance fires hardest when code is reaching
       > users; in MVPs and dev tools, prefer the simplest thing that
       > works.
+
+### Reviewer notes (not acceptance gates)
+
+The two harness spot-checks below are non-deterministic across
+harnesses, model versions, and temperature settings. They are
+*reviewer-confidence checks*, not pass/fail acceptance criteria.
+Run them and use judgement:
+
+- Ask the agent: *"I'm prototyping a Python script that calls a
+  local Ollama instance to summarize text. Should I add a circuit
+  breaker?"* Confidence signal: agent does **not** propose Nygard's
+  circuit breaker (correctly recognizing MVP / dev-tool context).
+- Ask the agent: *"I'm building a production web service that calls
+  Stripe's payment API for live customer transactions. Should I add
+  a circuit breaker?"* Confidence signal: agent **does** propose one.
+
+If both signals fire, calibration is wired correctly. If neither or
+only one fires, investigate — but treat as a follow-up issue, not a
+gate on landing this task.
 
 ## Notes
 
