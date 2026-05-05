@@ -13,6 +13,9 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ### Documentation
 
+- `README.md` OpenCode install section trimmed: dropped the per-platform
+  config-path table and the floating-vs-pinned trade-off paragraph.
+  Both were noise for a section that just needs to show the snippet.
 - `CONTRIBUTE.md` §4 (changelog style) and §6 (release commit message)
   now spell out the plain-prose voice we used for v0.3: open each
   version with a 1–2 sentence framing line, describe the change rather

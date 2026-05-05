@@ -47,13 +47,7 @@ Updates ship via the marketplace; run `copilot plugin update 97` when a new vers
 
 ### OpenCode
 
-Add to your OpenCode config file. Location varies by platform:
-
-| Platform | Default location |
-|---|---|
-| Linux | `~/.config/opencode/opencode.jsonc` |
-| macOS | `~/.config/opencode/opencode.jsonc` |
-| Windows | `%APPDATA%\opencode\opencode.jsonc` |
+Add to your OpenCode config file.
 
 ```jsonc
 {
@@ -75,11 +69,6 @@ pin to a specific tag (`#vX.Y.Z`):
   ]
 }
 ```
-
-The trade-off: pinning means you don't get fixes automatically. Unpinned
-means a bad commit reaches you on next restart. CI runs the test suite on
-Linux, macOS, and Windows across Node 18, 20, and 22 before any merge to
-`main`, which is what makes floating viable.
 
 Works on Linux, macOS, and Windows. Node 18+.
 
