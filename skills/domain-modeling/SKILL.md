@@ -43,12 +43,12 @@ If you're not sure whether a change introduces a *new domain concept* (vs. a loc
 
 Run every decision in order. Do not write the type's methods until decision 5 is settled.
 
-1. **Name the concept the way the domain expert names it.** If the user says "trader", "portfolio", "booking", "policy" — that's the type name. Avoid invented programmer terms (`UserDataObject`, `BookingManager`, `PolicyHelper`) when a domain term exists. If the domain expert wouldn't recognize the name, you're inventing a secret vocabulary the next programmer will have to decode. *(North, #11.)*
-2. **Make implicit relationships explicit as types or methods.** If the rule is "some traders cannot view some portfolios," prefer `trader.canView(portfolio)` over `portfolioIdsByTraderId.get(...)containsKey(...)`. Replace primitive obsession (raw ints, strings, nested maps standing in for relationships) with named types and operations. *(North, #11.)*
-3. **Treat this as design, not typing.** The shape you pick now will outlive most of the code that uses it. Sketch two or three alternatives before committing. Validate the chosen shape against at least two realistic scenarios — if it forces awkward workarounds in either, it's the wrong shape. Code is design; design needs validation. *(Brush, #12.)*
-4. **Default to immutable value types and pure transformations.** Unless the concept *intrinsically* has identity and lifetime (a `User`, a `Booking`), prefer value types you construct fresh rather than mutate. Operations that produce new domain objects from old ones are easier to test, reason about, and reuse than methods that secretly mutate shared state. *(Garson, #2.)*
-5. **Decide where the state lives — before sketching methods.** Ask: Is this data **large** (won't fit in RAM), **persistent** (survives process restart), or **interconnected** (entities reference each other with consistency rules)? If yes to any two: it belongs in a database (embedded like SQLite is fine for small needs). If no to all three: an in-memory structure is fine. Hand-rolled `Map<int, Map<int, int>>` for what is really a relational dataset is a cost you pay forever. *(Spinellis, #48.)*
-6. **Consider whether this concept needs its own little language.** When users keep describing the concept with a constrained vocabulary — rules, validations, query expressions, configuration — and several places in the code re-encode that vocabulary by hand, you are recreating a DSL the slow way. An internal DSL (a fluent API in the host language) lets domain experts read and sometimes write the rules directly. Don't *start* here, but recognize the smell. *(Hunger, #23.)*
+1. **Name the concept the way the domain expert names it.** If the user says "trader", "portfolio", "booking", "policy" — that's the type name. Avoid invented programmer terms (`UserDataObject`, `BookingManager`, `PolicyHelper`) when a domain term exists. If the domain expert wouldn't recognize the name, you're inventing a secret vocabulary the next programmer will have to decode. *(North, 97/11.)*
+2. **Make implicit relationships explicit as types or methods.** If the rule is "some traders cannot view some portfolios," prefer `trader.canView(portfolio)` over `portfolioIdsByTraderId.get(...)containsKey(...)`. Replace primitive obsession (raw ints, strings, nested maps standing in for relationships) with named types and operations. *(North, 97/11.)*
+3. **Treat this as design, not typing.** The shape you pick now will outlive most of the code that uses it. Sketch two or three alternatives before committing. Validate the chosen shape against at least two realistic scenarios — if it forces awkward workarounds in either, it's the wrong shape. Code is design; design needs validation. *(Brush, 97/12.)*
+4. **Default to immutable value types and pure transformations.** Unless the concept *intrinsically* has identity and lifetime (a `User`, a `Booking`), prefer value types you construct fresh rather than mutate. Operations that produce new domain objects from old ones are easier to test, reason about, and reuse than methods that secretly mutate shared state. *(Garson, 97/2.)*
+5. **Decide where the state lives — before sketching methods.** Ask: Is this data **large** (won't fit in RAM), **persistent** (survives process restart), or **interconnected** (entities reference each other with consistency rules)? If yes to any two: it belongs in a database (embedded like SQLite is fine for small needs). If no to all three: an in-memory structure is fine. Hand-rolled `Map<int, Map<int, int>>` for what is really a relational dataset is a cost you pay forever. *(Spinellis, 97/48.)*
+6. **Consider whether this concept needs its own little language.** When users keep describing the concept with a constrained vocabulary — rules, validations, query expressions, configuration — and several places in the code re-encode that vocabulary by hand, you are recreating a DSL the slow way. An internal DSL (a fluent API in the host language) lets domain experts read and sometimes write the rules directly. Don't *start* here, but recognize the smell. *(Hunger, 97/23.)*
 7. **Place the concept in one canonical location.** One file, one module, one table — not three competing definitions. If you find a parallel concept already exists under a different name, stop and unify before adding a third. The next programmer should be able to find this concept by searching for the domain term and finding exactly one definition.
 
 ## Red Flags
@@ -57,15 +57,15 @@ These thoughts mean STOP — restart the decisions:
 
 | Thought | Reality |
 |---|---|
-| "I'll use a `Map<int, Map<int, ...>>` — it's just an internal lookup." | Nested generic collections standing in for domain relationships are a tacit secret only you understand. Make the relationship a type or a method. (#11) |
-| "I'll call it `UserManager` / `DataHelper` / `ServiceUtil` — close enough." | If the domain expert wouldn't recognize the name, you've invented a vocabulary the next programmer has to decode. Use the domain term. (#11) |
-| "I'll write the methods first and figure out the shape as I go." | The shape *is* the design decision. Methods follow. Sketch the shape, validate it against scenarios, then add methods. (#12) |
-| "It's just a data class — five mutable fields with getters and setters." | Default to immutable value types; reach for mutability only when the concept inherently has identity over time. Mutability is a leading source of defects. (#2) |
-| "I'll keep this dataset in a `HashMap` for now — we can move it to a DB later." | "Later" rarely arrives. If the data is large, persistent, or interconnected, it belongs in a database from the start. SQLite is fine. (#48) |
-| "Let me hand-roll consistency between these in-memory collections." | Foreign keys, cascading deletes, and unique constraints are what an RDBMS does for free. Hand-rolling them produces dangling-reference bugs. (#48) |
-| "I'll add another `BookingDataObject` next to the existing `Booking` — they're slightly different." | Two competing definitions of the same domain concept guarantee they will drift. Unify first, then add. (#11) |
-| "This rule is just a one-line `if` — no need for a domain method." | If the same `if` recurs across the codebase representing the same business rule, it's a method on a domain type. Encapsulate it. (#11) |
-| "It's an internal type, naming doesn't matter." | Internal today is exposed tomorrow, and the name you pick now will appear in stack traces, logs, and PR diffs for years. Name it for the domain. (#11, #12) |
+| "I'll use a `Map<int, Map<int, ...>>` — it's just an internal lookup." | Nested generic collections standing in for domain relationships are a tacit secret only you understand. Make the relationship a type or a method. (97/11) |
+| "I'll call it `UserManager` / `DataHelper` / `ServiceUtil` — close enough." | If the domain expert wouldn't recognize the name, you've invented a vocabulary the next programmer has to decode. Use the domain term. (97/11) |
+| "I'll write the methods first and figure out the shape as I go." | The shape *is* the design decision. Methods follow. Sketch the shape, validate it against scenarios, then add methods. (97/12) |
+| "It's just a data class — five mutable fields with getters and setters." | Default to immutable value types; reach for mutability only when the concept inherently has identity over time. Mutability is a leading source of defects. (97/2) |
+| "I'll keep this dataset in a `HashMap` for now — we can move it to a DB later." | "Later" rarely arrives. If the data is large, persistent, or interconnected, it belongs in a database from the start. SQLite is fine. (97/48) |
+| "Let me hand-roll consistency between these in-memory collections." | Foreign keys, cascading deletes, and unique constraints are what an RDBMS does for free. Hand-rolling them produces dangling-reference bugs. (97/48) |
+| "I'll add another `BookingDataObject` next to the existing `Booking` — they're slightly different." | Two competing definitions of the same domain concept guarantee they will drift. Unify first, then add. (97/11) |
+| "This rule is just a one-line `if` — no need for a domain method." | If the same `if` recurs across the codebase representing the same business rule, it's a method on a domain type. Encapsulate it. (97/11) |
+| "It's an internal type, naming doesn't matter." | Internal today is exposed tomorrow, and the name you pick now will appear in stack traces, logs, and PR diffs for years. Name it for the domain. (97/11, 97/12) |
 
 ## What "done" looks like
 
@@ -84,10 +84,10 @@ If any box is unchecked, you are not done modeling — you are mid-modeling. Eit
 
 | # | Principle | Author |
 |---|---|---|
-| #2 | Apply Functional Programming Principles | Edward Garson |
-| #11 | Code in the Language of the Domain | Dan North |
-| #12 | Code Is Design | Ryan Brush |
-| #23 | Domain-Specific Languages | Michael Hunger |
-| #48 | Large, Interconnected Data Belongs to a Database | Diomidis Spinellis |
+| 97/2 | Apply Functional Programming Principles | Edward Garson |
+| 97/11 | Code in the Language of the Domain | Dan North |
+| 97/12 | Code Is Design | Ryan Brush |
+| 97/23 | Domain-Specific Languages | Michael Hunger |
+| 97/48 | Large, Interconnected Data Belongs to a Database | Diomidis Spinellis |
 
 See `principles.md` for the long-form distillations, citations, and source links.

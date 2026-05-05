@@ -30,17 +30,28 @@ For each principle we include:
 This commentary is original work, offered under MIT alongside the code.
 The source essays remain CC-BY-3.0 and are credited to their authors.
 
+## Principle IDs
+
+Every principle in this bundle has a stable string ID of the form
+`<source-key>/<principle-key>` (e.g. `97/74`, `Fowler/LongMethod`).
+The full registry of accepted source keys and the format spec live in
+`CITATION-SCHEME.md`. Citation of *97 Things* essays remains by author
+and essay number (`97/N`); citation of other sources is by author,
+book, and chapter as documented in each skill's `principles.md`.
+
 ## `security-and-trust-boundaries` — predominantly original
 
 The `security-and-trust-boundaries` skill is the project's one acknowledged
 "97-inspired plus extension." The book has thin direct coverage of modern
 security practice. Two book principles generalize cleanly to
-trust-boundary discipline and are kept under their CC-BY-3.0 attributions
-in `skills/security-and-trust-boundaries/principles.md`:
+trust-boundary discipline and are surfaced in the skill's `SKILL.md`
+as Red Flags and cross-references; their canonical entries live in
+`error-and-correctness-traps/principles.md` per the ID-uniqueness rule
+in `CITATION-SCHEME.md`:
 
-- **#26** ("Don't Ignore That Error!", Pete Goodliffe) — generalized to
+- **`97/26`** ("Don't Ignore That Error!", Pete Goodliffe) — generalized to
   "don't ignore the trust boundary."
-- **#29** ("Don't Rely on 'Magic Happens Here'", Alan Griffiths) —
+- **`97/29`** ("Don't Rely on 'Magic Happens Here'", Alan Griffiths) —
   generalized to "don't rely on a security control no one on the team
   understands."
 

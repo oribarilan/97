@@ -14,14 +14,11 @@ distillation, file an issue and the file will be revised or removed.
 
 ---
 
-## #2 — Apply Functional Programming Principles
+## 97/2 — Apply Functional Programming Principles
 
 **Author:** Edward Garson
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_02/README.md
-**Source (reading aid):** https://medium.com/@biratkirat/learning-the-list-2-apply-functional-programming-principles-edward-garson-cd6ac9c5f9ee
-**Source used:** GitHub mirror (CC-BY-3.0). Medium consulted as reading aid only.
-**Access date:** 2026-05-04
-**Gaps:** None — chapter present on the mirror, complete, attributed.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_02/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Functional programming's central design property is
 *referential transparency*: a function returns the same result for the same
@@ -44,14 +41,11 @@ specifically; the lesson generalizes here as a default for new domain types.
 
 ---
 
-## #11 — Code in the Language of the Domain
+## 97/11 — Code in the Language of the Domain
 
 **Author:** Dan North
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_11/README.md
-**Source (reading aid):** https://medium.com/@biratkirat/step-11-code-in-the-language-of-the-domain-dan-north-1c2efcc55e3b
-**Source used:** GitHub mirror (CC-BY-3.0). Medium consulted as reading aid only.
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_11/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Compare two ways of expressing "this trader is allowed to
 view this portfolio": a nested map lookup on raw integer IDs, versus a method
@@ -74,14 +68,11 @@ should be domain methods, and parallel competing definitions.
 
 ---
 
-## #12 — Code Is Design
+## 97/12 — Code Is Design
 
 **Author:** Ryan Brush
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_12/README.md
-**Source (reading aid):** https://medium.com/@biratkirat/step-12-code-is-design-ryan-brush-2d6e4cffc8eb
-**Source used:** GitHub mirror (CC-BY-3.0). Medium consulted as reading aid only.
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_12/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Software's "construction" step — compilation, deployment —
 is essentially free; the expensive activity is the design itself, which is
@@ -102,14 +93,11 @@ a public API.
 
 ---
 
-## #23 — Domain-Specific Languages
+## 97/23 — Domain-Specific Languages
 
 **Author:** Michael Hunger
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_23/README.md
-**Source (reading aid):** https://medium.com/@biratkirat/step-23-domain-specific-languages-michael-hunger-fc7f2e7b1e0b
-**Source used:** GitHub mirror (CC-BY-3.0). Medium consulted as reading aid only.
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_23/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Experts in any field share a constrained vocabulary that
 captures their domain efficiently; a domain-specific language brings that
@@ -132,14 +120,11 @@ warranted.
 
 ---
 
-## #48 — Large, Interconnected Data Belongs to a Database
+## 97/48 — Large, Interconnected Data Belongs to a Database
 
 **Author:** Diomidis Spinellis
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_48/README.md
-**Source (reading aid):** https://medium.com/@biratkirat/step-48-large-interconnected-data-belongs-to-a-database-diomidis-spinellis-c2e6e2f7f8a5
-**Source used:** GitHub mirror (CC-BY-3.0). Medium consulted as reading aid only.
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_48/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Modern relational databases are cheap (open source options
 like SQLite, PostgreSQL, MySQL), embeddable, and performant — the historical

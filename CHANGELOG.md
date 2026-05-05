@@ -11,6 +11,49 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [Unreleased]
 
+### Added
+
+- `CITATION-SCHEME.md` defines the `<source-key>/<principle-key>` ID
+  format used by every `principles.md` heading and the structural
+  lint. Replaces the implicit `#NN` convention with stable string IDs
+  and registers the source-key set v1.0 imports from. No content
+  changes in this entry; the migration follows.
+
+### Changed
+
+- Migrated principle IDs from `#NN` to `<source-key>/<principle-key>`
+  format (e.g. `#74` → `97/74`) and trimmed per-principle metadata
+  blocks to the unified five-field shape (Author, Source, License,
+  Distillation, Agent application). Hygiene fields (Source reading
+  aid, Source used, Access date, Gaps) dropped — provenance is
+  recoverable from `git log`. Per-principle Birat Rai Medium
+  walkthrough URLs (previously in the dropped `Source (reading aid)`
+  field) are removed from `principles.md` files; the README credit to
+  Birat Rai's 97-day walkthrough remains in place. Distillation and
+  agent-application paragraphs are byte-identical to pre-migration.
+  Lint regex and `SKILL_RULES.principles` updated. Per the ID-
+  uniqueness rule in `CITATION-SCHEME.md`, the v0.3 cross-listing of
+  `97/26` and `97/29` in `security-and-trust-boundaries` is resolved:
+  canonical home is `error-and-correctness-traps`; the security skill
+  keeps `SKILL.md` Red Flags surfacing with bare-ID cross-references.
+  External GitHub anchor links to the old `## #NN — …` headings
+  break; the renamed `## 97/NN — …` headings own the new anchor URLs.
+- `using-97/SKILL.md` Overview sentence updated from "nine themed
+  skills" to "ten themed skills" to match the v0.3 baseline (the
+  `security-and-trust-boundaries` addition was missed in that pass)
+  and reframes the source aperture to "*97 Things* and adjacent
+  canonical sources." A new Priority rule tells the agent to apply
+  principles silently — no surfacing source author names, book titles,
+  or principle IDs in user-facing responses.
+- Added stakes calibration to the bundle. Production-shaped skills
+  (`error-and-correctness-traps`, `build-deploy-and-tooling`,
+  `security-and-trust-boundaries`) now carry an explicit calibration
+  sentence in their Overview and MVP / prototype / dev-tool /
+  one-off-script exclusions in their Non-triggers. A new `using-97`
+  Priority rule tells the agent to match principle weight to stage
+  and stakes: production guidance fires hardest when code is reaching
+  users; in MVPs and dev tools, prefer the simplest thing that works.
+
 ### Documentation
 
 - `README.md` OpenCode install section trimmed: dropped the per-platform

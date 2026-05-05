@@ -14,14 +14,11 @@ distillation, file an issue and the file will be revised or removed.
 
 ---
 
-## #5 — Beauty Is in Simplicity
+## 97/5 — Beauty Is in Simplicity
 
 **Author:** Jørn Ølmheim
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_05/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None — chapter present on the mirror, complete, attributed.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_05/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** The qualities programmers say they value in code —
 readability, maintainability, speed of development, even the subjective sense
@@ -35,19 +32,16 @@ that simplicity is the only design property that compounds in the right
 direction as the system grows.
 
 **Agent application.** Source for decision 1 ("default to the simplest thing
-that works"). Companion to #75, which gives the *technique* (removal); this
+that works"). Companion to 97/75, which gives the *technique* (removal); this
 principle gives the *target* (simplicity as the unifying quality).
 
 ---
 
-## #13 — Code Layout Matters
+## 97/13 — Code Layout Matters
 
 **Author:** Steve Freeman
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_13/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_13/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** The cautionary tale is a Cobol shop that forbade indentation
 changes unless the code was also being changed, because someone once broke a
@@ -65,19 +59,16 @@ names is over; in modern IDEs the limiting resource is pixels, and ceremony
 that wastes them is a tax on every reader.
 
 **Agent application.** Source for decision 6 ("treat layout as a tool for the
-reader, not for the parser"). Pairs with #62 — names and layout together are
+reader, not for the parser"). Pairs with 97/62 — names and layout together are
 how the code communicates without help from comments or docs.
 
 ---
 
-## #15 — Coding with Reason
+## 97/15 — Coding with Reason
 
 **Author:** Yechiel Kimchi
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_15/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_15/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Formal proofs of program correctness are usually longer and
 more error-prone than the code itself. The middle path is to reason
@@ -100,18 +91,15 @@ static analysis.
 **Agent application.** Source for decision 3 ("reason about each block in
 short sections"). The "ask, don't tell" / "tell, don't ask" undercurrent
 also feeds decision 5 (single responsibility) and the broader bias toward
-encapsulation that #76 makes explicit.
+encapsulation that 97/76 makes explicit.
 
 ---
 
-## #17 — Comment Only What the Code Cannot Say
+## 97/17 — Comment Only What the Code Cannot Say
 
 **Author:** Kevlin Henney
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_17/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_17/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Comments sound helpful in theory; in practice they're often
 a blight. Bad code is caught by compilers, by tests, by production traffic.
@@ -132,18 +120,15 @@ the code can express and what the next reader needs to know.
 **Agent application.** Source for decision 8 ("comment only what the code
 cannot say") and the Red Flags about restating the code in prose, leaving
 old blocks commented out, and treating comments as a sign of professionalism.
-Reinforces #62 — code is the only artifact guaranteed to tell the truth.
+Reinforces 97/62 — code is the only artifact guaranteed to tell the truth.
 
 ---
 
-## #30 — Don't Repeat Yourself
+## 97/30 — Don't Repeat Yourself
 
 **Author:** Steve Smith
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_30/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_30/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** DRY (Hunt and Thomas, *The Pragmatic Programmer*) is one of
 the most-cited principles in the craft for good reason: every piece of
@@ -164,19 +149,16 @@ is fine when it solves a real problem rather than an imagined one.
 
 **Agent application.** Source for decision 10 ("each piece of knowledge has
 one authoritative representation") and the Red Flags about extraction-feels-
-premature and slightly-different-helpers. Companion to #91, which makes the
+premature and slightly-different-helpers. Companion to 97/91, which makes the
 performance argument for DRY explicit.
 
 ---
 
-## #39 — Improve Code by Removing It
+## 97/39 — Improve Code by Removing It
 
 **Author:** Pete Goodliffe
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_39/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_39/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** A war story: a codebase improved meaningfully when chunks
 of it were deleted. The team thought they were following YAGNI, but pieces
@@ -196,19 +178,16 @@ in a session is sometimes deletion.
 
 **Agent application.** Source for decision 9 ("improve code by removing it")
 and the Red Flag about adding speculative knobs. Resolves the apparent
-tension with #93 — long-term support is about clarity, not about predicting
+tension with 97/93 — long-term support is about clarity, not about predicting
 which extras a future maintainer will want.
 
 ---
 
-## #62 — Only the Code Tells the Truth
+## 97/62 — Only the Code Tells the Truth
 
 **Author:** Peter Sommerlad
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_62/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_62/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** The semantics of a program is the running code; everything
 else is a hope or a memory. Requirements documents capture intent, not
@@ -231,19 +210,16 @@ what it does once you're not around to explain.
 
 **Agent application.** Source for decision 7 ("choose names that let the
 code speak for itself") and the Red Flag about short names that "rely on
-context." Pairs with #17 — both principles converge on the same conclusion:
+context." Pairs with 97/17 — both principles converge on the same conclusion:
 the code is the document, and comments are at best a supplement.
 
 ---
 
-## #75 — Simplicity Comes from Reduction
+## 97/75 — Simplicity Comes from Reduction
 
 **Author:** Paul W. Homer
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_75/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_75/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** The story: an early boss "Stefan" sat down at the author's
 machine and pressed delete one line at a time until the bad code was gone,
@@ -264,19 +240,16 @@ inside the file.
 
 **Agent application.** Source for decision 2 ("reach simplicity by removing,
 not by adding") and the Red Flag about the reflex to add another flag.
-Companion to #5 (the target) and #39 (the user-visible justification for
+Companion to 97/5 (the target) and 97/39 (the user-visible justification for
 deletion).
 
 ---
 
-## #76 — The Single Responsibility Principle
+## 97/76 — The Single Responsibility Principle
 
 **Author:** Robert C. Martin
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_76/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_76/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** SRP, stated precisely: gather together the things that
 change for the same reason, and separate the things that change for
@@ -301,14 +274,11 @@ sharing a noun isn't a single responsibility.
 
 ---
 
-## #91 — WET Dilutes Performance Bottlenecks
+## 97/91 — WET Dilutes Performance Bottlenecks
 
 **Author:** Kirk Pepperdine
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_91/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_91/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** WET — Write Every Time — is the antithesis of DRY, named
 to make the cost obvious. The performance angle: imagine a feature that
@@ -326,19 +296,16 @@ list keyed on spending level) without touching client code. DRY makes
 bottlenecks both findable and fixable.
 
 **Agent application.** Source for decision 11 ("duplication hides the
-bottlenecks"). Companion to #30 — the same rule, justified twice: once on
+bottlenecks"). Companion to 97/30 — the same rule, justified twice: once on
 correctness grounds, once on performance grounds.
 
 ---
 
-## #93 — Write Code As If You Had to Support It for the Rest of Your Life
+## 97/93 — Write Code As If You Had to Support It for the Rest of Your Life
 
 **Author:** Yuriy Zubarev
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_93/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_93/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Faced with 97 pieces of advice from 73 contributors, the
 question is where to start and how to integrate any of it. The answer is
@@ -355,21 +322,18 @@ opinions of you from it. Writing for long-term support is the discipline
 that makes you better.
 
 **Agent application.** Source for decision 12 ("write code as if you'll
-have to support it for years"). Carries the explicit tension with #39
+have to support it for years"). Carries the explicit tension with 97/39
 (YAGNI) that the SKILL.md resolves: long-term thinking is about clarity for
 the next reader, not about adding speculative complexity for hypothetical
 future needs.
 
 ---
 
-## #94 — Write Small Functions Using Examples
+## 97/94 — Write Small Functions Using Examples
 
 **Author:** Keith Braithwaite
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_94/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_94/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** A function has two sizes. The first is lines of code, which
 is what most people mean by "small." The second, more interesting one, is
@@ -389,6 +353,6 @@ writing the function, and let those examples drive the type choices.
 
 **Agent application.** Source for decision 4 ("find the examples in domain
 terms before writing the function") and the Red Flag about using native
-`int`/`string` for now. Bridges to `domain-modeling` (#65 in that skill) and
+`int`/`string` for now. Bridges to `domain-modeling` (97/65 in that skill) and
 `api-and-interface-design` — domain-specific types are the shared answer to
 multiple distinct questions.

@@ -12,21 +12,18 @@ Distillations below are original commentary in our own words. No verbatim
 quotes longer than ~25 words. If a contributor objects to a particular
 distillation, file an issue and the file will be revised or removed.
 
-A note on attribution: the canonical mirror byline for #29 reads
+A note on attribution: the canonical mirror byline for 97/29 reads
 "AlanGriffiths" without a space; we use "Alan Griffiths" for readability.
-For #89 the mirror reads "JC van Winkel"; we use the longer form
+For 97/89 the mirror reads "JC van Winkel"; we use the longer form
 "Jan Christiaan \"JC\" van Winkel" used in the project's source-tracking docs.
 
 ---
 
-## #21 — Distinguish Business Exceptions from Technical
+## 97/21 — Distinguish Business Exceptions from Technical
 
 **Author:** Dan Bergh Johnsson
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_21/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_21/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Two reasons code throws at runtime: a *technical* problem
 prevents the system from continuing (bad arguments to a library, an
@@ -50,14 +47,11 @@ or modifies an exception type or a `throw`.
 
 ---
 
-## #26 — Don't Ignore That Error!
+## 97/26 — Don't Ignore That Error!
 
 **Author:** Pete Goodliffe
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_26/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_26/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Goodliffe opens with a leg injury he ignored to keep his
 plans — turned out to be a fractured shin. The same impulse, applied to
@@ -84,14 +78,11 @@ calls that can fail.
 
 ---
 
-## #29 — Don't Rely on "Magic Happens Here"
+## 97/29 — Don't Rely on "Magic Happens Here"
 
 **Author:** Alan Griffiths
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_29/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** Mirror byline reads "AlanGriffiths" without a space; we spell it
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_29/README.md
+**License:** CC-BY-3.0
 "Alan Griffiths."
 
 **Distillation.** From far enough away, any complex activity looks simple.
@@ -119,14 +110,11 @@ the framework behavior the agent has not actually confirmed.
 
 ---
 
-## #33 — Floating-Point Numbers Aren't Real
+## 97/33 — Floating-Point Numbers Aren't Real
 
 **Author:** Chuck Allison
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_33/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_33/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Floats are not the real numbers — they are finite,
 unevenly-spaced rationals that approximate reals only inside narrow
@@ -155,14 +143,11 @@ for money — straight into the agent's per-domain checklist.
 
 ---
 
-## #41 — Inter-Process Communication Affects Application Response Time
+## 97/41 — Inter-Process Communication Affects Application Response Time
 
 **Author:** Randy Stafford
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_41/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_41/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Performance literature still focuses on data structures
 and algorithms — but in modern multi-tier applications, response time is
@@ -189,14 +174,11 @@ batch / parallelize / cache before the count grows.
 
 ---
 
-## #46 — Know Your Limits
+## 97/46 — Know Your Limits
 
 **Author:** Greg Colvin
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_46/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_46/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Resources — time, money, attention, hardware — are
 limited; design has to respect that. Colvin invokes Sean Parent's
@@ -217,20 +199,17 @@ hardware.
 
 **Agent application.** Source for checklist step 12 ("respect the cache
 hierarchy when it dominates") and the data-structure Red Flag in
-combination with #89. The skill applies Colvin's argument as a brake
+combination with 97/89. The skill applies Colvin's argument as a brake
 on perf-by-reasoning: when performance matters, measurement is the
 arbiter, not big-O on its own.
 
 ---
 
-## #57 — Message Passing Leads to Better Scalability in Parallel Systems
+## 97/57 — Message Passing Leads to Better Scalability in Parallel Systems
 
 **Author:** Russel Winder
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_57/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_57/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Concurrency has a reputation for being hard, and most of
 that hardness traces to one root cause: shared mutable memory. Race
@@ -257,14 +236,11 @@ the need.
 
 ---
 
-## #73 — Resist the Temptation of the Singleton
+## 97/73 — Resist the Temptation of the Singleton
 
 **Author:** Sam Saariste
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_73/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_73/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Singletons are tempting — only one instance is needed,
 the instance is guaranteed initialized, and there's a single global
@@ -295,14 +271,11 @@ can substitute it.
 
 ---
 
-## #89 — Use the Right Algorithm and Data Structure
+## 97/89 — Use the Right Algorithm and Data Structure
 
 **Author:** Jan Christiaan "JC" van Winkel
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_89/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** Mirror byline reads "JC van Winkel"; we use the longer form for
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_89/README.md
+**License:** CC-BY-3.0
 the principles table.
 
 **Distillation.** A bank's tellers were threatening to drop the contract

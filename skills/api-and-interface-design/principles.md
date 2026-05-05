@@ -14,14 +14,11 @@ distillation, file an issue and the file will be revised or removed.
 
 ---
 
-## #7 — Beware the Share
+## 97/7 — Beware the Share
 
 **Author:** Udi Dahan
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_07/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None — chapter present on the mirror, complete, attributed.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_07/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Reuse is taught as an unqualified good, but reuse without
 shared *context* trades a small amount of duplication for a large amount of
@@ -37,19 +34,16 @@ only when a real shared concept emerges and earns a name in the domain.
 **Agent application.** Source for decision 4 ("don't extract a shared API
 until the contexts are actually shared") and the Red Flag about extracting
 a helper from two call sites that happen to look alike. Bounds the
-encapsulation pressure from #32 — encapsulate within a context, don't
+encapsulation pressure from 97/32 — encapsulate within a context, don't
 universalize across them.
 
 ---
 
-## #19 — Convenience Is not an -ility
+## 97/19 — Convenience Is not an -ility
 
 **Author:** Gregor Hohpe
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_19/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_19/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** "Convenience" is the most-cited justification for sloppy
 API choices: one method with a boolean switch instead of two methods, a
@@ -66,19 +60,16 @@ anticipate; that is the convenience worth optimizing for.
 
 **Agent application.** Source for decision 7 ("design vocabulary, not
 conveniences") and the Red Flag about adding a `bool strict` parameter.
-Pairs with #55 — flag-driven overloads are the canonical example of an
+Pairs with 97/55 — flag-driven overloads are the canonical example of an
 interface that is *easy to use incorrectly*.
 
 ---
 
-## #32 — Encapsulate Behavior, Not Just State
+## 97/32 — Encapsulate Behavior, Not Just State
 
 **Author:** Einar Landre
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_32/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_32/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Two failure modes of class design come up again and again:
 the 3000-line god class with one entry point, and the record-with-getters
@@ -99,14 +90,11 @@ that skill picks the type; this one picks what the type *exposes*.
 
 ---
 
-## #35 — The Golden Rule of API Design
+## 97/35 — The Golden Rule of API Design
 
 **Author:** Michael Feathers
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_35/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_35/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** The temptation when shipping an API is to lock everything
 down — `final`, `sealed`, singleton, static factory — to preserve the
@@ -126,14 +114,11 @@ test is where each design choice gets validated.
 
 ---
 
-## #55 — Make Interfaces Easy to Use Correctly and Hard to Use Incorrectly
+## 97/55 — Make Interfaces Easy to Use Correctly and Hard to Use Incorrectly
 
 **Author:** Scott Meyers
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_55/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_55/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Interface design happens at every level — UI buttons,
 function signatures, library entry points, RPC schemas — and the same two
@@ -151,20 +136,17 @@ caller's convenience, not the implementer's.
 
 **Agent application.** Headline rule of the entire skill. Source for
 decision 1 and the framing under which decisions 2–9 are tactics. Multiple
-Red Flags cite #55 directly because most of the bad-API thoughts ("I'll
+Red Flags cite 97/55 directly because most of the bad-API thoughts ("I'll
 document the right way," "internal API, rules don't apply") are this
 principle being violated.
 
 ---
 
-## #59 — Missing Opportunities for Polymorphism
+## 97/59 — Missing Opportunities for Polymorphism
 
 **Author:** Kirk Pepperdine
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_59/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_59/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** When a caller has to inspect a type tag or enum to choose
 which behavior to invoke, the API has handed a closed-set decision back to
@@ -182,20 +164,17 @@ keep one.
 
 **Agent application.** Source for decision 9 ("reach for polymorphism
 before chains of `if`/`switch` on type tags") and the Red Flag about three
-cases that will become thirty. Bounds the type-system advice in #84 —
+cases that will become thirty. Bounds the type-system advice in 97/84 —
 once you have explicit state types, polymorphism is how operations dispatch
 on them without callers re-checking the tag.
 
 ---
 
-## #65 — Prefer Domain-Specific Types to Primitive Types
+## 97/65 — Prefer Domain-Specific Types to Primitive Types
 
 **Author:** Einar Landre
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_65/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_65/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** The Mars Climate Orbiter was lost because one piece of
 ground software produced thrust values in pounds and the spacecraft expected
@@ -212,19 +191,16 @@ just bit patterns.
 
 **Agent application.** Source for decision 5 ("prefer domain-specific types
 to primitives") and the Red Flag about taking a `string` because callers
-"can pass whatever." Companion to #84 — domain types model values; #84
+"can pass whatever." Companion to 97/84 — domain types model values; 97/84
 models *valid sequences* of operations on them.
 
 ---
 
-## #66 — Prevent Errors
+## 97/66 — Prevent Errors
 
 **Author:** Giles Colborne
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_66/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_66/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Error messages mark a breakdown in communication between
 the user and the system — and most caller "mistakes" are predictable, which
@@ -242,20 +218,17 @@ signatures: the "user" is the caller, and the same techniques translate.
 
 **Agent application.** Source for decision 2 ("prevent errors at the call
 site, not in the error message") and the Red Flag about clear error
-messages standing in for a better signature. Reinforces #55 by giving
+messages standing in for a better signature. Reinforces 97/55 by giving
 concrete tactics — eliminate, parse leniently, cue, default — for making
 incorrect use hard.
 
 ---
 
-## #84 — Thinking in States
+## 97/84 — Thinking in States
 
 **Author:** Niclas Nilsson
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_84/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_84/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Programmers tend to handle state vaguely, and the bugs
 hide in plain sight. An `Order.isComplete()` defined as `isPaid() &&
@@ -272,6 +245,6 @@ but the underlying clarity is the win.
 
 **Agent application.** Source for decision 6 ("model state explicitly;
 reject illegal operations by type or guard") and the Red Flag about
-implicit ordering of method calls. Pairs with #65 (types for values) and
-#59 (polymorphism for dispatch) to form the type-system tactics that cash
-out the headline rule from #55.
+implicit ordering of method calls. Pairs with 97/65 (types for values) and
+97/59 (polymorphism for dispatch) to form the type-system tactics that cash
+out the headline rule from 97/55.

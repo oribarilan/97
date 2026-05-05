@@ -41,7 +41,7 @@ If the change is small but introduces real logic, **invoke anyway** — the chec
 
 ## A Message to the Future
 
-Linda Rising (#58) frames the underlying motivation. Every line you are about to commit is a message to a future programmer — often a smarter, less-context-rich version of you, six months on, paged at 3am. The work of self-review is the work of writing that message clearly. Cleverness that only the present author can decode is a debt the future reader pays. The aspiration is the future reader saying "I can see exactly what was done here, and it's clear" — not "betcha can't guess what this does."
+Linda Rising (97/58) frames the underlying motivation. Every line you are about to commit is a message to a future programmer — often a smarter, less-context-rich version of you, six months on, paged at 3am. The work of self-review is the work of writing that message clearly. Cleverness that only the present author can decode is a debt the future reader pays. The aspiration is the future reader saying "I can see exactly what was done here, and it's clear" — not "betcha can't guess what this does."
 
 Hold that frame while running the checklist below.
 
@@ -49,15 +49,15 @@ Hold that frame while running the checklist below.
 
 Run every step before you commit, hand off, or claim completion.
 
-1. **Re-read the diff as a stranger.** Open the diff fresh and read it top to bottom without context. If a section needs you to remember what you were thinking yesterday to make sense of it, the next reader will not have that memory. Rename, comment, or restructure until the diff explains itself. *(Rising, #58.)*
-2. **Suspect your own code first.** Before you blame the framework, the library, or the flaky test, assume the bug is yours. It almost always is. Walk the code path with the failing input in mind; confirm assumptions about types, ordering, null cases, and shared state. Reach for "compiler bug" only after you have ruled out yours. *(Kelly, #9.)*
-3. **Know what your next commit is.** State, in one sentence, what this commit does. If the sentence contains "and also" or "various", the commit is two commits. Split it. If you cannot name a clear, bounded change, you are committing speculation — throw the speculative parts away and re-scope. *(Bergh Johnsson, #47.)*
-4. **Check for deliberate technical debt.** Did you take a shortcut to ship? Name it. File a follow-up note (issue, todo, line in the hand-off) so the debt is visible. Untracked debt accrues silent interest. *(Rose, #1.)*
-5. **Clean the build before you leave it.** New compiler warnings, lint errors, or deprecation notices introduced by this change get fixed now, not later. A noisy build hides the warning that actually matters. *(Brodwall, #42.)*
-6. **Audit the logs you added.** Every new log line: is its level right? Will it fire once per significant event, or per inner-loop iteration? Would you want to be paged for an ERROR-level message you wrote? If not, downgrade it. *(Brodwall, #90.)*
-7. **Re-read the comments.** Header comments should let the next reader use the code without reading the body. Inline comments should explain *why*, not narrate *what*. Delete comments that have drifted from the code. Never paste anything into a comment you would not want quoted back in a meeting. *(Evans, #16.)*
-8. **Step away if you're stuck on a smell.** If something feels off but you can't say why, stop typing. Walk, switch tasks, sleep on it. The creative side surfaces the problem once the logical side stops talking. Do not commit a change you are uneasy about because you are tired. *(Hufnagel, #69.)*
-9. **Frame the hand-off as a review, not a defense.** When you summarize for your human partner, mention the trade-offs, the parts you are least sure about, and any debt you incurred. Reviews exist for knowledge sharing, not for catching you out — invite scrutiny rather than deflect it. *(Karlsson, #14.)*
+1. **Re-read the diff as a stranger.** Open the diff fresh and read it top to bottom without context. If a section needs you to remember what you were thinking yesterday to make sense of it, the next reader will not have that memory. Rename, comment, or restructure until the diff explains itself. *(Rising, 97/58.)*
+2. **Suspect your own code first.** Before you blame the framework, the library, or the flaky test, assume the bug is yours. It almost always is. Walk the code path with the failing input in mind; confirm assumptions about types, ordering, null cases, and shared state. Reach for "compiler bug" only after you have ruled out yours. *(Kelly, 97/9.)*
+3. **Know what your next commit is.** State, in one sentence, what this commit does. If the sentence contains "and also" or "various", the commit is two commits. Split it. If you cannot name a clear, bounded change, you are committing speculation — throw the speculative parts away and re-scope. *(Bergh Johnsson, 97/47.)*
+4. **Check for deliberate technical debt.** Did you take a shortcut to ship? Name it. File a follow-up note (issue, todo, line in the hand-off) so the debt is visible. Untracked debt accrues silent interest. *(Rose, 97/1.)*
+5. **Clean the build before you leave it.** New compiler warnings, lint errors, or deprecation notices introduced by this change get fixed now, not later. A noisy build hides the warning that actually matters. *(Brodwall, 97/42.)*
+6. **Audit the logs you added.** Every new log line: is its level right? Will it fire once per significant event, or per inner-loop iteration? Would you want to be paged for an ERROR-level message you wrote? If not, downgrade it. *(Brodwall, 97/90.)*
+7. **Re-read the comments.** Header comments should let the next reader use the code without reading the body. Inline comments should explain *why*, not narrate *what*. Delete comments that have drifted from the code. Never paste anything into a comment you would not want quoted back in a meeting. *(Evans, 97/16.)*
+8. **Step away if you're stuck on a smell.** If something feels off but you can't say why, stop typing. Walk, switch tasks, sleep on it. The creative side surfaces the problem once the logical side stops talking. Do not commit a change you are uneasy about because you are tired. *(Hufnagel, 97/69.)*
+9. **Frame the hand-off as a review, not a defense.** When you summarize for your human partner, mention the trade-offs, the parts you are least sure about, and any debt you incurred. Reviews exist for knowledge sharing, not for catching you out — invite scrutiny rather than deflect it. *(Karlsson, 97/14.)*
 
 ## Red Flags
 
@@ -65,15 +65,15 @@ These thoughts mean STOP — do not commit yet:
 
 | Thought | Reality |
 |---|---|
-| "It works on my machine — shipping it." | "Works" is the verification gate, not the review gate. Re-read the diff as a stranger before claiming done. (#58) |
-| "Must be a bug in the library." | Mature libraries used by many people are usually fine. Suspect your code first; reach for "library bug" only after ruling yours out. (#9) |
-| "I'll squash this giant commit and figure out the message later." | If you can't state the commit in one sentence now, the commit is speculation. Split it or throw the speculative parts away. (#47) |
-| "I took a shortcut, I'll come back and fix it." | The promise is sincere and rarely kept. Track the debt explicitly — issue, todo, hand-off note — or pay it now. (#1) |
-| "There are a few new warnings, but the build still passes." | Today's ignored warning hides tomorrow's real one. Fix warnings as they appear, not in a future cleanup pass. (#42) |
-| "More logging is safer." | A log flooded with INFO drowns the ERROR that wakes you at 3am. Audit log levels before committing. (#90) |
-| "The code is obvious, no comments needed." | Obvious to you today is opaque to the next reader. Header comment for *how to use*, inline comment for *why*. (#16) |
-| "I'm tired but let me push this through." | Tired commits are the ones you regret. Step away; the answer is usually obvious after a break. (#69) |
-| "I'll just downplay the messy parts in the summary." | Hand-off is for knowledge sharing, not self-defense. Name the trade-offs and the parts you're unsure about. (#14) |
+| "It works on my machine — shipping it." | "Works" is the verification gate, not the review gate. Re-read the diff as a stranger before claiming done. (97/58) |
+| "Must be a bug in the library." | Mature libraries used by many people are usually fine. Suspect your code first; reach for "library bug" only after ruling yours out. (97/9) |
+| "I'll squash this giant commit and figure out the message later." | If you can't state the commit in one sentence now, the commit is speculation. Split it or throw the speculative parts away. (97/47) |
+| "I took a shortcut, I'll come back and fix it." | The promise is sincere and rarely kept. Track the debt explicitly — issue, todo, hand-off note — or pay it now. (97/1) |
+| "There are a few new warnings, but the build still passes." | Today's ignored warning hides tomorrow's real one. Fix warnings as they appear, not in a future cleanup pass. (97/42) |
+| "More logging is safer." | A log flooded with INFO drowns the ERROR that wakes you at 3am. Audit log levels before committing. (97/90) |
+| "The code is obvious, no comments needed." | Obvious to you today is opaque to the next reader. Header comment for *how to use*, inline comment for *why*. (97/16) |
+| "I'm tired but let me push this through." | Tired commits are the ones you regret. Step away; the answer is usually obvious after a break. (97/69) |
+| "I'll just downplay the messy parts in the summary." | Hand-off is for knowledge sharing, not self-defense. Name the trade-offs and the parts you're unsure about. (97/14) |
 
 ## What "done" looks like
 
@@ -92,14 +92,14 @@ If any box is unchecked, you are not done — you are mid-review. Either finish 
 
 | # | Principle | Author |
 |---|---|---|
-| #1 | Act with Prudence | Seb Rose |
-| #9 | Check Your Code First Before Looking to Blame Others | Allan Kelly |
-| #14 | Code Reviews | Mattias Karlsson |
-| #16 | A Comment on Comments | Cal Evans |
-| #42 | Keep the Build Clean | Johannes Brodwall |
-| #47 | Know Your Next Commit | Dan Bergh Johnsson |
-| #58 | A Message to the Future | Linda Rising |
-| #69 | Put the Mouse Down and Step Away from the Keyboard | Burk Hufnagel |
-| #90 | Verbose Logging Will Disturb Your Sleep | Johannes Brodwall |
+| 97/1 | Act with Prudence | Seb Rose |
+| 97/9 | Check Your Code First Before Looking to Blame Others | Allan Kelly |
+| 97/14 | Code Reviews | Mattias Karlsson |
+| 97/16 | A Comment on Comments | Cal Evans |
+| 97/42 | Keep the Build Clean | Johannes Brodwall |
+| 97/47 | Know Your Next Commit | Dan Bergh Johnsson |
+| 97/58 | A Message to the Future | Linda Rising |
+| 97/69 | Put the Mouse Down and Step Away from the Keyboard | Burk Hufnagel |
+| 97/90 | Verbose Logging Will Disturb Your Sleep | Johannes Brodwall |
 
 See `principles.md` for the long-form distillations, citations, and source links.

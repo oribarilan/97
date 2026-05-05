@@ -41,46 +41,46 @@ If you're unsure whether the change is non-trivial, ask: *would a reviewer pause
 
 Each decision pairs with a **check** — a property a reviewer can verify by reading the diff.
 
-1. **Reach simplicity by removing, not adding.** *(Homer, #75.)* The reflex when code misbehaves is to add another variable, branch, or comment. Try the opposite — delete a line and see what breaks. Bad code that is close to working is worth saving; bad code that is far from working should be discarded and retyped from memory, because the act of retyping cuts through the clutter.
+1. **Reach simplicity by removing, not adding.** *(Homer, 97/75.)* The reflex when code misbehaves is to add another variable, branch, or comment. Try the opposite — delete a line and see what breaks. Bad code that is close to working is worth saving; bad code that is far from working should be discarded and retyped from memory, because the act of retyping cuts through the clutter.
    *Check:* you tried deleting at least one line you initially wrote on this hunk, and the code is better for what survived.
 
-2. **Reason about each block in short sections.** *(Kimchi, #15.)* Write code in chunks — a single line up to under ten — that you could defend to a sceptical peer. The endpoints of each section should be describable as state properties (a generalized pre/postcondition or invariant). When you intend to reason about the code, the structure improves on its own: smaller scopes, fewer mutable globals, narrower interfaces, getters that don't leak internal state.
+2. **Reason about each block in short sections.** *(Kimchi, 97/15.)* Write code in chunks — a single line up to under ten — that you could defend to a sceptical peer. The endpoints of each section should be describable as state properties (a generalized pre/postcondition or invariant). When you intend to reason about the code, the structure improves on its own: smaller scopes, fewer mutable globals, narrower interfaces, getters that don't leak internal state.
    *Check:* you can describe, in one sentence, what state holds at the start and end of each block of ten or fewer lines.
 
-3. **Find examples in domain terms before writing the function.** *(Braithwaite, #94.)* A function with an `int` parameter has billions of input cases; a function with a `LibertyCount = {1,2,3,4}` parameter has four. Pick the types that make the function checkable by example, then write it.
+3. **Find examples in domain terms before writing the function.** *(Braithwaite, 97/94.)* A function with an `int` parameter has billions of input cases; a function with a `LibertyCount = {1,2,3,4}` parameter has four. Pick the types that make the function checkable by example, then write it.
    *Check:* every parameter that could be a domain type is one (or there's a named reason it's not — measured perf, language limitation, deferred to a tracked issue).
 
-4. **One reason to change per unit.** *(Martin, #76.)* The Single Responsibility Principle: a function, class, or module should have one reason to change. An `Employee` class with `calculatePay`, `reportHours`, and `save` has three reasons to change and three sets of dependents who suffer for each. Split along axes of change, not axes of "things that share a noun."
+4. **One reason to change per unit.** *(Martin, 97/76.)* The Single Responsibility Principle: a function, class, or module should have one reason to change. An `Employee` class with `calculatePay`, `reportHours`, and `save` has three reasons to change and three sets of dependents who suffer for each. Split along axes of change, not axes of "things that share a noun."
    *Check:* the responsibility of each function/class/module fits in one sentence with no "and also."
 
-5. **Treat layout as a tool for the reader, not for the parser.** *(Freeman, #13.)* Standardize accidental complexity (formatter handles the basics) so domain content stands out. Use line breaks to express intention. Compact, scannable code beats sparse ceremonial code on every metric the reader cares about.
+5. **Treat layout as a tool for the reader, not for the parser.** *(Freeman, 97/13.)* Standardize accidental complexity (formatter handles the basics) so domain content stands out. Use line breaks to express intention. Compact, scannable code beats sparse ceremonial code on every metric the reader cares about.
    *Check:* removing any blank line in the hunk would either obscure intent or prove it wasn't doing work.
 
-6. **Names match the domain; no name relies on local context.** *(Sommerlad, #62 — distilled.)* Context evaporates the moment the reader is somewhere else in the file. Names carry their meaning with them.
+6. **Names match the domain; no name relies on local context.** *(Sommerlad, 97/62 — distilled.)* Context evaporates the moment the reader is somewhere else in the file. Names carry their meaning with them.
    *Check:* every new name reads correctly when the reviewer encounters it for the first time, with the surrounding lines hidden.
 
-7. **Comment only what the code cannot say.** *(Henney, #17.)* A comment that restates what the code does adds nothing. A comment that contradicts the code is worse than nothing — wrong comments survive forever because no compiler catches them. The legitimate space is *why this approach, not what it does*.
+7. **Comment only what the code cannot say.** *(Henney, 97/17.)* A comment that restates what the code does adds nothing. A comment that contradicts the code is worse than nothing — wrong comments survive forever because no compiler catches them. The legitimate space is *why this approach, not what it does*.
    *Check:* every comment in the hunk explains *why*, not *what*; comments that describe the code itself are deleted, and the underlying name or extraction is improved instead.
 
-8. **Each piece of knowledge has one authoritative representation.** *(Smith, #30; performance-angle credit Pepperdine, #91.)* DRY applies to data, logic, and process. Copy-paste duplication is the easy case to spot; the harder case is parallel implementations of the same business rule that drift apart over time. (Bonus from #91: a hot path concentrated in one place shows up clearly in a profile; spread across copies, each looks like noise.) Occasional duplication for a measured performance reason is fine; speculative duplication is not.
+8. **Each piece of knowledge has one authoritative representation.** *(Smith, 97/30; performance-angle credit Pepperdine, 97/91.)* DRY applies to data, logic, and process. Copy-paste duplication is the easy case to spot; the harder case is parallel implementations of the same business rule that drift apart over time. (Bonus from 97/91: a hot path concentrated in one place shows up clearly in a profile; spread across copies, each looks like noise.) Occasional duplication for a measured performance reason is fine; speculative duplication is not.
    *Check:* no business rule is implemented in two places without a named reason; if it is, the reason is recorded inline or in the commit message.
 
 ### Long-term mindset vs YAGNI — the tension
 
-"Write for long-term support" and "remove anything you don't need" sound contradictory and aren't. **Long-term thinking is about clarity, not predictive feature engineering.** Invest in good names, small functions, honest comments, removed dead code, tests that pin behavior. Don't invest in speculative parameters, configuration knobs, abstraction layers, or "extension points" for hypothetical future maintainers — that's #75/#39 territory. The test: would I want to *read* this code in two years (long-term thinking) versus would I want to *have already written* this extra layer (speculation; cut it).
+"Write for long-term support" and "remove anything you don't need" sound contradictory and aren't. **Long-term thinking is about clarity, not predictive feature engineering.** Invest in good names, small functions, honest comments, removed dead code, tests that pin behavior. Don't invest in speculative parameters, configuration knobs, abstraction layers, or "extension points" for hypothetical future maintainers — that's 97/75/97/39 territory. The test: would I want to *read* this code in two years (long-term thinking) versus would I want to *have already written* this extra layer (speculation; cut it).
 
 ## Red Flags
 
 | Thought | Reality |
 |---|---|
-| "I'll add another flag/variable to make it work." | The reflex to add is what produced the mess. Try removing instead — delete a line and see what breaks. (#75) |
-| "It's a long function, but splitting it would be artificial." | A function with multiple reasons to change is not one function. Split along the axes of change, not "looks tidy." (#76) |
-| "I'll comment what the code is doing so the reader follows along." | Restating the code in prose adds noise. Rename, extract, or simplify until the code says what the comment was going to. (#17) |
-| "I'll leave the old block commented out in case we need it." | Commented-out code goes stale immediately and isn't executable. Version control remembers; the file shouldn't. (#17, #62) |
-| "It's only duplicated twice — extracting feels premature." | Two copies become five. The cost of extracting now is small; finding all copies of a buggy rule later is not. (#30, #91) |
-| "I'll use `int`/`string` for now — we can wrap it later." | The native type opens billions of input cases that no test will ever cover. A domain type collapses the function to something checkable. (#94) |
-| "The variable name is short — context makes it obvious." | Context evaporates the moment the reader is somewhere else. Names carry their meaning with them. (#62) |
-| "Every function on this class belongs together — they all touch `Order`." | Sharing a noun isn't a single responsibility. Ask what changes for what reason; if the answers differ, split. (#76) |
+| "I'll add another flag/variable to make it work." | The reflex to add is what produced the mess. Try removing instead — delete a line and see what breaks. (97/75) |
+| "It's a long function, but splitting it would be artificial." | A function with multiple reasons to change is not one function. Split along the axes of change, not "looks tidy." (97/76) |
+| "I'll comment what the code is doing so the reader follows along." | Restating the code in prose adds noise. Rename, extract, or simplify until the code says what the comment was going to. (97/17) |
+| "I'll leave the old block commented out in case we need it." | Commented-out code goes stale immediately and isn't executable. Version control remembers; the file shouldn't. (97/17, 97/62) |
+| "It's only duplicated twice — extracting feels premature." | Two copies become five. The cost of extracting now is small; finding all copies of a buggy rule later is not. (97/30, 97/91) |
+| "I'll use `int`/`string` for now — we can wrap it later." | The native type opens billions of input cases that no test will ever cover. A domain type collapses the function to something checkable. (97/94) |
+| "The variable name is short — context makes it obvious." | Context evaporates the moment the reader is somewhere else. Names carry their meaning with them. (97/62) |
+| "Every function on this class belongs together — they all touch `Order`." | Sharing a noun isn't a single responsibility. Ask what changes for what reason; if the answers differ, split. (97/76) |
 
 ## What "done" looks like
 
@@ -95,13 +95,13 @@ Each decision pairs with a **check** — a property a reviewer can verify by rea
 
 | # | Principle | Author |
 |---|---|---|
-| #13 | Code Layout Matters | Steve Freeman |
-| #15 | Coding with Reason | Yechiel Kimchi |
-| #17 | Comment Only What the Code Cannot Say | Kevlin Henney |
-| #30 | Don't Repeat Yourself | Steve Smith |
-| #75 | Simplicity Comes from Reduction | Paul W. Homer |
-| #76 | The Single Responsibility Principle | Robert C. Martin |
-| #91 | WET Dilutes Performance Bottlenecks | Kirk Pepperdine (folded into #30 here) |
-| #94 | Write Small Functions Using Examples | Keith Braithwaite |
+| 97/13 | Code Layout Matters | Steve Freeman |
+| 97/15 | Coding with Reason | Yechiel Kimchi |
+| 97/17 | Comment Only What the Code Cannot Say | Kevlin Henney |
+| 97/30 | Don't Repeat Yourself | Steve Smith |
+| 97/75 | Simplicity Comes from Reduction | Paul W. Homer |
+| 97/76 | The Single Responsibility Principle | Robert C. Martin |
+| 97/91 | WET Dilutes Performance Bottlenecks | Kirk Pepperdine (folded into 97/30 here) |
+| 97/94 | Write Small Functions Using Examples | Keith Braithwaite |
 
-See `principles.md` for the long-form distillations and source links — including #5 (Beauty Is in Simplicity), #39 (Improve Code by Removing It), #62 (Only the Code Tells the Truth — distilled into decision 6), and #93 (Write Code As If You Had to Support It for the Rest of Your Life), kept for attribution but no longer cited as separate decisions in `SKILL.md`.
+See `principles.md` for the long-form distillations and source links — including 97/5 (Beauty Is in Simplicity), 97/39 (Improve Code by Removing It), 97/62 (Only the Code Tells the Truth — distilled into decision 6), and 97/93 (Write Code As If You Had to Support It for the Rest of Your Life), kept for attribution but no longer cited as separate decisions in `SKILL.md`.

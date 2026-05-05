@@ -14,14 +14,11 @@ distillation, file an issue and the file will be revised or removed.
 
 ---
 
-## #25 — Don't Be Cute with Your Test Data
+## 97/25 — Don't Be Cute with Your Test Data
 
 **Author:** Rod Begbie
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_25/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0). Medium consulted as reading aid only.
-**Access date:** 2026-05-04
-**Gaps:** None — chapter present on the mirror, complete, attributed.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_25/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Test data is not private. It surfaces in screenshots taken
 for an executive deck, in logs forwarded to support, in error dialogs that
@@ -44,14 +41,11 @@ applied to every string a programmer writes.
 
 ---
 
-## #60 — News of the Weird: Testers Are Your Friends
+## 97/60 — News of the Weird: Testers Are Your Friends
 
 **Author:** Burk Hufnagel
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_60/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0). Medium consulted as reading aid only.
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_60/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** The dismissive framing ("QA is too picky, they want
 everything perfect") misreads what testers do. Hufnagel's example is
@@ -68,19 +62,16 @@ the underlying work is trustworthy. The picky tester is the reason that
 chain of small doubts never reaches the user.
 
 **Agent application.** Source for checklist step 6 ("treat testers as
-collaborators") and the "QA is too picky" Red Flag. Pairs with #92 below;
-this one focuses on the *attitude* shift, #92 focuses on the *practice*.
+collaborators") and the "QA is too picky" Red Flag. Pairs with 97/92 below;
+this one focuses on the *attitude* shift, 97/92 focuses on the *practice*.
 
 ---
 
-## #80 — Test for Required Behavior, Not Incidental Behavior
+## 97/80 — Test for Required Behavior, Not Incidental Behavior
 
 **Author:** Kevlin Henney
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_80/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0). Medium consulted as reading aid only.
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_80/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** A test that hardwires the current implementation's
 incidental choices to its assertions creates a false-positive trap. Henney's
@@ -103,16 +94,13 @@ stated incidental is still wrong.
 
 ---
 
-## #81 — Test Precisely and Concretely
+## 97/81 — Test Precisely and Concretely
 
 **Author:** Kevlin Henney
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_81/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0). Medium consulted as reading aid only.
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_81/README.md
+**License:** CC-BY-3.0
 
-**Distillation.** Aiming at the requirement (per #80) is necessary but not
+**Distillation.** Aiming at the requirement (per 97/80) is necessary but not
 sufficient. Tests must also be *precise*. Henney's sort example shows how
 loose postconditions admit wrong answers: "result is sorted, same length as
 input" is satisfied by `[3,3,3,3,3,3]` against `[3,1,4,1,5,9]` — and that
@@ -129,19 +117,16 @@ but "now contains exactly one element, and that element is X."
 
 **Agent application.** Source for checklist step 3 ("be precise and
 accurate; use concrete examples") and the "same length, all in range" Red
-Flag. Pairs with #80: #80 picks the right *target*, #81 makes the assertion
+Flag. Pairs with 97/80: 97/80 picks the right *target*, 97/81 makes the assertion
 sharp enough to actually hit it.
 
 ---
 
-## #82 — Test While You Sleep (and over Weekends)
+## 97/82 — Test While You Sleep (and over Weekends)
 
 **Author:** Rajith Attapattu
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_82/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0). Medium consulted as reading aid only.
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_82/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Build infrastructure spends most of every twenty-four-hour
 period idle. Attapattu's recommendation is to put that idle capacity to
@@ -165,14 +150,11 @@ the slow test is being written.
 
 ---
 
-## #83 — Testing Is the Engineering Rigor of Software Development
+## 97/83 — Testing Is the Engineering Rigor of Software Development
 
 **Author:** Neal Ford
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_83/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0). Medium consulted as reading aid only.
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_83/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Programmers reach for hard-engineering metaphors
 (bridge-building, structural analysis) to legitimize software work to
@@ -196,14 +178,11 @@ is the verification step the discipline depends on.
 
 ---
 
-## #92 — When Programmers and Testers Collaborate
+## 97/92 — When Programmers and Testers Collaborate
 
 **Author:** Janet Gregory
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_92/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0). Medium consulted as reading aid only.
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_92/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** The throw-it-over-the-wall model — programmer commits,
 tester finds bugs, defects argued in a tracker — wastes the most expensive
@@ -222,21 +201,18 @@ programmers' code" and "QA is out to get me" to "we are jointly responsible
 for testability."
 
 **Agent application.** Source for checklist step 6 ("treat testers as
-collaborators") alongside #60, and the "throw it over the wall" Red Flag.
-#60 supplies the *attitude* (testers protect users, not adversaries); #92
+collaborators") alongside 97/60, and the "throw it over the wall" Red Flag.
+97/60 supplies the *attitude* (testers protect users, not adversaries); 97/92
 supplies the *practice* (acceptance tests as input, pre-coding handoff,
 joint responsibility for automation quality).
 
 ---
 
-## #95 — Write Tests for People
+## 97/95 — Write Tests for People
 
 **Author:** Gerard Meszaros
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_95/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0). Medium consulted as reading aid only.
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_95/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Meszaros frames test-writing as a question of audience.
 Tests written "for me, so I spend less time bug-fixing" or "for the

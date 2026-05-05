@@ -7,9 +7,11 @@ description: Use when parsing user input, writing/executing SQL or shell command
 
 ## Overview
 
-Whole categories of production breach recur because the trust boundary is invisible until it bites — input concatenated into a query, a token logged "for debugging", an unguarded endpoint behind one missing decorator, `pickle.loads` on untrusted bytes. **When code crosses a trust boundary, stop and apply the domain-specific discipline before the trap closes.** This skill is a fast trap-scan organized by domain, modeled after `error-and-correctness-traps`. The book's #26 ("Don't ignore that error") generalizes to "don't ignore the trust boundary"; #29 ("Don't rely on magic") generalizes to "don't rely on a security control no one on the team understands." The rest of this skill is original commentary written for modern agent work — the book predates much of current security practice.
+Whole categories of production breach recur because the trust boundary is invisible until it bites — input concatenated into a query, a token logged "for debugging", an unguarded endpoint behind one missing decorator, `pickle.loads` on untrusted bytes. **When code crosses a trust boundary, stop and apply the domain-specific discipline before the trap closes.** This skill is a fast trap-scan organized by domain, modeled after `error-and-correctness-traps`. The book's 97/26 ("Don't ignore that error") generalizes to "don't ignore the trust boundary"; 97/29 ("Don't rely on magic") generalizes to "don't rely on a security control no one on the team understands." The rest of this skill is original commentary written for modern agent work — the book predates much of current security practice.
 
 This is a **rigid** skill. Jump to the sub-section that matches what you're writing and run that sub-section's checks.
+
+Fires hardest when untrusted input is crossing into a system with real users — production endpoint, shared service, anything that touches user data, secrets, or auth state. Fires lightly in MVPs, prototypes, internal dev tools, debugging endpoints, and one-off scripts where the architecture is not yet settled — prefer the simplest thing that works, and re-invoke this skill before the code reaches users.
 
 ## When to invoke
 
@@ -30,6 +32,9 @@ Invoke when you're about to:
 - A unit test that pins down already-agreed behavior on validated inputs
 - Reading code without modifying it
 - Editing config files where the values are not secrets and the keys are not new auth toggles
+- An early-stage MVP or prototype where the architecture is still in flux and no real user data is involved
+- An internal dev tool, debugging endpoint, or one-off script
+- Throwaway code expected to be replaced before reaching users
 
 If the change touches one of the trap domains even slightly, **invoke anyway** — the per-domain check is short and the bugs are not.
 
@@ -90,18 +95,18 @@ These thoughts mean STOP — apply the domain check before committing:
 
 | Thought | Reality |
 |---|---|
-| "I'll f-string the user value into the SQL — it's faster than parameters." | The interpreter cannot tell your code from the attacker's input. Parameterize, always. (#1) |
-| "I need shell features here, so `shell=True` is justified." | Shell features in argv form are usually achievable with `subprocess` itself, or with `shlex.quote`-ing every interpolated value. Re-justify. (#2) |
-| "I'll just `os.path.join(base, user_filename)` — `..` is rare." | `..` is one keystroke. Resolve to realpath and verify it starts with the intended root. (#4) |
-| "Let me fetch this URL the user provided — it's just a webhook test." | SSRF into the metadata service is one URL away. Allowlist host/scheme; reject private ranges. (#5) |
-| "`pickle.loads` is convenient and we trust the source." | Trust drifts. The next caller of this function won't know the contract. Use a safe loader for any cross-trust data. (#6) |
-| "I'll log the request object so we can debug auth issues." | Request bodies and headers contain passwords and bearer tokens. Mask in middleware before logging. (#8) |
-| "Just put the API key in the config file for now — we'll move it before launch." | Once it's in git, it's leaked. Rotate it the moment it's pushed. Never commit secrets. (#9) |
-| "SHA-256 of password+salt is hashed, so it's secure." | Password hashing is a *category*, not "any hash function." Use bcrypt/scrypt/argon2id. (#11) |
-| "`Math.random()` for the password reset token is fine — it's random." | It's predictable. Tokens use `secrets.token_urlsafe` / `crypto.randomBytes` / `SecureRandom`. (#12) |
-| "I'll add the auth decorator after I get the endpoint working." | "After" is when it ships unauth'd to production. Auth decoration is part of the route definition, not a follow-up. (#14) |
-| "`/api/users/<id>` looks the user up by id — the auth check at the door is enough." | That's IDOR. Authorize on the resource, not just the route. (#15) |
-| "The client sends `is_admin=true` in the JWT and we trust it." | Trusting client-side state is the canonical privilege-escalation bug. The server re-derives authorization from its own signed session. (#16) |
+| "I'll f-string the user value into the SQL — it's faster than parameters." | The interpreter cannot tell your code from the attacker's input. Parameterize, always. (97/1) |
+| "I need shell features here, so `shell=True` is justified." | Shell features in argv form are usually achievable with `subprocess` itself, or with `shlex.quote`-ing every interpolated value. Re-justify. (97/2) |
+| "I'll just `os.path.join(base, user_filename)` — `..` is rare." | `..` is one keystroke. Resolve to realpath and verify it starts with the intended root. (97/4) |
+| "Let me fetch this URL the user provided — it's just a webhook test." | SSRF into the metadata service is one URL away. Allowlist host/scheme; reject private ranges. (97/5) |
+| "`pickle.loads` is convenient and we trust the source." | Trust drifts. The next caller of this function won't know the contract. Use a safe loader for any cross-trust data. (97/6) |
+| "I'll log the request object so we can debug auth issues." | Request bodies and headers contain passwords and bearer tokens. Mask in middleware before logging. (97/8) |
+| "Just put the API key in the config file for now — we'll move it before launch." | Once it's in git, it's leaked. Rotate it the moment it's pushed. Never commit secrets. (97/9) |
+| "SHA-256 of password+salt is hashed, so it's secure." | Password hashing is a *category*, not "any hash function." Use bcrypt/scrypt/argon2id. (97/11) |
+| "`Math.random()` for the password reset token is fine — it's random." | It's predictable. Tokens use `secrets.token_urlsafe` / `crypto.randomBytes` / `SecureRandom`. (97/12) |
+| "I'll add the auth decorator after I get the endpoint working." | "After" is when it ships unauth'd to production. Auth decoration is part of the route definition, not a follow-up. (97/14) |
+| "`/api/users/<id>` looks the user up by id — the auth check at the door is enough." | That's IDOR. Authorize on the resource, not just the route. (97/15) |
+| "The client sends `is_admin=true` in the JWT and we trust it." | Trusting client-side state is the canonical privilege-escalation bug. The server re-derives authorization from its own signed session. (97/16) |
 
 ## What "done" looks like
 
@@ -119,7 +124,7 @@ If any box that applies to your change is unchecked, you are not done — you ar
 
 | # | Principle | Author |
 |---|---|---|
-| #26 | Don't Ignore That Error! (generalized to "don't ignore the trust boundary") | Pete Goodliffe |
-| #29 | Don't Rely on "Magic Happens Here" (generalized to "don't rely on a security control no one on the team understands") | Alan Griffiths |
+| 97/26 | Don't Ignore That Error! (generalized to "don't ignore the trust boundary") | Pete Goodliffe |
+| 97/29 | Don't Rely on "Magic Happens Here" (generalized to "don't rely on a security control no one on the team understands") | Alan Griffiths |
 
-The remaining content is original commentary written for this plugin — the book has thin direct coverage of modern security practice. See `principles.md` for the long-form distillations of #26 and #29 and a note on the rest. See `CONTENT-LICENSE.md` for the licensing posture.
+The remaining content is original commentary written for this plugin — the book has thin direct coverage of modern security practice. See `principles.md` for the long-form distillations of 97/26 and 97/29 and a note on the rest. See `CONTENT-LICENSE.md` for the licensing posture.

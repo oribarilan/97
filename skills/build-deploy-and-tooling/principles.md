@@ -14,14 +14,11 @@ distillation, file an issue and the file will be revised or removed.
 
 ---
 
-## #4 — Automate Your Coding Standard
+## 97/4 — Automate Your Coding Standard
 
 **Author:** Filip van Laenen
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_04/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None — chapter present on the mirror, complete, attributed.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_04/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** The lifecycle of an unenforced coding standard is
 predictable: kickoff agreement, gradual neglect, post-mortem disappointment.
@@ -38,19 +35,16 @@ as the project learns, not be frozen at kickoff.
 
 **Agent application.** Source for checklist step 8 ("automate the coding
 standard") and the "I'll just hand-format this once" Red Flag. Pairs with
-#79 (analysis tools as the *technical* mechanism for many of the rules van
+97/79 (analysis tools as the *technical* mechanism for many of the rules van
 Laenen wants enforced).
 
 ---
 
-## #10 — Choose Your Tools with Care
+## 97/10 — Choose Your Tools with Care
 
 **Author:** Giovanni Asproni
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_10/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_10/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Modern applications are assemblages of components,
 libraries, and frameworks; the assembly choice has long-tail consequences
@@ -77,14 +71,11 @@ an interface so the next person can swap it.
 
 ---
 
-## #20 — Deploy Early and Often
+## 97/20 — Deploy Early and Often
 
 **Author:** Steve Berczuk
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_20/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_20/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Deployment delegated to a release engineer at the end of
 the project is the source of two compounding problems. The team gets no
@@ -101,19 +92,16 @@ nothing else delivers business value until that is true.
 
 **Agent application.** Source for checklist step 4 ("deploy from week one")
 and the "deploy is trivial, we'll wire it up at the end" Red Flag. Pairs
-with #61 — Berczuk gives the cadence (early, often), Freeman gives the
+with 97/61 — Berczuk gives the cadence (early, often), Freeman gives the
 artifact discipline (one image, promoted).
 
 ---
 
-## #38 — How to Use a Bug Tracker
+## 97/38 — How to Use a Bug Tracker
 
 **Author:** Matt Doar
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_38/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_38/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** A bug report is a conversation with a permanent record;
 how you write and triage it shapes how the team treats defects. A useful
@@ -135,14 +123,11 @@ query" as a setup obligation.
 
 ---
 
-## #40 — Install Me
+## 97/40 — Install Me
 
 **Author:** Marcus Baker
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_40/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_40/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Baker writes from the user's point of view: the user does
 not care about your project, runs a continuous cost-benefit on every
@@ -167,14 +152,11 @@ requirement for any new install/library/CLI surface.
 
 ---
 
-## #61 — One Binary
+## 97/61 — One Binary
 
 **Author:** Steve Freeman
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_61/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_61/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Freeman wrote in 2010 about per-environment binaries
 generated by build-time code rewriting; the principle generalizes cleanly
@@ -201,14 +183,11 @@ is the skill's editorial framing, not a claim about Freeman's original text.
 
 ---
 
-## #63 — Own (and Refactor) the Build
+## 97/63 — Own (and Refactor) the Build
 
 **Author:** Steve Berczuk
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_63/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_63/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Disciplined teams that demand clean code and tested
 behavior often leave the build script in a corner — dismissed as plumbing,
@@ -233,14 +212,11 @@ comes from here.
 
 ---
 
-## #68 — Put Everything Under Version Control
+## 97/68 — Put Everything Under Version Control
 
 **Author:** Diomidis Spinellis
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_68/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_68/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** The historical reasons not to put a particular file in
 version control — disk cost, server cost, network bandwidth, tooling
@@ -267,14 +243,11 @@ equals one checkout" framing.
 
 ---
 
-## #78 — Step Back and Automate, Automate, Automate
+## 97/78 — Step Back and Automate, Automate, Automate
 
 **Author:** Cay Horstmann
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_78/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_78/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Horstmann opens with two field reports: a programmer
 pasting source files into Word weekly to get a line count, and a
@@ -300,14 +273,11 @@ misconception.
 
 ---
 
-## #79 — Take Advantage of Code Analysis Tools
+## 97/79 — Take Advantage of Code Analysis Tools
 
 **Author:** Sarah Mount
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_79/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_79/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Testing finds the bugs the tests imagined. Static
 analysis finds the bug class the tests forgot — null dereferences, dead
@@ -326,19 +296,16 @@ write your own when the catalog does not cover what you need.
 
 **Agent application.** Source for checklist step 9 ("run static analysis as
 a first-class quality gate") and the "we have tests, so we don't need
-static analysis" Red Flag. Pairs with #4 — Mount supplies the *mechanism*
+static analysis" Red Flag. Pairs with 97/4 — Mount supplies the *mechanism*
 for many of the rules van Laenen wants enforced.
 
 ---
 
-## #88 — The Unix Tools Are Your Friends
+## 97/88 — The Unix Tools Are Your Friends
 
 **Author:** Diomidis Spinellis
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_88/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_88/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Spinellis would pick the Unix toolchest over an IDE if
 forced to choose. Seven reasons stack up. IDEs are language-bound; Unix

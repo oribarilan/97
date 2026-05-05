@@ -12,22 +12,19 @@ Distillations below are original commentary in our own words. No verbatim
 quotes longer than ~25 words. If a contributor objects to a particular
 distillation, file an issue and the file will be revised or removed.
 
-A note on attribution: the canonical CC-BY mirror credits #1 to Seb Rose.
+A note on attribution: the canonical CC-BY mirror credits 97/1 to Seb Rose.
 Some secondary walkthroughs (e.g. Medium reposts) credit Edward Garson; the
-mirror is the source of truth for this project. #69 appears on the mirror
+mirror is the source of truth for this project. 97/69 appears on the mirror
 under the byline "BurkHufnagel"; we use "Burk Hufnagel" with a space for
 readability.
 
 ---
 
-## #1 — Act with Prudence
+## 97/1 — Act with Prudence
 
 **Author:** Seb Rose
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_01/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** Authorship contested in some reposts (see header note); we follow the mirror's byline.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_01/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Schedule pressure pushes the choice from "do it right" to
 "do it quick," with the silent promise to come back and fix it later. The
@@ -52,14 +49,11 @@ hand-off, not held in the agent's head where the human partner can't see it.
 
 ---
 
-## #9 — Check Your Code First Before Looking to Blame Others
+## 97/9 — Check Your Code First Before Looking to Blame Others
 
 **Author:** Allan Kelly
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_09/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_09/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Programmers find it hard to accept that their own code is
 the broken thing. Compiler, OS, and library bugs do exist, but mature tools
@@ -83,14 +77,11 @@ problem is external; the skill forces a return to the local code first.
 
 ---
 
-## #14 — Code Reviews
+## 97/14 — Code Reviews
 
 **Author:** Mattias Karlsson
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_14/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_14/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Code reviews raise quality, but not for the reason most
 people assume. The chief value isn't catching errors — it's spreading
@@ -114,14 +105,11 @@ and uncertainties rather than minimize them.
 
 ---
 
-## #16 — A Comment on Comments
+## 97/16 — A Comment on Comments
 
 **Author:** Cal Evans
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_16/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_16/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Evans tells a college story: a clean BASIC program,
 recopied for legibility, came back with a near-failing grade and "No
@@ -145,14 +133,11 @@ warning to never commit a comment you wouldn't want quoted back at you.
 
 ---
 
-## #42 — Keep the Build Clean
+## 97/42 — Keep the Build Clean
 
 **Author:** Johannes Brodwall
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_42/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_42/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Compiler warnings pile up the moment a team adopts
 "I'll deal with that later." A build emitting hundreds of warnings hides
@@ -176,14 +161,11 @@ rather than promising a future cleanup that won't happen.
 
 ---
 
-## #47 — Know Your Next Commit
+## 97/47 — Know Your Next Commit
 
 **Author:** Dan Bergh Johnsson
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_47/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_47/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Three programmers, asked what they're doing: "refactoring
 these methods," "adding parameters to this web action," "working on this
@@ -211,14 +193,11 @@ commits or it's speculation, and either way it shouldn't ship as one.
 
 ---
 
-## #58 — A Message to the Future
+## 97/58 — A Message to the Future
 
 **Author:** Linda Rising
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_58/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_58/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Joe arrives at Rising's desk with a clever data-
 structures hack and a grin: "Betcha can't guess what it does!" Rising
@@ -242,14 +221,11 @@ that future-message well.
 
 ---
 
-## #69 — Put the Mouse Down and Step Away from the Keyboard
+## 97/69 — Put the Mouse Down and Step Away from the Keyboard
 
 **Author:** Burk Hufnagel
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_69/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** Mirror byline reads "BurkHufnagel" without a space; we use the spaced form for readability.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_69/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Hufnagel was stuck on a gnarly problem; on a coffee
 break the answer became obvious. The mechanism: while the logical brain
@@ -274,14 +250,11 @@ already feel uncertain about.
 
 ---
 
-## #90 — Verbose Logging Will Disturb Your Sleep
+## 97/90 — Verbose Logging Will Disturb Your Sleep
 
 **Author:** Johannes Brodwall
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_90/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_90/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** The first sign of trouble in a long-running system is a
 dirty log. One user click producing a deluge of messages in the only log

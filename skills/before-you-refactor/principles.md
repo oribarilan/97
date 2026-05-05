@@ -14,14 +14,11 @@ distillation, file an issue and the file will be revised or removed.
 
 ---
 
-## #6 — Before You Refactor
+## 97/6 — Before You Refactor
 
 **Author:** Rajith Attapattu
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_06/README.md
-**Source (reading aid):** https://medium.com/@biratkirat/step-6-before-you-refactor-rajith-attapattu-386e525222e1
-**Source used:** GitHub mirror (CC-BY-3.0). Medium consulted as reading aid only.
-**Access date:** 2026-05-04
-**Gaps:** None — chapter present on the mirror, complete, attributed.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_06/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Before changing the shape of working code, take stock of
 what's there: read the code, identify the tests that protect it, and respect
@@ -39,14 +36,11 @@ checklist (steps 1, 2, 4, 5) and for the "I'll just rewrite from scratch" /
 
 ---
 
-## #8 — The Boy Scout Rule
+## 97/8 — The Boy Scout Rule
 
 **Author:** Robert C. Martin (Uncle Bob)
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_08/README.md
-**Source (reading aid):** https://medium.com/@biratkirat/step-8-the-boy-scout-rule-robert-c-martin-uncle-bob-9ac839778385
-**Source used:** GitHub mirror (CC-BY-3.0). Medium consulted as reading aid only.
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_08/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Every time you check a module out, leave it slightly cleaner
 than you found it: improve one variable name, split one long function, break
@@ -62,14 +56,11 @@ see while I'm in there" comes from this principle.
 
 ---
 
-## #24 — Don't Be Afraid to Break Things
+## 97/24 — Don't Be Afraid to Break Things
 
 **Author:** Mike Lewis
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_24/README.md
-**Source (reading aid):** https://medium.com/@biratkirat/step-24-dont-be-afraid-to-break-things-mike-lewis-96fb42119888
-**Source used:** GitHub mirror (CC-BY-3.0). Medium consulted as reading aid only.
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_24/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Codebases get sick when fear of breaking them prevents
 needed structural change. Inside a branch protected by a test suite, breaking
@@ -79,20 +70,17 @@ heroic rewrite, redefine internal interfaces, restructure modules, refactor
 duplicated code, and reduce coupling. The fear of change is the disease; the
 willingness to make small, reversible cuts is the cure.
 
-**Agent application.** Pairs with #6 and #8: gives the agent permission to
+**Agent application.** Pairs with 97/6 and 97/8: gives the agent permission to
 *actually start cutting* once the checklist is satisfied, while constraining
 cuts to be small and incremental. Source for the "do it all at once" Red Flag.
 
 ---
 
-## #31 — Don't Touch That Code!
+## 97/31 — Don't Touch That Code!
 
 **Author:** Cal Evans
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_31/README.md
-**Source (reading aid):** https://medium.com/@biratkirat/step-31-dont-touch-that-code-cal-evans-bf70fc41e155
-**Source used:** GitHub mirror (CC-BY-3.0). Medium consulted as reading aid only.
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_31/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Code flows from local development → SCC → integration
 server → staging → production through specific human roles, and developers
@@ -111,14 +99,11 @@ shell access to which servers.
 
 ---
 
-## #74 — The Road to Performance Is Littered with Dirty Code Bombs
+## 97/74 — The Road to Performance Is Littered with Dirty Code Bombs
 
 **Author:** Kirk Pepperdine
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_74/README.md
-**Source (reading aid):** https://medium.com/@biratkirat/step-74-the-road-to-performance-is-littered-with-dirty-code-bombs-kirk-pepperdine-727a334bfce6
-**Source used:** GitHub mirror (CC-BY-3.0). Medium consulted as reading aid only.
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_74/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Refactor estimates blow up not because the target change is
 hard, but because it triggers cascading breakage in tightly-coupled

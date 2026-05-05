@@ -230,5 +230,6 @@ unrelated feature work.
 - Skill template structure: `skills/before-you-refactor/SKILL.md` (the
   original) and `skills/domain-modeling/SKILL.md` (the cleanest follow-on)
 - Lint constraints: `scripts/lint-skills.mjs` (`SKILL_RULES` constant)
+- Citation/principle-ID scheme: `CITATION-SCHEME.md`
 - Distribution and release: `CONTRIBUTE.md`
 - Source-essay attribution policy: `CONTENT-LICENSE.md`

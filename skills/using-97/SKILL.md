@@ -5,7 +5,7 @@ description: Use when starting any coding task — establishes the 97 trigger ma
 
 ## Overview
 
-**97** distills principles from *97 Things Every Programmer Should Know* (O'Reilly, ed. Kevlin Henney; CC-BY-3.0 originals at https://github.com/97-things/97-things-every-programmer-should-know) into trigger-based skills. You have nine themed skills plus this bootstrap. Each one activates on a specific situation — refactoring, writing tests, designing an API, committing — and brings the relevant principles to bear. Unofficial companion, not affiliated with O'Reilly or any contributor.
+**97** distills principles from *97 Things Every Programmer Should Know* (O'Reilly, ed. Kevlin Henney; CC-BY-3.0 originals at https://github.com/97-things/97-things-every-programmer-should-know) and adjacent canonical sources into trigger-based skills. You have ten themed skills plus this bootstrap. Each one activates on a specific situation — refactoring, writing tests, designing an API, committing — and brings the relevant principles to bear. Per-skill `principles.md` files list every source. Unofficial companion, not affiliated with O'Reilly or any contributor.
 
 ## Trigger Map
 
@@ -30,6 +30,8 @@ When the situation matches, invoke the named skill **before** you act. Use the `
 3. **More specific 97 skill > broader 97 skill.** `before-you-refactor` wins over `writing-clean-code` when both could apply. `testing-discipline` wins over `writing-clean-code` for test code.
 4. **Before editing a file you haven't read this session, read it first.** No skill load — just the cheap reminder. Editing without reading is the most common avoidable failure mode.
 5. **When debugging, defer to `superpowers/systematic-debugging` if available.** Otherwise fall back to `error-and-correctness-traps` for trap-shaped bugs and `pre-commit-self-review` step 2 (suspect your own code first) for general debugging.
+6. **Apply principles silently.** Do not surface source author names, book titles, or principle IDs (e.g. `97/74`, `Fowler/LongMethod`) in user-facing responses. Citations exist for repo provenance, not for user-facing authority.
+7. **Match principle weight to stage and stakes.** Production-shaped guidance — resilience patterns (timeouts, circuit breakers, bulkheads), observability instrumentation, deploy hygiene, security boundaries — fires hardest when code is reaching real users in production. In MVPs, prototypes, internal dev tools, debugging endpoints, and one-off scripts, prefer the simplest thing that works. Do not retrofit production discipline onto code whose architecture is not yet settled.
 
 ## Red Flags
 

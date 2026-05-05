@@ -37,27 +37,27 @@ Invoke when you're about to:
 
 Run the relevant items. If a request crosses areas (a UX call with an estimate attached), run each.
 
-1. **Restate the request in different words, then ask one clarifying question that distinguishes two competing interpretations.** Do not parrot the user's words back — they did not mean what they told you. Example: user says "I want a customer dashboard." Restate: "So an at-a-glance view a salesperson opens once a day to spot accounts that need attention?" Then ask: "Is this for the salesperson, or for the customer themselves to log into?" *(Jackson, #97.)*
-2. **Probe context with vocabulary swaps.** When the user says "client" or "user" or "customer," substitute the other terms in your reply and watch the reaction. Mismatch in the casual term is the cheapest way to surface a definitional gap. *(Jackson, #97.)*
-3. **Discuss the same topic in two separate conversations with two different stakeholders.** Compare what they each said. Resolve contradictions before writing the spec, not after writing the code. *(Jackson, #97.)*
-4. **Use a visual aid for layout, color, or workflow ordering.** Whiteboard, mockup, or prototype. Verbal descriptions are how the "I said black, I meant white" demo happens. *(Jackson, #97.)*
-5. **You are not the user.** *(Colborne, #3.)* Users do not share your mental models or care how the software is built. Before adding a UI affordance, list two alternative paths a non-power-user might take and confirm both work. Place help at the point of action (inline hint, tooltip on the control), not in a sidebar a stuck user will not see.
-6. **When asking a senior engineer for help, deliver context with the question.** Stack trace, what you tried, what you expected, the smallest reproducer. Treating them as a "guru" wastes their time and stunts your own learning. *(Brush, #36.)*
-7. **Start from yes — ask "why?" before you object.** *(Miller, #77.)* Find the underlying need; often the request is achievable as stated, and sometimes voicing the reason makes the original objection look wrong. If after the why the request still cannot work, propose the closest thing that does, or escalate — never silently refuse.
-8. **Before giving a number, name which of three things is being asked for** *(Asproni, #50)*: an **estimate** (approximate calculation from data, never spuriously precise), a **target** (a desired business outcome), or a **commitment** (a promise to deliver specified scope at specified quality by a specified date). These are independent. A target is not an estimate. A commitment should be *based on* an estimate, not negotiated against one.
+1. **Restate the request in different words, then ask one clarifying question that distinguishes two competing interpretations.** Do not parrot the user's words back — they did not mean what they told you. Example: user says "I want a customer dashboard." Restate: "So an at-a-glance view a salesperson opens once a day to spot accounts that need attention?" Then ask: "Is this for the salesperson, or for the customer themselves to log into?" *(Jackson, 97/97.)*
+2. **Probe context with vocabulary swaps.** When the user says "client" or "user" or "customer," substitute the other terms in your reply and watch the reaction. Mismatch in the casual term is the cheapest way to surface a definitional gap. *(Jackson, 97/97.)*
+3. **Discuss the same topic in two separate conversations with two different stakeholders.** Compare what they each said. Resolve contradictions before writing the spec, not after writing the code. *(Jackson, 97/97.)*
+4. **Use a visual aid for layout, color, or workflow ordering.** Whiteboard, mockup, or prototype. Verbal descriptions are how the "I said black, I meant white" demo happens. *(Jackson, 97/97.)*
+5. **You are not the user.** *(Colborne, 97/3.)* Users do not share your mental models or care how the software is built. Before adding a UI affordance, list two alternative paths a non-power-user might take and confirm both work. Place help at the point of action (inline hint, tooltip on the control), not in a sidebar a stuck user will not see.
+6. **When asking a senior engineer for help, deliver context with the question.** Stack trace, what you tried, what you expected, the smallest reproducer. Treating them as a "guru" wastes their time and stunts your own learning. *(Brush, 97/36.)*
+7. **Start from yes — ask "why?" before you object.** *(Miller, 97/77.)* Find the underlying need; often the request is achievable as stated, and sometimes voicing the reason makes the original objection look wrong. If after the why the request still cannot work, propose the closest thing that does, or escalate — never silently refuse.
+8. **Before giving a number, name which of three things is being asked for** *(Asproni, 97/50)*: an **estimate** (approximate calculation from data, never spuriously precise), a **target** (a desired business outcome), or a **commitment** (a promise to deliver specified scope at specified quality by a specified date). These are independent. A target is not an estimate. A commitment should be *based on* an estimate, not negotiated against one.
 9. **Refuse to compress an estimate by negotiation.** If you said three weeks and the PM says "I can give you two," that is a target, not a new estimate. Either reduce scope, change the team, or accept that the target will miss — do not relabel.
 
 ## Red Flags
 
 | Thought | Reality |
 |---|---|
-| "The user said they want X — I'll just build X." | What users say and what they do diverge. Restate in *different* words and ask one question that distinguishes interpretations. (#97) |
-| "I'll restate the requirement word-for-word so they know I heard them." | Verbatim restatement confirms the words, not the meaning. Restate in different words to surface the gap. (#97) |
-| "I know how a user will use this — I designed it." | You are not the user. Walk the non-power-user path before shipping the affordance; place help at the point of action, not the sidebar. (#3) |
-| "Two weeks is fine — I'll just commit to it." | A target accepted under pressure is not an estimate. Name what's being asked for: estimate, target, or commitment. (#50) |
-| "I'll give a precise number so it sounds credible." | Spurious precision (4.2 days) signals a target dressed as an estimate. Give a range from data, or say you do not have data yet. (#50) |
-| "The request is dumb — I'll push back and explain why." | Start from yes. Ask why first. The reason often reveals a real constraint, and sometimes the objection collapses. (#77) |
-| "I'll just ask the senior engineer — they'll know." | Without stack trace, repro, or what-you-tried, you are asking for magic. Deliver context with the question. (#36) |
+| "The user said they want X — I'll just build X." | What users say and what they do diverge. Restate in *different* words and ask one question that distinguishes interpretations. (97/97) |
+| "I'll restate the requirement word-for-word so they know I heard them." | Verbatim restatement confirms the words, not the meaning. Restate in different words to surface the gap. (97/97) |
+| "I know how a user will use this — I designed it." | You are not the user. Walk the non-power-user path before shipping the affordance; place help at the point of action, not the sidebar. (97/3) |
+| "Two weeks is fine — I'll just commit to it." | A target accepted under pressure is not an estimate. Name what's being asked for: estimate, target, or commitment. (97/50) |
+| "I'll give a precise number so it sounds credible." | Spurious precision (4.2 days) signals a target dressed as an estimate. Give a range from data, or say you do not have data yet. (97/50) |
+| "The request is dumb — I'll push back and explain why." | Start from yes. Ask why first. The reason often reveals a real constraint, and sometimes the objection collapses. (97/77) |
+| "I'll just ask the senior engineer — they'll know." | Without stack trace, repro, or what-you-tried, you are asking for magic. Deliver context with the question. (97/36) |
 
 ## What "done" looks like
 
@@ -70,10 +70,10 @@ Run the relevant items. If a request crosses areas (a UX call with an estimate a
 
 | # | Principle | Author |
 |---|---|---|
-| #3 | You Are Not the User | Giles Colborne |
-| #36 | The Guru Myth | Ryan Brush |
-| #50 | Learn to Estimate | Giovanni Asproni |
-| #77 | Start from Yes | Alex Miller |
-| #97 | Your Customers Do Not Mean What They Say | Nate Jackson |
+| 97/3 | You Are Not the User | Giles Colborne |
+| 97/36 | The Guru Myth | Ryan Brush |
+| 97/50 | Learn to Estimate | Giovanni Asproni |
+| 97/77 | Start from Yes | Alex Miller |
+| 97/97 | Your Customers Do Not Mean What They Say | Nate Jackson |
 
-See `principles.md` for the long-form distillations, citations, and source links — including #64, #85, #86, #87, #96 (pairing, rotation, compensating defects, leaving the next reader better off, caring about the code), kept for attribution but no longer loaded on trigger.
+See `principles.md` for the long-form distillations, citations, and source links — including 97/64, 97/85, 97/86, 97/87, 97/96 (pairing, rotation, compensating defects, leaving the next reader better off, caring about the code), kept for attribution but no longer loaded on trigger.

@@ -9,7 +9,8 @@
  *   - body contains required sections (varies by skill — see SKILL_RULES)
  *   - body has a markdown table somewhere after `Red Flags` heading
  *   - line count <= per-skill budget
- *   - if principles.md exists, contains every #NN principle for that skill
+ *   - if principles.md exists, contains every `<source>/<principle>` ID
+ *     listed in SKILL_RULES.principles for that skill (see CITATION-SCHEME.md)
  *
  * Exits 1 on any failure.
  */
@@ -22,10 +23,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
 const skillsDir = path.join(root, 'skills');
 
-// Per-skill budgets (lines) and required principle numbers.
-// Source of truth: .todo/US-97-mvp/main.md "Skill grouping" table.
-// Per-skill budgets (lines) and required principle numbers.
-// Source of truth: .todo/US-97-mvp/main.md "Skill grouping" table.
+// Per-skill budgets (lines) and required principle IDs.
+// ID format: `<source-key>/<principle-key>` — see CITATION-SCHEME.md.
 //
 // Budget philosophy (`decide-lint-budget-policy`, v0.3):
 // Caps are tight by design. The gold-standard skill,
@@ -41,52 +40,67 @@ const SKILL_RULES = {
   'before-you-refactor': {
     maxLines: 200,
     sections: ['Overview', 'When to invoke', 'Red Flags'],
-    principles: [6, 8, 24, 31, 74],
+    principles: ['97/6', '97/8', '97/24', '97/31', '97/74'],
   },
   'writing-clean-code': {
     maxLines: 250,
     sections: ['Overview', 'When to invoke', 'Red Flags'],
-    principles: [13, 15, 17, 30, 75, 76, 91, 94],
+    principles: ['97/13', '97/15', '97/17', '97/30', '97/75', '97/76', '97/91', '97/94'],
   },
   'testing-discipline': {
     maxLines: 250,
     sections: ['Overview', 'When to invoke', 'Red Flags'],
-    principles: [25, 60, 80, 81, 82, 83, 92, 95],
+    principles: ['97/25', '97/60', '97/80', '97/81', '97/82', '97/83', '97/92', '97/95'],
   },
   'api-and-interface-design': {
     maxLines: 250,
     sections: ['Overview', 'When to invoke', 'Red Flags'],
-    principles: [7, 19, 32, 35, 55, 59, 65, 66, 84],
+    principles: ['97/7', '97/19', '97/32', '97/35', '97/55', '97/59', '97/65', '97/66', '97/84'],
   },
   'pre-commit-self-review': {
     maxLines: 250,
     sections: ['Overview', 'When to invoke', 'Red Flags'],
-    principles: [1, 9, 14, 16, 42, 47, 58, 69, 90],
+    principles: ['97/1', '97/9', '97/14', '97/16', '97/42', '97/47', '97/58', '97/69', '97/90'],
   },
   'error-and-correctness-traps': {
     maxLines: 250,
     sections: ['Overview', 'When to invoke', 'Red Flags'],
-    principles: [21, 26, 29, 33, 41, 46, 57, 73, 89],
+    principles: ['97/21', '97/26', '97/29', '97/33', '97/41', '97/46', '97/57', '97/73', '97/89'],
   },
   'build-deploy-and-tooling': {
     maxLines: 250,
     sections: ['Overview', 'When to invoke', 'Red Flags'],
-    principles: [4, 10, 20, 38, 40, 61, 63, 68, 78, 79, 88],
+    principles: [
+      '97/4',
+      '97/10',
+      '97/20',
+      '97/38',
+      '97/40',
+      '97/61',
+      '97/63',
+      '97/68',
+      '97/78',
+      '97/79',
+      '97/88',
+    ],
   },
   'domain-modeling': {
     maxLines: 200,
     sections: ['Overview', 'When to invoke', 'Red Flags'],
-    principles: [2, 11, 12, 23, 48],
+    principles: ['97/2', '97/11', '97/12', '97/23', '97/48'],
   },
   'working-with-users-and-team': {
     maxLines: 250,
     sections: ['Overview', 'When to invoke', 'Red Flags'],
-    principles: [3, 36, 50, 77, 97],
+    principles: ['97/3', '97/36', '97/50', '97/77', '97/97'],
   },
   'security-and-trust-boundaries': {
     maxLines: 250,
     sections: ['Overview', 'When to invoke', 'Red Flags'],
-    principles: [26, 29],
+    // Per CITATION-SCHEME.md ID-uniqueness rule, 97/26 and 97/29 are owned
+    // canonically by error-and-correctness-traps. This skill cross-references
+    // them in SKILL.md but does not own them.
+    principles: [],
   },
 };
 
@@ -163,13 +177,10 @@ function lintSkill(skillName) {
     if (fs.existsSync(principlesFile)) {
       const text = fs.readFileSync(principlesFile, 'utf8');
       const found = new Set();
-      for (const m of text.matchAll(/#(\d+)\b/g)) found.add(Number(m[1]));
-      const missing = rules.principles.filter((n) => !found.has(n));
+      for (const m of text.matchAll(/^##\s+([A-Za-z0-9]+\/[A-Za-z0-9]+)\b/gm)) found.add(m[1]);
+      const missing = rules.principles.filter((id) => !found.has(id));
       if (missing.length)
-        fail(
-          skillName,
-          `principles.md missing principle numbers: ${missing.map((n) => '#' + n).join(', ')}`
-        );
+        fail(skillName, `principles.md missing principle IDs: ${missing.join(', ')}`);
     }
   }
 }

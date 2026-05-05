@@ -18,14 +18,11 @@ file will be revised or removed.
 
 ---
 
-## #3 — You Are Not the User (Ask "What Would the User Do?")
+## 97/3 — You Are Not the User (Ask "What Would the User Do?")
 
 **Author:** Giles Colborne
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_03/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None — chapter present on the mirror, complete, attributed.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_03/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Programmers assume other people think like programmers, and
 unconsciously treat users who don't as defective. Users spend less time at
@@ -44,14 +41,11 @@ control), not in a sidebar or modal the user must navigate to.
 
 ---
 
-## #36 — The Guru Myth
+## 97/36 — The Guru Myth
 
 **Author:** Ryan Brush
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_36/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_36/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** "I'm getting exception XYZ — do you know what's wrong?"
 asked without stack trace, log, or context, treats the answerer as a guru
@@ -72,14 +66,11 @@ asker's next problem, not this one.
 
 ---
 
-## #50 — Learn to Estimate
+## 97/50 — Learn to Estimate
 
 **Author:** Giovanni Asproni
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_50/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_50/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Most "estimation" disagreements are vocabulary
 disagreements. Three concepts are conflated. An **estimate** is an
@@ -101,14 +92,11 @@ reduce scope, change the team, or surface that the target will likely miss.
 
 ---
 
-## #64 — Pair Program and Feel the Flow
+## 97/64 — Pair Program and Feel the Flow
 
 **Authors:** Gudny Hauknes, Ann Katrin Gagnat, Kari Røssland
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_64/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_64/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Flow — total absorption in the work, time disappearing —
 is fragile in a team setting because of interruptions and context switches.
@@ -128,14 +116,11 @@ sub-task) rather than "until we are done."
 
 ---
 
-## #77 — Start from Yes
+## 97/77 — Start from Yes
 
 **Author:** Alex Miller
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_77/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_77/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Tech leads who view their job as protecting the codebase
 from a stream of demands default to "no" and become a bottleneck. The
@@ -155,14 +140,11 @@ with both the ask and the constraint laid out — never silently refuse.
 
 ---
 
-## #85 — Two Heads Are Often Better Than One
+## 97/85 — Two Heads Are Often Better Than One
 
 **Author:** Adrian Wible
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_85/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_85/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Collaboration is rolling up sleeves on the work jointly,
 not asking and answering questions or sitting in meetings. Pair programming
@@ -183,14 +165,11 @@ compare against your usual solo baseline before deciding.
 
 ---
 
-## #86 — Two Wrongs Can Make a Right (and Are Difficult to Fix)
+## 97/86 — Two Wrongs Can Make a Right (and Are Difficult to Fix)
 
 **Author:** Allan Kelly
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_86/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_86/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Two defects that compensate for each other present as zero
 visible faults — until one of them is corrected. Apollo 11's lunar-module
@@ -211,14 +190,11 @@ flag it and plan the migration before silently fixing it.
 
 ---
 
-## #87 — Ubuntu Coding for Your Friends
+## 97/87 — Ubuntu Coding for Your Friends
 
 **Author:** Aslam Khan
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_87/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_87/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Software is technical work mixed with social work. Code
 gets written in apparent isolation but is read, used, extended, and relied
@@ -237,14 +213,11 @@ intent, or write the comment that explains the non-obvious choice.
 
 ---
 
-## #96 — You Gotta Care About the Code
+## 97/96 — You Gotta Care About the Code
 
 **Author:** Pete Goodliffe
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_96/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None.
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_96/README.md
+**License:** CC-BY-3.0
 
 **Distillation.** Good code is not produced by accident, intelligence, or
 language mastery alone — highly intellectual programmers can produce
@@ -264,14 +237,11 @@ default to the plainer one.
 
 ---
 
-## #97 — Your Customers Do Not Mean What They Say
+## 97/97 — Your Customers Do Not Mean What They Say
 
 **Author:** Nate Jackson
-**Source (primary):** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_97/README.md
-**Source (reading aid):** n/a (no Medium link in TOC)
-**Source used:** GitHub mirror (CC-BY-3.0).
-**Access date:** 2026-05-04
-**Gaps:** None — author byline on the mirror is "Icnatejackson"; real name is
+**Source:** https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_97/README.md
+**License:** CC-BY-3.0
 Nate Jackson.
 
 **Distillation.** Customers describe what they want in detail but rarely
