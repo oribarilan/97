@@ -11,6 +11,13 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [Unreleased]
 
+### Documentation
+
+- `README.md` now explains that every principle is attributed and shows
+  users how to ask the agent for the author, source link, and reasoning
+  behind any principle it applies. Reframes 97 as a guided reading list
+  into the source book in addition to a behavior plugin.
+
 ## [0.4.0] — 2026-05-06
 
 Six themed skills get new principles from sources outside *97 Things* — Fowler,

@@ -89,13 +89,27 @@ Works on Linux, macOS, and Windows. Node 18+.
 | `pre-commit-self-review` | About to commit, finish a task, open a PR, summarize work, or when asked for a review or hand-off |
 | `working-with-users-and-team` | Gathering or interpreting requirements, estimating effort, or communicating with stakeholders about what to build |
 
-12 skills total (the bootstrap plus 11 themed skills). Per-skill contributor
-attributions live in each skill's `principles.md`. The
-`security-and-trust-boundaries` and `observability` skills are predominantly
-original commentary on sources outside *97 Things*
-(see `CONTENT-LICENSE.md`); the others distill book principles, with
-several enriched from additional sources (Fowler, Wlaschin,
-Nygard, 12-factor, GOOS, Meszaros, Ousterhout, Liskov, King).
+12 skills total (the bootstrap plus 11 themed skills). The themed skills
+distill book principles, with several enriched from additional sources
+(Fowler, Wlaschin, Nygard, 12-factor, GOOS, Meszaros, Ousterhout, Liskov,
+King).
+
+### Attribution & sources
+
+Every principle the agent applies is attributed to the original essay
+author. Each skill ships a `principles.md` next to its `SKILL.md` with,
+per principle: the contributor's name, a link to the CC-BY-3.0 source
+essay, our distillation in our own words, and how the agent applies it.
+
+You can ask the agent at any time: *"Who wrote the principle you just
+applied, and why does it say what it says?"* The agent will open the
+relevant `principles.md` and tell you who wrote it, link the source
+essay, and explain the reasoning. Treat 97 as a guided reading list
+into the source book as much as a behavior plugin.
+
+The `security-and-trust-boundaries` and `observability` skills are
+predominantly original commentary on sources outside *97 Things*; see
+`CONTENT-LICENSE.md`.
 
 ## Credits
 

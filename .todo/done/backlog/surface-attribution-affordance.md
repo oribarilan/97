@@ -35,26 +35,26 @@ modification. Single-file change, low risk, high signal.
 
 ## Acceptance Criteria
 
-- [ ] `README.md` has a new `### Attribution & sources` subsection
+- [x] `README.md` has a new `### Attribution & sources` subsection
       between the existing "11 skills total..." line and the `## Credits`
       header.
-- [ ] The subsection (a) names what attribution exists per principle
+- [x] The subsection (a) names what attribution exists per principle
       (contributor, CC-BY-3.0 link, distillation, agent application);
       (b) tells the user they can ask the agent who wrote a principle
       and why; (c) shows **one** italicized example prompt covering
       both who and why; (d) reframes 97 as a guided reading list into
       the source book.
-- [ ] The existing one-liner about per-skill attributions in the
+- [x] The existing one-liner about per-skill attributions in the
       "What's inside" section is removed (replaced by the new
       subsection) — no duplicate statement.
-- [ ] The existing `security-and-trust-boundaries` carve-out sentence
+- [x] The existing `security-and-trust-boundaries` carve-out sentence
       is preserved (it's honest attribution and still belongs).
-- [ ] No edits to any `SKILL.md`, `principles.md`,
+- [x] No edits to any `SKILL.md`, `principles.md`,
       `CONTENT-LICENSE.md`, or any adapter (`.opencode/plugins/97.js`,
       `hooks/`).
-- [ ] `CHANGELOG.md` has a new bullet under `[Unreleased]` →
+- [x] `CHANGELOG.md` has a new bullet under `[Unreleased]` →
       `### Documentation` describing the change in user-facing terms.
-- [ ] `npm test` (lint + format-check + smoke) passes.
+- [x] `npm test` (lint + format-check + smoke) passes.
 
 ## Verification
 
@@ -87,6 +87,17 @@ modification. Single-file change, low risk, high signal.
 - If a future eval shows users *don't* discover the affordance, then
   consider adding a single line to `using-97/SKILL.md` about
   surfacing attribution when relevant. Don't pre-optimize.
+
+## Execution notes
+
+- README went from 146 → 160 lines (+14), inside the predicted +12 to +16.
+- Carve-out sentence extended to include `observability` (not just
+  `security-and-trust-boundaries`) to match the current README state
+  post-v0.4 — the task spec was written before `observability` shipped.
+- Suggested CHANGELOG bullet wording used verbatim.
+- Suggested README subsection wording used verbatim.
+- `npm test` passed: lint (12 skills OK), format-check (clean), smoke
+  (plugin v0.4.0, marketplace OK, AGENTS.md single source, hook present).
 - Suggested CHANGELOG bullet:
   > `README.md` now explains that every principle is attributed and
   > shows users how to ask the agent for the author, source link, and
