@@ -79,14 +79,11 @@ These thoughts mean STOP — do not commit yet:
 
 You are done when **all** of the following are true:
 
-- [ ] You re-read the full diff as a stranger and it explains itself.
 - [ ] You ruled out your own code as the source of any unresolved oddness before blaming external systems.
 - [ ] The commit (or hand-off) can be described in one sentence with no "and also."
 - [ ] Any shortcut taken is named in a tracked follow-up.
 - [ ] Build is clean — no new warnings, lint errors, or deprecation notices introduced.
 - [ ] New log lines have correct levels and reasonable volume.
-- [ ] Comments help the next reader; none are stale, snarky, or career-limiting.
-- [ ] Nothing in the change is something you'd want to undo after a night's sleep.
 - [ ] The hand-off names trade-offs and uncertainties rather than hiding them.
 
 If any box is unchecked, you are not done — you are mid-review. Either finish the review, or hand back with the gaps named explicitly.

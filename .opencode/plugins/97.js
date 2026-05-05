@@ -19,7 +19,7 @@
  *   than a system message avoids per-turn token bloat and Qwen
  *   multi-system-message issues. Idempotent via substring marker.
  * - Bootstrap content: built dynamically from `skills/using-97/SKILL.md` body
- *   (frontmatter stripped) wrapped in <EXTREMELY_IMPORTANT>...</EXTREMELY_IMPORTANT>
+ *   (frontmatter stripped) wrapped in <bootstrap name="using-97">...</bootstrap>
  *   plus a tool-mapping block that translates Claude-native tool names used
  *   in the harness-neutral SKILL.md to OpenCode equivalents.
  * - Zero runtime deps: Node built-ins only (`path`, `fs`, `os`, `url`).
@@ -96,15 +96,11 @@ When skills reference tools you don't have, substitute OpenCode equivalents:
 
 Use OpenCode's native \`skill\` tool to list and load skills.`;
 
-    return `<EXTREMELY_IMPORTANT>
-You have 97.
-
-**IMPORTANT: The using-97 skill content is included below. It is ALREADY LOADED — you are currently following it. Do NOT use the skill tool to load "using-97" again — that would be redundant.**
-
+    return `<bootstrap name="using-97">
 ${content}
 
 ${toolMapping}
-</EXTREMELY_IMPORTANT>`;
+</bootstrap>`;
   };
 
   return {
@@ -119,13 +115,17 @@ ${toolMapping}
     },
 
     // Inject bootstrap into the first user message of each session.
-    // Idempotent via substring marker (`EXTREMELY_IMPORTANT`).
+    // Idempotent via substring marker (`<bootstrap name="using-97">`).
     'experimental.chat.messages.transform': async (_input, output) => {
       const bootstrap = getBootstrapContent();
       if (!bootstrap || !output?.messages?.length) return;
       const firstUser = output.messages.find((m) => m.info?.role === 'user');
       if (!firstUser || !firstUser.parts?.length) return;
-      if (firstUser.parts.some((p) => p.type === 'text' && p.text?.includes('EXTREMELY_IMPORTANT')))
+      if (
+        firstUser.parts.some(
+          (p) => p.type === 'text' && p.text?.includes('<bootstrap name="using-97">')
+        )
+      )
         return;
 
       const ref = firstUser.parts[0];

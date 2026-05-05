@@ -89,19 +89,20 @@ Works on Linux, macOS, and Windows. Node 18+.
 |---|---|
 | `using-97` | Always — bootstrap that primes the agent on the trigger map |
 | `before-you-refactor` | About to refactor, restructure, rename across files, or "clean up" existing code |
-| `writing-clean-code` | Adding a new function/class, naming a new entity, or modifying ≥3 lines of non-trivial logic — at most once per file per session |
+| `writing-clean-code` | Adding a new function/class, naming a new entity, or modifying ≥3 lines of non-trivial logic |
 | `domain-modeling` | Introducing a new top-level type/table/domain concept, renaming a domain concept, or deciding where state lives |
 | `api-and-interface-design` | Designing a public API, function signature, module boundary, exported type, or any contract other code depends on |
 | `testing-discipline` | Writing tests, designing test data, naming a test, choosing what to assert, or writing test helpers/mocks/fixtures |
 | `error-and-correctness-traps` | Writing error handling, comparing/calculating with floats, writing concurrent code, calling a remote process, adding a singleton, choosing a data structure for a hot path, or changing log statements |
+| `security-and-trust-boundaries` | Parsing user input, writing SQL or shell commands, handling secrets/tokens, hashing passwords, adding/changing an auth check, deserializing untrusted data, or constructing file paths/URLs from input |
 | `build-deploy-and-tooling` | Authoring/changing build scripts, CI workflows, deploy pipelines, repo setup, or evaluating a new tool for adoption |
 | `pre-commit-self-review` | About to commit, finish a task, open a PR, summarize work, or when asked for a review or hand-off |
-| `working-with-users-and-team` | Designing UX, gathering/interpreting requirements, estimating effort, or communicating with stakeholders about what to build |
+| `working-with-users-and-team` | Gathering or interpreting requirements, estimating effort, or communicating with stakeholders about what to build |
 
-10 skills total. 78 of the book's 97 principles are distilled across the 9
-themed skills. The remaining 19 are pure career/mindset essays and aren't
-agent-actionable. Per-skill contributor attributions live in each skill's
-`principles.md`.
+11 skills total (the bootstrap plus 10 themed skills). Per-skill contributor
+attributions live in each skill's `principles.md`. The
+`security-and-trust-boundaries` skill is mostly original commentary
+(see `CONTENT-LICENSE.md`); the others distill book principles.
 
 ## Credits
 

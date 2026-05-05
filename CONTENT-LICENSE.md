@@ -30,6 +30,29 @@ For each principle we include:
 This commentary is original work, offered under MIT alongside the code.
 The source essays remain CC-BY-3.0 and are credited to their authors.
 
+## `security-and-trust-boundaries` — predominantly original
+
+The `security-and-trust-boundaries` skill is the project's one acknowledged
+"97-inspired plus extension." The book has thin direct coverage of modern
+security practice. Two book principles generalize cleanly to
+trust-boundary discipline and are kept under their CC-BY-3.0 attributions
+in `skills/security-and-trust-boundaries/principles.md`:
+
+- **#26** ("Don't Ignore That Error!", Pete Goodliffe) — generalized to
+  "don't ignore the trust boundary."
+- **#29** ("Don't Rely on 'Magic Happens Here'", Alan Griffiths) —
+  generalized to "don't rely on a security control no one on the team
+  understands."
+
+The remaining trap domains in that skill — injection, untrusted-input
+boundaries, secrets handling, crypto misuse, authentication and
+authorization — are original commentary written for this plugin. They
+draw on standard industry references (OWASP Top 10, language vendor
+security guides, CWE catalog) and on agent-specific failure modes
+observed in production code review. The MIT plugin code license applies
+to the original parts; CC-BY-3.0 attribution covers the two cited book
+principles.
+
 ## Unofficial, and easy to take down
 
 This plugin is an **unofficial companion**. It is not affiliated with,

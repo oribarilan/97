@@ -3,9 +3,8 @@
 # Markdown is intentionally NOT formatted by Prettier in this repo:
 #   - skills/**/*.md have lint-enforced line budgets (scripts/lint-skills.mjs)
 #     and careful prose layout that Prettier would re-flow.
-#   - Root *.md files (README, CONTRIBUTE, AGENTS, CLAUDE, CHANGELOG) are
-#     hand-managed for clarity. CLAUDE.md must stay byte-identical to
-#     AGENTS.md (smoke check) — letting Prettier near them adds drift risk.
+#   - Root *.md files (README, CONTRIBUTE, AGENTS, CHANGELOG) are
+#     hand-managed for clarity — letting Prettier near them adds drift risk.
 #
 # Add markdown back to scope deliberately, with adjustments to the lint
 # rules first, never as an offhand change.

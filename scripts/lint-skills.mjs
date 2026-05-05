@@ -24,6 +24,18 @@ const skillsDir = path.join(root, 'skills');
 
 // Per-skill budgets (lines) and required principle numbers.
 // Source of truth: .todo/US-97-mvp/main.md "Skill grouping" table.
+// Per-skill budgets (lines) and required principle numbers.
+// Source of truth: .todo/US-97-mvp/main.md "Skill grouping" table.
+//
+// Budget philosophy (`decide-lint-budget-policy`, v0.3):
+// Caps are tight by design. The gold-standard skill,
+// `error-and-correctness-traps`, fits ~7 trap domains with concrete
+// examples in ~130 lines. Existing content skills sit comfortably
+// below 250. The cap is a forcing function for editorial density,
+// not a budget to spend. New skills should match
+// `error-and-correctness-traps` density first; if the work genuinely
+// can't fit, bump that one skill's cap with a documented reason —
+// don't blanket-loosen.
 const SKILL_RULES = {
   'using-97': { maxLines: 100, sections: ['Overview', 'Red Flags'], principles: [] },
   'before-you-refactor': {
@@ -34,7 +46,7 @@ const SKILL_RULES = {
   'writing-clean-code': {
     maxLines: 250,
     sections: ['Overview', 'When to invoke', 'Red Flags'],
-    principles: [5, 13, 15, 17, 30, 39, 62, 75, 76, 91, 93, 94],
+    principles: [13, 15, 17, 30, 75, 76, 91, 94],
   },
   'testing-discipline': {
     maxLines: 250,
@@ -69,7 +81,12 @@ const SKILL_RULES = {
   'working-with-users-and-team': {
     maxLines: 250,
     sections: ['Overview', 'When to invoke', 'Red Flags'],
-    principles: [3, 36, 50, 64, 77, 85, 86, 87, 96, 97],
+    principles: [3, 36, 50, 77, 97],
+  },
+  'security-and-trust-boundaries': {
+    maxLines: 250,
+    sections: ['Overview', 'When to invoke', 'Red Flags'],
+    principles: [26, 29],
   },
 };
 

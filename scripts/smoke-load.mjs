@@ -7,8 +7,10 @@
  *   - .claude-plugin/plugin.json and marketplace.json JSON-parse
  *   - marketplace.json names the marketplace `97-marketplace` and lists plugin `97`
  *   - Versions match across package.json, plugin.json, marketplace.json[plugins[0]]
- *   - AGENTS.md and CLAUDE.md are byte-identical
- *   - hooks/hooks.json JSON-parses and references run-hook.cmd session-start
+ *   - AGENTS.md exists (single source of truth for contributor docs)
+ *   - hooks/hooks.json JSON-parses and invokes hooks/session-start.mjs via node
+ *   - hooks/session-start.mjs runs and emits valid JSON with the using-97
+ *     bootstrap embedded in the expected harness-shaped envelope
  */
 
 import fs from 'fs';
@@ -53,6 +55,37 @@ if (fakeConfig.skills.paths.length !== paths.length) die('config hook is not ide
 
 // Bootstrap transform: must be a no-op when no first user message exists.
 await hooks['experimental.chat.messages.transform']({}, { messages: [] });
+
+// Bootstrap transform: must actually inject bootstrap content into the
+// first user message. The empty-messages path above only proves "doesn't
+// crash"; this proves "the most consequential thing the plugin does
+// actually happens." Stable marker: the literal "Trigger Map" heading
+// from skills/using-97/SKILL.md, which survives wrapper changes.
+const STABLE_MARKER = 'Trigger Map';
+const fakeMsgs = {
+  messages: [
+    {
+      info: { role: 'user' },
+      parts: [{ type: 'text', text: 'hello' }],
+    },
+  ],
+};
+await hooks['experimental.chat.messages.transform']({}, fakeMsgs);
+const userMsg = fakeMsgs.messages[0];
+if (!Array.isArray(userMsg.parts) || userMsg.parts.length !== 2)
+  die(`bootstrap transform did not prepend a part: expected 2 parts, got ${userMsg.parts?.length}`);
+const injected = userMsg.parts[0];
+if (injected.type !== 'text')
+  die(`injected part has wrong type: expected "text", got "${injected.type}"`);
+if (!injected.text || !injected.text.includes(STABLE_MARKER))
+  die(`injected bootstrap missing stable marker "${STABLE_MARKER}"`);
+if (!injected.text.includes('OpenCode equivalents'))
+  die('injected bootstrap missing OpenCode tool-mapping appendix');
+
+// Idempotency: a second transform call must not add a third part.
+await hooks['experimental.chat.messages.transform']({}, fakeMsgs);
+if (userMsg.parts.length !== 2)
+  die(`bootstrap transform is not idempotent: a second call grew parts to ${userMsg.parts.length}`);
 
 // ---------------------------------------------------------------------------
 // 2. .claude-plugin/ manifests parse and version equality holds
@@ -110,16 +143,18 @@ if (distinctVersions.size !== 1) {
 }
 
 // ---------------------------------------------------------------------------
-// 3. AGENTS.md and CLAUDE.md byte-identical
+// 3. AGENTS.md is the single source of truth for contributor docs
 // ---------------------------------------------------------------------------
 const agentsPath = path.join(root, 'AGENTS.md');
-const claudePath = path.join(root, 'CLAUDE.md');
 if (!fs.existsSync(agentsPath)) die('AGENTS.md missing');
-if (!fs.existsSync(claudePath)) die('CLAUDE.md missing');
 const agentsBytes = fs.readFileSync(agentsPath);
-const claudeBytes = fs.readFileSync(claudePath);
-if (!agentsBytes.equals(claudeBytes)) {
-  die('AGENTS.md and CLAUDE.md must be byte-identical (no symlink — both real files)');
+const claudePath = path.join(root, 'CLAUDE.md');
+if (fs.existsSync(claudePath)) {
+  die(
+    'CLAUDE.md should not exist — AGENTS.md is the single source of truth for ' +
+      'contributor docs (decided in v0.3, see .todo/done/US-v0.3-council-feedback/' +
+      'decide-agents-claude-md-strategy.md). Delete CLAUDE.md.'
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -137,14 +172,66 @@ const sessionStartArr = hooksJson?.hooks?.SessionStart;
 if (!Array.isArray(sessionStartArr) || sessionStartArr.length === 0) {
   die('hooks/hooks.json missing hooks.SessionStart entry');
 }
-for (const f of ['session-start', 'run-hook.cmd']) {
+for (const f of ['session-start.mjs']) {
   const p = path.join(root, 'hooks', f);
   if (!fs.existsSync(p)) die(`hooks/${f} missing`);
 }
+for (const stale of ['session-start', 'run-hook.cmd']) {
+  const p = path.join(root, 'hooks', stale);
+  if (fs.existsSync(p))
+    die(
+      `hooks/${stale} should be removed in v0.3 (Node port replaced the bash+cmd polyglot — see node-rewrite-session-start)`
+    );
+}
+
+const hooksCommand = sessionStartArr[0]?.hooks?.[0]?.command;
+if (typeof hooksCommand !== 'string' || !hooksCommand.includes('session-start.mjs')) {
+  die(`hooks/hooks.json command field must invoke session-start.mjs, got: ${hooksCommand}`);
+}
+
+// ---------------------------------------------------------------------------
+// 5. hooks/session-start.mjs runs and emits the expected envelope
+// ---------------------------------------------------------------------------
+const { spawnSync } = await import('child_process');
+const hookScript = path.join(root, 'hooks', 'session-start.mjs');
+
+function runHook(env) {
+  const res = spawnSync(process.execPath, [hookScript], {
+    encoding: 'utf8',
+    env: { ...process.env, ...env },
+  });
+  if (res.status !== 0) die(`session-start.mjs exited ${res.status}: ${res.stderr || res.stdout}`);
+  let parsed;
+  try {
+    parsed = JSON.parse(res.stdout);
+  } catch (e) {
+    die(`session-start.mjs stdout is not valid JSON: ${e.message}\n${res.stdout}`);
+  }
+  return parsed;
+}
+
+// Default (Claude Code) shape: nested hookSpecificOutput.additionalContext.
+const claudePayload = runHook({ COPILOT_CLI: '' });
+const claudeCtx = claudePayload?.hookSpecificOutput?.additionalContext;
+if (typeof claudeCtx !== 'string')
+  die('session-start.mjs default output missing hookSpecificOutput.additionalContext');
+if (claudePayload.hookSpecificOutput.hookEventName !== 'SessionStart')
+  die('session-start.mjs default output missing hookEventName="SessionStart"');
+if (!claudeCtx.includes(STABLE_MARKER))
+  die(`session-start.mjs default output missing stable marker "${STABLE_MARKER}"`);
+
+// Copilot shape: top-level additionalContext.
+const copilotPayload = runHook({ COPILOT_CLI: '1' });
+if (typeof copilotPayload?.additionalContext !== 'string')
+  die('session-start.mjs COPILOT_CLI=1 output missing top-level additionalContext');
+if (copilotPayload.hookSpecificOutput)
+  die('session-start.mjs COPILOT_CLI=1 output should not contain hookSpecificOutput');
+if (!copilotPayload.additionalContext.includes(STABLE_MARKER))
+  die(`session-start.mjs COPILOT_CLI=1 output missing stable marker "${STABLE_MARKER}"`);
 
 console.log(`smoke-load OK
   skills path:      ${skillsPath}
   plugin version:   ${pkg.version}
   marketplace:      ${marketplace.name}
-  AGENTS=CLAUDE:    byte-identical (${agentsBytes.length} bytes)
-  hooks:            session-start, run-hook.cmd present`);
+  AGENTS.md:        single source (${agentsBytes.length} bytes)
+  hooks:            session-start.mjs present`);

@@ -33,8 +33,8 @@ bootstrap hooks under `hooks/`, tooling under `scripts/`.
 4. **Don't touch shared files in parallel work.** When dispatching multiple
    subagents, forbid each from editing `README.md`, `package.json`,
    `skills/using-97/SKILL.md`, `.opencode/plugins/97.js`, `AGENTS.md`,
-   `CLAUDE.md`, or anything under `.claude-plugin/` or `hooks/`. Those
-   updates land in the integration step.
+   or anything under `.claude-plugin/` or `hooks/`. Those updates land
+   in the integration step.
 5. **Voice rules apply to skill content.** No AI tells (testament, pivotal,
    landscape, "serves as", trailing -ing clauses, etc.). The
    `humanizer` skill is the source of truth for voice. The imperative voice
@@ -45,9 +45,15 @@ bootstrap hooks under `hooks/`, tooling under `scripts/`.
    `using-97/SKILL.md` in particular are harness-neutral and use
    Claude Code-native tool names (`Read`, `Write`, `Edit`, `Bash`, `Task`,
    `TodoWrite`, `Skill`). Harness-specific glue lives in adapters:
-   `.opencode/plugins/97.js` for OpenCode, `hooks/session-start` for
+   `.opencode/plugins/97.js` for OpenCode, `hooks/session-start.mjs` for
    Claude Code and Copilot CLI. Don't push OpenCode tool names, OpenCode
    config paths, or OpenCode-only behavior into shared content.
+8. **Harness scope is frozen through v1.0.** Supported: Claude Code,
+   Copilot CLI, OpenCode. Adding a new harness adapter requires both
+   demonstrated user demand and behavioral evidence that the existing
+   skills change agent output. PRs that add a fourth harness without
+   meeting both bars will be deferred. See "Harness scope policy" in
+   `CONTRIBUTE.md`.
 
 ## Cross-platform discipline
 
@@ -162,33 +168,51 @@ If the need arises:
 
 ## Multi-harness adapter pattern
 
-Adding a new harness (Cursor, Codex, Gemini) means adding a new adapter,
-not editing `skills/`:
+Adding a new harness (Cursor, Codex, Gemini) is gated by the harness
+scope policy (Rule 8 above; see `CONTRIBUTE.md` for the full policy).
+When a future harness *does* clear the bar, it adds its own adapter, not
+edits to `skills/`:
 
 - **OpenCode** loads via `.opencode/plugins/97.js`. The plugin registers
   the `skills/` directory and injects `using-97/SKILL.md` (with a tool-name
   translation appendix) into the first user message.
 - **Claude Code** and **Copilot CLI** load via `.claude-plugin/plugin.json`
-  and the `hooks/session-start` SessionStart hook. The hook injects the
-  same `using-97/SKILL.md` content as session context. Copilot CLI uses
-  Claude Code's plugin format directly — no separate manifest.
-- **Future harnesses** add their own manifest (e.g. `.cursor-plugin/`,
-  `gemini-extension.json`) and their own bootstrap-injection mechanism.
-  The harness-neutral `skills/` directory is the single source of truth
-  and never changes per-harness.
+  and the `hooks/session-start.mjs` SessionStart hook. The hook injects
+  the same `using-97/SKILL.md` content as session context. Copilot CLI
+  uses Claude Code's plugin format directly — no separate manifest.
+- **Future harnesses** (post-bar) would add their own manifest (e.g.
+  `.cursor-plugin/`, `gemini-extension.json`) and their own
+  bootstrap-injection mechanism. The harness-neutral `skills/` directory
+  is the single source of truth and never changes per-harness.
 
 The bootstrap (`using-97/SKILL.md`) uses Claude Code-native tool names
 because that's the largest target audience. OpenCode's adapter translates
 them at injection time. New harnesses do the same translation in their
 adapter if their tool names differ.
 
-## CLAUDE.md and AGENTS.md are byte-identical
+## AGENTS.md is the single source of truth
 
-Claude Code reads `CLAUDE.md`. Other agents read `AGENTS.md`. Both files
-must have identical content. They are real files (not symlinks — Git on
-Windows defaults to `core.symlinks=false` and would check out a symlink
-as a 9-byte text file). `npm test` enforces byte-equality. When you edit
-one, edit both.
+This file is the contributor-conventions document for AI agents working
+on the 97 codebase. It is **not** shipped to plugin users — end users
+get skill content through the plugin loader (`skills/`,
+`.claude-plugin/`, `hooks/`, `.opencode/`).
+
+Most modern coding agents (OpenCode, Copilot CLI, Cursor, Codex) read
+`AGENTS.md` automatically. **Claude Code** does not — it reads
+`CLAUDE.md`. If you contribute to 97 using Claude Code, manually load
+this file at session start (e.g., paste it, `@AGENTS.md`, or
+"read AGENTS.md before making changes").
+
+The repo previously kept `AGENTS.md` and `CLAUDE.md` byte-identical
+with a smoke-test enforcement. That was dropped in v0.3
+(`decide-agents-claude-md-strategy`, revised) — these are
+contributor-facing docs and the maintenance tax of two files exceeded
+the value of automatic Claude Code priming. Smoke now actively rejects
+a re-introduced `CLAUDE.md` to prevent drift.
+
+**Revisit when** Anthropic adopts `AGENTS.md`, the ecosystem
+standardizes on a single name, or a real contributor-flow problem
+emerges from Claude Code users not getting these conventions.
 
 ## Releases (manual only)
 

@@ -24,9 +24,31 @@ supported harnesses today:
 This is the multi-harness adapter pattern from
 [`superpowers`](https://github.com/obra/superpowers): a single
 harness-neutral `skills/` directory at the source of truth, with thin
-per-harness adapter manifests at the repo root. Adding a new harness
-(Cursor, Codex, Gemini) is an additive change. Drop in a new manifest and
-a bootstrap-injection mechanism. Leave `skills/` alone.
+per-harness adapter manifests at the repo root.
+
+### Harness scope policy (through v1.0)
+
+**Supported harnesses through v1.0: Claude Code, Copilot CLI, OpenCode.**
+Adding a new harness (Cursor, Codex, Gemini, or any other) requires
+*both*:
+
+1. **Demonstrated user demand** — concrete inbound interest from users
+   of that harness, not a maintainer's speculative interest.
+2. **Behavioral evidence** that the existing skills change agent output
+   on the harnesses already supported. Until the project has measured
+   evidence that the content is doing real work, adapter breadth is
+   the wrong investment.
+
+Adapter PRs that add a new harness without meeting both bars will be
+deferred until v1.0 at earliest. This is scope discipline, not a
+rejection of contribution: external adapters can be maintained as
+separate forks/repos by interested parties without inflating the core
+repo's CI matrix or maintenance load.
+
+The v0.3 release dropped an unused Cursor branch from
+`hooks/session-start.mjs` for the same reason. If a major harness
+ships strong demand and the project has accrued behavioral evidence,
+the policy can be revisited.
 
 ---
 
@@ -62,8 +84,7 @@ a bootstrap-injection mechanism. Leave `skills/` alone.
 │   ├── error-and-correctness-traps/
 │   ├── build-deploy-and-tooling/
 │   └── working-with-users-and-team/
-├── AGENTS.md              # short imperative rules for agents
-├── CLAUDE.md              # byte-identical copy of AGENTS.md (Claude Code reads this name)
+├── AGENTS.md              # contributor conventions for AI agents
 ├── CHANGELOG.md
 ├── CONTENT-LICENSE.md
 ├── CONTRIBUTE.md          # ← you are here
@@ -77,11 +98,17 @@ agent context when the trigger fires) and `principles.md` (long-form
 reference, loaded only when the agent needs the deep cut on a specific
 principle).
 
-`AGENTS.md` and `CLAUDE.md` are **two real files with byte-identical
-content** — not a symlink. Git on Windows defaults to
-`core.symlinks=false`, which would check out a symlink as a 9-byte text
-file containing the literal string `AGENTS.md` and silently break Claude
-Code on Windows. The smoke check enforces byte equality.
+`AGENTS.md` is the **single source of truth for contributor
+conventions**. Most modern coding agents (OpenCode, Copilot CLI, Cursor,
+Codex) read it automatically. Claude Code reads `CLAUDE.md` instead and
+will not auto-load `AGENTS.md` — if you contribute using Claude Code,
+load it manually at session start (e.g., paste it, `@AGENTS.md`, or
+"read AGENTS.md before making changes"). The repo previously kept
+`CLAUDE.md` byte-identical to `AGENTS.md`; that was dropped in v0.3
+(`decide-agents-claude-md-strategy`, revised) — these are
+contributor-facing docs and the maintenance tax exceeded the value of
+automatic Claude Code priming. Smoke now actively rejects a
+re-introduced `CLAUDE.md` to prevent drift.
 
 ---
 
@@ -122,9 +149,8 @@ formatted automatically:
 
 - `skills/**/*.md` have lint-enforced line budgets (`scripts/lint-skills.mjs`)
   and careful prose layout that Prettier would re-flow.
-- Root `*.md` files (README, CONTRIBUTE, AGENTS, CLAUDE, CHANGELOG) are
-  hand-managed for clarity. `CLAUDE.md` must stay byte-identical to
-  `AGENTS.md` (smoke check) — letting Prettier near them adds drift risk.
+- Root `*.md` files (README, CONTRIBUTE, AGENTS, CHANGELOG) are
+  hand-managed for clarity — letting Prettier near them adds drift risk.
 
 `.prettierignore` is the source of truth for what's excluded.
 
@@ -164,7 +190,7 @@ hook registers the skills directory. It also:
 
 - JSON-parses `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`
 - Asserts version equality across `package.json`, `plugin.json`, and `marketplace.json[plugins[0]]`
-- Asserts byte-equality of `AGENTS.md` and `CLAUDE.md`
+- Asserts `AGENTS.md` exists and `CLAUDE.md` does **not** exist (single-source-of-truth rule from v0.3)
 
 These invariants are load-bearing: drift breaks at least one harness
 silently. The smoke check turns drift into a CI failure.
@@ -281,8 +307,8 @@ versions or tag as part of unrelated feature work.
    just check    # or: npm test
    ```
 
-   This asserts version equality across the three manifests, byte-equality
-   of `AGENTS.md` / `CLAUDE.md`, structural lint, and Prettier formatting.
+   This asserts version equality across the three manifests, the
+   `AGENTS.md`-only single-source rule, structural lint, and Prettier formatting.
 
 6. **Commit, tag, push.** Use the `Release vX.Y.Z: <one-line summary>`
    commit message convention (mirrors superpowers; the commit message is
@@ -328,7 +354,7 @@ Jobs:
 - Checkout
 - Set up Node (matrix: 18, 20, 22 — the OpenCode-supported range)
 - `npm ci` (zero deps, but ensures clean state)
-- `npm test` (lint + smoke, including manifest version equality and `AGENTS.md` / `CLAUDE.md` byte equality)
+- `npm test` (lint + smoke, including manifest version equality and the `AGENTS.md`-only single-source rule)
 
 Matrix: Ubuntu, macOS, Windows. A red CI job on any platform blocks merge to
 `main`.

@@ -77,7 +77,6 @@ You are done when **all** of the following are true:
 - [ ] Mutability is a deliberate choice (this concept has identity) rather than a default (it's just easier).
 - [ ] You decided where the state lives based on size/persistence/interconnectedness — not by reflex.
 - [ ] There is exactly one canonical definition of this concept in the codebase.
-- [ ] You can describe the concept and its responsibility to your human partner in one sentence using only domain words.
 
 If any box is unchecked, you are not done modeling — you are mid-modeling. Either finish, or revert and re-plan.
 
