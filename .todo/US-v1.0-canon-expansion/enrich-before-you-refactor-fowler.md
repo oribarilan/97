@@ -18,8 +18,7 @@ with the canonical reference for refactoring practice.
 - `skills/before-you-refactor/principles.md`
 - `scripts/lint-skills.mjs` — `SKILL_RULES` entry (principle count)
 - `CHANGELOG.md` — `### Changed` entry under `[Unreleased]`
-- `CONTENT-LICENSE.md` — per-source attribution line if not already
-  added by `1-reposition-framing`
+- `CONTENT-LICENSE.md` — per-source attribution line for Fowler
 
 ## Dependencies
 
@@ -28,7 +27,6 @@ with the canonical reference for refactoring practice.
   `CITATION-SCHEME.md`.
 - `0b-citation-scheme-migration.md` in `done/` — `principles.md` is
   already in the new heading format; this task appends new entries.
-- `1-reposition-framing.md` must be in `done/` first.
 
 ## Acceptance Criteria
 

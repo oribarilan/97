@@ -28,7 +28,11 @@ skill currently lacks.
   `RI/CircuitBreaker`, `RI/Bulkhead`, `RI/Backpressure`, `RI/FailFast`
   IDs follow the format in `CITATION-SCHEME.md`.
 - `0b-citation-scheme-migration.md` in `done/`.
-- `1-reposition-framing.md` in `done/`.
+- `add-stakes-calibration.md` in `done/` — `error-and-correctness-traps/SKILL.md`
+  already carries calibration framing in its Overview + Non-triggers
+  before this task starts. New principles authored against the
+  calibrated skill; no Overview or Non-triggers calibration edits in
+  this task.
 
 ## Acceptance Criteria
 
@@ -87,6 +91,6 @@ skill currently lacks.
 - **Overlap with `build-deploy-and-tooling`:** retries-as-self-DDoS is
   a deploy-pipeline concern too (a buggy retry policy can DDoS your
   own backend during a deploy). Cite the overlap.
-- **Overlap with the new `observability-and-operations` skill** (if
+- **Overlap with the new `observability` skill** (if
   it lands first): a circuit breaker without metrics is invisible.
   Note the dependency: open-circuit events should be observable.

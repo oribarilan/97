@@ -37,7 +37,7 @@ comment.
 - v0.3 (`US-v0.3-council-feedback`) in `done/`. Story-level dependency
   per `main.md`.
 - **Must run before `0b-citation-scheme-migration.md`.**
-- **Must run before `1-reposition-framing.md`** so reposition framing can
+- **Must run before any enrichment task** so each enrichment can
   reference the settled ID scheme.
 
 ## Acceptance Criteria
@@ -87,10 +87,14 @@ comment.
       | `OTel` | OpenTelemetry semantic conventions, opentelemetry.io | Apache 2.0 / CC-BY-4.0 |
       | `Liskov` | Liskov, "Data Abstraction and Hierarchy", CACM 1987 | fair-use commentary |
       | `Hyrum` | Hyrum's Law, hyrumslaw.com | informal canon |
+      | `Ousterhout` | *A Philosophy of Software Design* (2nd ed.), Ousterhout, Yaknyam Press 2021 | fair-use commentary |
 
-      Other source keys may be added in their own enrichment tasks
-      (each new key requires editing this table in the same PR as the
-      first enrichment that uses it).
+      **Pre-registered sources only.** Sources whose enrichment tasks
+      are still under review (e.g. Martin's *Clean Code*, *Pragmatic
+      Programmer*, Cagan's *Inspired*, *The Phoenix Project*) are
+      **not** pre-registered. If a future enrichment task confirms one
+      of those sources is in scope, that task adds the source key to
+      this table in the same PR.
 
 - [ ] **Heading format in `principles.md`.** Every principle starts with:
       ```markdown
@@ -179,10 +183,13 @@ comment.
 
 - [ ] **README phrasing rule.** Spec forbids any count-coupled headline
       phrase like "78 of the book's 97 principles." Suggested
-      replacement (final wording owned by `1-reposition-framing.md`):
-      > Trigger-based skills distilled from *97 Things* and the wider
-      > programming canon. *97 Things* is the seed; per-skill
-      > `principles.md` files list every source.
+      replacement (final wording landed by `0b-citation-scheme-migration.md`):
+      > Trigger-based skills distilled from *97 Things* and adjacent
+      > canonical sources. Per-skill `principles.md` files list every
+      > source.
+      v1.0 does not reframe the README's "What this is" section beyond
+      removing the count-coupled sentence. A larger reposition is
+      deferred to v2.0.
 
 - [ ] **Cross-reference convention.** Inside `SKILL.md` or
       `principles.md`, refer to another principle by its full ID in
@@ -192,6 +199,28 @@ comment.
       ```
       File paths are not used for cross-references; IDs are stable, file
       paths are not.
+
+- [ ] **Agent output policy: silent application.** The spec records
+      the decision that the agent applies principles **silently** in
+      user-facing responses. Concretely:
+      - The agent does not surface author names, book titles, or essay
+        IDs (`97/74`, `Fowler/LongMethod`, etc.) in responses to the
+        end user.
+      - The agent applies the principle and explains the reasoning
+        in plain terms ("this function is doing too many things; let
+        me extract a helper") without name-dropping the source.
+      - Citations exist for repo provenance and CC-BY-3.0 compliance,
+        not for user-facing authority.
+
+      Why: the trigger taxonomy is the moat (per `main.md` cross-cutting
+      concerns); the moat works whether or not the agent name-drops.
+      Silent application keeps user-facing output clean and avoids
+      turning the plugin into indirect advertising for source books.
+
+      **Implementation:** the actual one-line Priority rule lands in
+      `using-97/SKILL.md` as part of `0b-citation-scheme-migration.md`'s
+      edits to the bootstrap. This task only records the policy in
+      the spec doc; `0b` adds the line.
 
 - [ ] **What this spec does NOT cover.** Explicit non-goals:
       - Voice rules — those live in `humanizer`.

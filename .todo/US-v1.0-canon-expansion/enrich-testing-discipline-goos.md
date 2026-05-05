@@ -29,35 +29,49 @@ into the agent's vocabulary.
 
 ## Dependencies
 
-- `0a-citation-scheme-spec.md` in `done/` — `GOOS/ListenToTests`,
+- `0a-citation-scheme-spec.md` in `done/` — `GOOS/ListenToTestPain`,
   `xUnit/ObscureTest`, `xUnit/FragileTest`, `xUnit/MysteryGuest`,
   `xUnit/ConditionalTestLogic` IDs follow the format in
   `CITATION-SCHEME.md`.
 - `0b-citation-scheme-migration.md` in `done/`.
-- `1-reposition-framing.md` in `done/`.
 
 ## Acceptance Criteria
 
-- [ ] Add **3–5** principles to `principles.md`:
-  - **Listen to the tests** — when a test is hard to write, the design
-    is wrong. Hard-to-mock collaborators, sprawling setup, brittle
-    assertions are signals to change the production code, not the
-    test. Source: Freeman & Pryce, *GOOS*, ch. 20.
-  - **Test smells: Obscure Test** — too much in one test; reader
-    cannot tell what is asserted. Fix: extract setup, name the
-    behavior. Source: Meszaros, *xUnit Test Patterns*, ch. 16.
-  - **Test smells: Fragile Test** — test breaks on changes unrelated
-    to its intent (interface, behavior, data, context sensitivity).
-    Fix: assert on behavior, not internals. Source: Meszaros, ch. 18.
-  - **Test smells: Mystery Guest** — test depends on data not visible
-    in the test (file on disk, shared DB row, env var). Fix: in-test
-    fixtures or named factory. Source: Meszaros, ch. 16.
-  - **No conditional logic in tests** — `if`/`for`/`switch` in a test
-    is a smell; the test is multiple tests in disguise or a fixture
-    is missing. Source: Meszaros, "Conditional Test Logic," ch. 18.
+- [ ] Add **4** principles to `principles.md`:
+  - **`GOOS/ListenToTestPain`** — when a test is hard to write,
+    the design is wrong. Operationalized trigger:
+    *"If the test setup is longer than the test body, or mocking
+    the collaborators is harder than mocking the system under test,
+    stop. Reshape the production code; do not mock harder."* This
+    is not a disposition; it is a concrete check the agent runs
+    before adding more mocks. Source: Freeman & Pryce, *Growing
+    Object-Oriented Software, Guided by Tests*, ch. 20.
+  - **`xUnit/ObscureTest`** — too much in one test; reader cannot
+    tell what is asserted. Fix: extract setup, name the behavior,
+    one assertion focus per test. Source: Meszaros, *xUnit Test
+    Patterns*, ch. 16.
+  - **`xUnit/FragileTest`** — test breaks on changes unrelated to
+    its intent (interface, behavior, data, context sensitivity).
+    Fix: assert on behavior, not internals; do not over-specify
+    mock interactions. Source: Meszaros, ch. 18.
+  - **`xUnit/MysteryGuest`** — test depends on data not visible in
+    the test (file on disk, shared DB row, env var). Fix: in-test
+    fixtures or named factory; the test should be readable in
+    isolation. Source: Meszaros, ch. 16.
+  - **`xUnit/ConditionalTestLogic`** — no branching that changes
+    *what the test asserts*. Operationalized trigger: *"`if` /
+    `for` / `switch` inside a test body that affects which assertion
+    runs is a smell — split into multiple tests or use named
+    parameterized cases."* Loops or conditionals over fixed test
+    *data* (table-driven tests, parameterized cases) are fine; the
+    rule is about branching over assertion logic. Source: Meszaros,
+    "Conditional Test Logic," ch. 18.
 - [ ] At least **2** principles surfaced in `SKILL.md` — likely as
-      Red Flags rows ("`if` inside a test body", "test setup longer
-      than the test", "test reads from a file at a magic path").
+      Red Flags rows ("test setup longer than the test body",
+      "branching inside a test body affects what is asserted",
+      "test reads from a file at a magic path"). The
+      `GOOS/ListenToTestPain` Red Flag is the highest-leverage
+      single addition.
 - [ ] `principles.md` cites Freeman & Pryce, *Growing Object-Oriented
       Software, Guided by Tests* (Addison-Wesley, 2009) and Meszaros,
       *xUnit Test Patterns* (Addison-Wesley, 2007).
@@ -66,7 +80,7 @@ into the agent's vocabulary.
       this skill decides *what makes the test good*. Add a
       cross-reference if missing.
 - [ ] `scripts/lint-skills.mjs` `SKILL_RULES.testing-discipline`
-      `principles` count updated.
+      `principles` field updated to include the 5 new IDs.
 - [ ] `CHANGELOG.md` `### Changed` entry written.
 - [ ] `npm test` passes.
 

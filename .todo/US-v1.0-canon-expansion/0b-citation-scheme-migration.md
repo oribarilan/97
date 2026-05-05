@@ -30,6 +30,8 @@ agent context cost on demand-loaded reference material.
 ## Related Files
 
 - `scripts/lint-skills.mjs` — regex + schema + comments
+- `skills/using-97/SKILL.md` — adds one Priority rule (silent-application
+  policy from `0a-citation-scheme-spec.md`)
 - `skills/before-you-refactor/principles.md`
 - `skills/writing-clean-code/principles.md`
 - `skills/testing-discipline/principles.md`
@@ -48,8 +50,6 @@ agent context cost on demand-loaded reference material.
 - `0a-citation-scheme-spec.md` in `done/`. The migration implements
   that spec exactly; deviations require amending the spec first.
 - v0.3 (`US-v0.3-council-feedback`) in `done/` (story-level dep).
-- **Must run before `1-reposition-framing.md`** so reposition framing
-  references the migrated state.
 - **Must run before any enrichment task.** Enrichments append IDs to a
   `string[]` field; pre-migration that field is `number[]`.
 
@@ -160,11 +160,15 @@ This is a pure shape refactor.
       > 10 skills total. 78 of the book's 97 principles are distilled across the 9 themed skills. The remaining 19 are pure career/mindset essays and aren't agent-actionable. Per-skill contributor attributions live in each skill's `principles.md`.
 
       With:
-      > 10 skills total. Trigger-based skills distilled from *97 Things* and the wider programming canon. *97 Things* is the seed; per-skill `principles.md` files list every source. Per-skill contributor attributions live in each skill's `principles.md`.
+      > 10 skills total. Trigger-based skills distilled from *97 Things*
+      > and adjacent canonical sources. Per-skill `principles.md` files
+      > list every source. Per-skill contributor attributions live in
+      > each skill's `principles.md`.
 
-      (Final wording for the broader "What this is" section is owned by
-      `1-reposition-framing.md`. This task only removes the
-      count-coupled sentence per the spec's README phrasing rule.)
+      v1.0 does not reframe the rest of the README's "What this is"
+      section. A larger reposition is deferred to v2.0; this migration
+      only removes the count-coupled sentence per the spec's README
+      phrasing rule.
 
 ### `CONTENT-LICENSE.md`
 
@@ -179,6 +183,21 @@ This is a pure shape refactor.
       > (`97/N`); citation of other sources is by author + book +
       > chapter as documented in each skill's `principles.md`.
 - [ ] Existing CC-BY-3.0 attribution and takedown commitment unchanged.
+
+### `using-97/SKILL.md` — silent-application policy
+
+Implements the agent-output policy recorded in
+`0a-citation-scheme-spec.md`. One Priority rule added; nothing else
+in the bootstrap touched.
+
+- [ ] In `skills/using-97/SKILL.md` Priority section, add one rule.
+      Suggested wording (place after the existing rules):
+      > **Apply principles silently.** Do not surface source author
+      > names, book titles, or principle IDs (e.g. `97/74`,
+      > `Fowler/LongMethod`) in user-facing responses. Citations exist
+      > for repo provenance, not for user-facing authority.
+- [ ] No other edits to `using-97/SKILL.md`. Trigger map, Overview,
+      Red Flags table, and any other Priority rules stay byte-identical.
 
 ### Changelog & verification
 

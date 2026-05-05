@@ -25,47 +25,62 @@ Haskell, Scala, Kotlin.
 
 ## Dependencies
 
-- `0a-citation-scheme-spec.md` in `done/` — Wlaschin/King IDs follow
-  the format defined in `CITATION-SCHEME.md`.
-- `0b-citation-scheme-migration.md` in `done/` — `principles.md` is
-  already in the new heading format.
-- `1-reposition-framing.md` in `done/`.
+- `0a-citation-scheme-spec.md` in `done/` — `Wlaschin/InvalidStatesUnrepresentable`,
+  `Wlaschin/SmartConstructors`, `Wlaschin/TypesForEffects` IDs follow
+  the format in `CITATION-SCHEME.md`.
+- `0b-citation-scheme-migration.md` in `done/`.
 
 ## Acceptance Criteria
 
-- [ ] Add **3–5** principles to `principles.md`:
-  - **Make invalid states unrepresentable** — encode constraints into
-    types (sum types / discriminated unions / branded primitives) so
-    illegal combinations cannot be constructed. Source: Wlaschin,
-    *Domain Modeling Made Functional*, ch. 6.
-  - **Parse, don't validate** — at the boundary, *parse* untrusted
-    input into a domain type that proves its shape; do not "validate
-    and pass through" a primitive. Source: Alexis King, "Parse, don't
-    validate" (2019).
-  - **Use the type system to track effects/state** — `Result<T, E>`,
-    `Option<T>`, `Maybe<T>`, branded types (`UserId` not `string`).
-    Cite Wlaschin (Result/Either) and the broader functional canon.
-  - **Smart constructors** — domain types are constructed only through
-    a function that enforces the invariant (`EmailAddress.parse(...)`
-    returns `Result<EmailAddress, InvalidEmail>`).
-  - **Total functions over partial functions** — a function that
-    accepts every value of its input type and returns every value of
-    its output type, no exceptions for "this case is impossible." If a
-    function is partial, its input type is wrong.
+- [ ] Add **3** principles to `principles.md`:
+  - **`Wlaschin/InvalidStatesUnrepresentable`** — encode constraints
+    into types (sum types / discriminated unions / branded primitives)
+    so illegal combinations cannot be constructed. This is the
+    canonical home for the principle; `api-and-interface-design`
+    cross-references it from its `King/ParseDontValidate` entry.
+    Source: Wlaschin, *Domain Modeling Made Functional*, ch. 6.
+  - **`Wlaschin/SmartConstructors`** — domain types are constructed
+    only through a function that enforces the invariant
+    (`EmailAddress.parse(...)` returns `Result<EmailAddress, InvalidEmail>`,
+    or in dynamic languages a parsed object or `None`). The raw
+    constructor is private; the smart constructor is the only entry
+    point. Pairs with `King/ParseDontValidate` (which fires at the
+    *boundary*); smart constructors are the *internal* counterpart.
+    Source: Wlaschin, ch. 6.
+  - **`Wlaschin/TypesForEffects`** — use the type system to track
+    effects and state: `Result<T, E>`, `Option<T>`, `Maybe<T>`,
+    branded types (`UserId` not `string`). In typed languages, this
+    is non-negotiable; in dynamic languages, the agent reaches for
+    typed wrappers, `dataclass(frozen=True)`, `pydantic`, `attrs`,
+    or `TypedDict` as available. Source: Wlaschin, *DMMF*; broader
+    functional canon.
+- [ ] **Parse, don't validate is NOT added in this task.** It lives
+      in `enrich-api-design-ousterhout-liskov-king.md` as
+      `King/ParseDontValidate`. This skill cross-references it.
+      Decision rule: parse-don't-validate fires when designing a
+      *boundary* (untrusted input crossing in); make-invalid-states-
+      unrepresentable fires when designing *internal* invariants.
+- [ ] **Total functions over partial functions is NOT added** as a
+      standalone principle. The `Wlaschin/TypesForEffects` entry
+      covers the practical implementation (`Result`/`Option`); a
+      separate "totality" principle would be abstract restating.
 - [ ] At least **2** principles surfaced in `SKILL.md` — either as
       checklist steps in the type-design flow or as Red Flags rows
-      ("string for an ID", "boolean flags carrying state").
+      ("string for an ID where a branded type would catch swaps",
+      "boolean flags carrying state", "constructor that does not
+      validate then private setters that do").
 - [ ] Add a **language guard** in `SKILL.md` Precedence or
       Non-triggers: these principles fire hardest in languages with
       sum types and pattern matching (TS, Rust, F#, Haskell, Scala,
       Kotlin); they degrade gracefully in dynamic languages (Python,
       JS, Ruby) where the agent should still prefer typed wrappers /
-      `dataclass(frozen=True)` / `pydantic` / `attrs`.
+      `dataclass(frozen=True)` / `pydantic` / `attrs`. **Do not be
+      type-system-evangelical:** in a small Python script, a `dict`
+      is the right answer.
 - [ ] `principles.md` cites Wlaschin (publisher: Pragmatic Bookshelf,
-      2018) and Alexis King's "Parse, don't validate" essay (2019,
-      lexi-lambda.github.io).
+      2018).
 - [ ] `scripts/lint-skills.mjs` `SKILL_RULES.domain-modeling`
-      `principles` count updated.
+      `principles` field updated to include the 3 new IDs.
 - [ ] `CHANGELOG.md` `### Changed` entry written.
 - [ ] `npm test` passes.
 
