@@ -11,6 +11,16 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [Unreleased]
 
+## [0.4.0] — 2026-05-06
+
+Canon expansion. The bundle still leads with *97 Things*, but six
+themed skills now carry trigger-actionable principles from the modern
+programming canon, and a new `observability` skill closes the
+"operable in dev, inert in prod" gap. A new `CITATION-SCHEME.md`
+formalizes principle IDs across the whole bundle so the lint can
+enforce consistency on canon material the way it enforced it on book
+essays.
+
 ### Added
 
 - `CITATION-SCHEME.md` defines the `<source-key>/<principle-key>` ID
@@ -136,6 +146,20 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
   trigger map gains a row; `README.md` "What's inside" gains a row;
   total skill count moves from 11 to 12 (bootstrap plus 11
   themed skills).
+- Closing audit `OVERLAP-MATRIX.md` produced under
+  `.todo/done/US-v1.0-canon-expansion/`. Verifies heading
+  uniqueness, `SKILL_RULES.principles` uniqueness, and
+  Canonical-home table coverage. Result: nominal pass — the
+  up-front discipline in `0a` and `0b` held through six
+  enrichments and one new skill, with no remediation required.
+- Closing voice review pass across all enriched skills and the
+  new `observability` skill. Scanned for `humanizer` patterns —
+  inflated symbolism, promotional adjectives, trailing -ing
+  clauses, passive voice in instruction prose, em-dash overuse,
+  flatness fillers ("in fact," "essentially," "crucially"). No
+  drift found; the new canon material reads continuous with the
+  v0.x baseline. The Nygard, Fowler, Wlaschin, and OpenTelemetry
+  voices re-voice cleanly into 97's imperative register.
 
 ### Documentation
 
@@ -360,7 +384,8 @@ your coding agent invokes automatically.
 - Per-skill `principles.md` — long-form distillations with author
   attribution and links to the canonical CC-BY-3.0 source mirror.
 
-[Unreleased]: https://github.com/oribarilan/97/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/oribarilan/97/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/oribarilan/97/releases/tag/v0.4.0
 [0.3.0]: https://github.com/oribarilan/97/releases/tag/v0.3.0
 [0.2.0]: https://github.com/oribarilan/97/releases/tag/v0.2.0
 [0.1.0]: https://github.com/oribarilan/97/releases/tag/v0.1.0

@@ -1,5 +1,15 @@
 # US-v1.0-canon-expansion
 
+**Status: SHIPPED as v0.4.0 on 2026-05-06.**
+
+The user authoring this run requested a minor version bump rather
+than v1.0 — the content gains are real but the v1.0 reposition (a
+"trigger-based distillation of the modern programming canon") is
+deferred to a future release where it can be debated on its own
+merits with the v0.4.0 content visible. The story name retains
+"v1.0" because that was the planning frame; the actual release tag
+is `v0.4.0`.
+
 ## Goal
 
 Enrich the existing 9 themed skills with **trigger-actionable
@@ -68,65 +78,49 @@ guardrail going silent on canon content.
 
 The story is complete when **all** of the following hold:
 
-- [ ] Every task file in this story is in `.todo/done/US-v1.0-canon-expansion/`
+- [x] Every task file in this story is in `.todo/done/US-v1.0-canon-expansion/`
       with all acceptance criteria checked.
-- [ ] `npm test` (lint + format-check + smoke) passes on a clean checkout.
-- [ ] `CITATION-SCHEME.md` exists at repo root and matches the ID
+- [x] `npm test` (lint + format-check + smoke) passes on a clean checkout.
+- [x] `CITATION-SCHEME.md` exists at repo root and matches the ID
       format used by every `principles.md` heading and every
       `SKILL_RULES.principles` entry. `scripts/lint-skills.mjs`
       enforces the new format.
-- [ ] `using-97/SKILL.md` Priority section includes the
+- [x] `using-97/SKILL.md` Priority section includes the
       silent-application rule from `0b-citation-scheme-migration.md`.
-- [ ] At least 6 existing skills have `principles.md` enriched with
+- [x] At least 6 existing skills have `principles.md` enriched with
       new canonical principles, surfaced in `SKILL.md` checklist or
-      Red Flags where they change agent behavior. **All 6 enrichment
-      tasks listed in this story are expected to succeed.** "At least
-      6" is wording slack only — there is no fallback to ship v1.0
-      with fewer enriched skills. If an enrichment task is genuinely
-      blocked, defer the story rather than ship a partial set.
-- [ ] One new themed skill exists: `observability`, structured in the
+      Red Flags where they change agent behavior. **Six enrichment
+      tasks shipped:** `before-you-refactor`, `domain-modeling`,
+      `build-deploy-and-tooling`, `error-and-correctness-traps`,
+      `api-and-interface-design`, `testing-discipline`.
+- [x] One new themed skill exists: `observability`, structured in the
       `error-and-correctness-traps` template, with the new trigger
       row added to `using-97/SKILL.md`.
-- [ ] Every enriched `principles.md` cites its non–*97 Things* sources
-      using IDs registered in `CITATION-SCHEME.md` (book + author +
-      chapter where relevant) so the attribution chain is traceable.
-- [ ] `CONTENT-LICENSE.md` includes the principle-ID paragraph from
-      `0b-citation-scheme-migration.md` and per-skill source-attribution
-      paragraphs from each enrichment task. CC-BY-3.0 attributions for
-      *97 Things* derivatives remain explicit. **No "What this is"
-      reframing in this story** — that is deferred to v2.0.
-- [ ] `README.md` "What's inside" table updates to include the new
-      `observability` skill row; total skill count reflects the new
-      addition (post-v0.3 baseline of 11 → 12). **No "What this is"
-      reframing.** Owned by `add-observability-skill.md`; `0b` no
-      longer touches `README.md`.
-- [ ] `scripts/lint-skills.mjs` `SKILL_RULES` entries reflect new
+- [x] Every enriched `principles.md` cites its non–*97 Things* sources
+      using IDs registered in `CITATION-SCHEME.md`.
+- [x] `CONTENT-LICENSE.md` includes the principle-ID paragraph and
+      per-skill source-attribution paragraphs.
+- [x] `README.md` "What's inside" table updated to include the new
+      `observability` skill row; total skill count moved from 11 to 12.
+- [x] `scripts/lint-skills.mjs` `SKILL_RULES` entries reflect new
       principle IDs and the new skill, all in
       `<source-key>/<principle-key>` string-ID format.
-- [ ] **Closing audits both passed:** the `99a-overlap-matrix-audit.md`
-      task identifies and resolves cross-skill duplications, and the
-      `99b-voice-review-pass.md` task confirms voice consistency
-      across all enriched skills.
-- [ ] `CHANGELOG.md` `[Unreleased]` reflects every user-visible
-      change, **consolidated into a coherent release narrative
-      shape** before the release author takes over. Twelve tasks each
-      append `### Added` / `### Changed` entries; the integrator
-      passes once at the end to merge near-duplicate entries, group
-      enrichments under a single bullet per skill where helpful, and
-      ensure the consolidated `[Unreleased]` reads as one release
-      story rather than a sequential task log.
-- [ ] **External-anchor compatibility documented in CHANGELOG.**
-      GitHub anchors derive from heading text, so renaming
-      `## #74 — …` to `## 97/74 — …` breaks every external link to
-      the old anchor (`#74-the-road-to-performance...`). The
-      `0b-citation-scheme-migration` `### Changed` entry calls this
-      out explicitly so external linkers know to update; the broken
-      anchors are accepted as the cost of the ID format change. No
-      HTML anchor-tag retention pass is in scope for v1.0.
-- [ ] Release process for the next version follows the manual procedure
-      in `CONTRIBUTE.md` — version bump in lockstep across the three
-      manifests, tagged commit, etc. (Out of scope for this story;
-      flagged for the release author.)
+- [x] **Closing audits both passed:** `99a-overlap-matrix-audit`
+      produced `OVERLAP-MATRIX.md` (nominal pass — heading uniqueness,
+      `SKILL_RULES` uniqueness, Canonical-home table coverage all
+      verified). `99b-voice-review-pass` confirmed voice consistency.
+- [x] `CHANGELOG.md` reflects every user-visible change, consolidated
+      under `[0.4.0] — 2026-05-06` with a release framing line.
+- [x] **External-anchor compatibility documented in CHANGELOG.**
+      The `## #NN — …` → `## 97/NN — …` rename breaks external
+      anchor links to old headings; called out in the changelog
+      Changed entry for the migration.
+- [x] **Release shipped as v0.4.0 (minor bump from 0.3.0)** rather
+      than v1.0. Per the run author's instruction, the v1.0
+      reposition is deferred. All three manifests bumped in lockstep
+      (`package.json`, `.claude-plugin/plugin.json`,
+      `.claude-plugin/marketplace.json`); release commit tagged
+      `v0.4.0`.
 
 ## Cross-Cutting Concerns
 
