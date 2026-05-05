@@ -82,8 +82,8 @@ those labels are the source's vocabulary for the concept.
 
 ## `observability` — predominantly original
 
-The `observability` skill is the project's second acknowledged
-"net-add canon" skill. The book has no direct coverage of structured
+The `observability` skill is the project's second skill drawn from
+sources outside *97 Things*. The book has no direct coverage of structured
 logging, distributed tracing, or metrics cardinality. Distillations
 draw on Google's *Site Reliability Engineering* (O'Reilly, 2016,
 ch. 6 — golden signals); the OpenTelemetry semantic conventions

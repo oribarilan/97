@@ -13,153 +13,117 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [0.4.0] — 2026-05-06
 
-Canon expansion. The bundle still leads with *97 Things*, but six
-themed skills now carry trigger-actionable principles from the modern
-programming canon, and a new `observability` skill closes the
-"operable in dev, inert in prod" gap. A new `CITATION-SCHEME.md`
-formalizes principle IDs across the whole bundle so the lint can
-enforce consistency on canon material the way it enforced it on book
+Six themed skills get new principles from sources outside *97 Things* — Fowler,
+Wlaschin, Nygard, 12-factor, *Continuous Delivery*, Ousterhout, Liskov, King,
+GOOS, Meszaros. A new `observability` skill closes the "operable in dev, inert
+in prod" gap. A new `CITATION-SCHEME.md` gives every principle a stable string
+ID so the lint can check the new entries the same way it checked the book
 essays.
 
 ### Added
 
+- New themed skill: `observability`. Agents reach for production
+  diagnosability by default in dev and forget it in prod — no tracing,
+  no metrics, unstructured logs. Four principles, structured in the
+  `error-and-correctness-traps` template: `OTel/StructuredLogs`
+  (key/value with stable event names; request id on every line),
+  `OTel/TraceContext` (W3C Trace Context across every cross-process
+  call), `SRE/GoldenSignals` (latency, traffic, errors, saturation as
+  a coverage check for service code), and `OE/CardinalityDiscipline`
+  (high-cardinality fields belong in logs and traces, not metric
+  labels — per-user metric labels are the canonical metrics-system
+  outage). Stakes calibration applied from creation. Skill count
+  moves from 11 to 12.
 - `CITATION-SCHEME.md` defines the `<source-key>/<principle-key>` ID
   format used by every `principles.md` heading and the structural
   lint. Replaces the implicit `#NN` convention with stable string IDs
-  and registers the source-key set v1.0 imports from. No content
-  changes in this entry; the migration follows.
+  and lists the source keys this release imports from.
 
 ### Changed
 
 - Migrated principle IDs from `#NN` to `<source-key>/<principle-key>`
-  format (e.g. `#74` → `97/74`) and trimmed per-principle metadata
-  blocks to the unified five-field shape (Author, Source, License,
-  Distillation, Agent application). Hygiene fields (Source reading
-  aid, Source used, Access date, Gaps) dropped — provenance is
-  recoverable from `git log`. Per-principle Birat Rai Medium
-  walkthrough URLs (previously in the dropped `Source (reading aid)`
-  field) are removed from `principles.md` files; the README credit to
-  Birat Rai's 97-day walkthrough remains in place. Distillation and
+  (e.g. `#74` → `97/74`) and trimmed per-principle metadata blocks
+  to five fields: Author, Source, License, Distillation, Agent
+  application. The dropped fields (Source reading aid, Source used,
+  Access date, Gaps) were contributor hygiene with no license
+  obligation behind them; provenance is recoverable from `git log`.
+  The Birat Rai Medium walkthrough URLs that lived in `Source
+  (reading aid)` are gone from `principles.md` files; the README
+  credit to Birat Rai's 97-day walkthrough stays. Distillation and
   agent-application paragraphs are byte-identical to pre-migration.
-  Lint regex and `SKILL_RULES.principles` updated. Per the ID-
-  uniqueness rule in `CITATION-SCHEME.md`, the v0.3 cross-listing of
-  `97/26` and `97/29` in `security-and-trust-boundaries` is resolved:
-  canonical home is `error-and-correctness-traps`; the security skill
-  keeps `SKILL.md` Red Flags surfacing with bare-ID cross-references.
-  External GitHub anchor links to the old `## #NN — …` headings
-  break; the renamed `## 97/NN — …` headings own the new anchor URLs.
-- `using-97/SKILL.md` Overview sentence updated from "nine themed
-  skills" to "ten themed skills" to match the v0.3 baseline (the
-  `security-and-trust-boundaries` addition was missed in that pass)
-  and reframes the source aperture to "*97 Things* and adjacent
+  The v0.3 cross-listing of `97/26` and `97/29` in
+  `security-and-trust-boundaries` is resolved per the new
+  ID-uniqueness rule: canonical home is
+  `error-and-correctness-traps`; the security skill cross-references
+  by ID. **External GitHub anchor links to old `## #NN — …` headings
+  break** — the renamed `## 97/NN — …` headings own the new anchor
+  URLs.
+- Stakes calibration added to the bundle. The production-shaped
+  skills (`error-and-correctness-traps`, `build-deploy-and-tooling`,
+  `security-and-trust-boundaries`, and the new `observability`) carry
+  an explicit calibration sentence in their Overview and explicit
+  exclusions in their Non-triggers for MVPs, prototypes, internal
+  dev tools, and one-off scripts. A new `using-97` Priority rule
+  tells the agent to match principle weight to stage and stakes.
+- `using-97/SKILL.md` Overview now reads "ten themed skills" (the
+  v0.3 baseline; the security skill was missed in that pass) and
+  reframes the source aperture to "*97 Things* and adjacent
   canonical sources." A new Priority rule tells the agent to apply
-  principles silently — no surfacing source author names, book titles,
-  or principle IDs in user-facing responses.
-- Added stakes calibration to the bundle. Production-shaped skills
-  (`error-and-correctness-traps`, `build-deploy-and-tooling`,
-  `security-and-trust-boundaries`) now carry an explicit calibration
-  sentence in their Overview and MVP / prototype / dev-tool /
-  one-off-script exclusions in their Non-triggers. A new `using-97`
-  Priority rule tells the agent to match principle weight to stage
-  and stakes: production guidance fires hardest when code is reaching
-  users; in MVPs and dev tools, prefer the simplest thing that works.
-- `before-you-refactor` now carries four Fowler smells from
-  *Refactoring* (2nd ed.) ch. 3: `Fowler/LongMethod` → Extract
-  Function, `Fowler/FeatureEnvy` → Move Method, `Fowler/ShotgunSurgery`
-  → Move Field / Inline Class, `Fowler/DataClumps` → Extract Class /
+  principles silently — no surfacing source author names, book
+  titles, or principle IDs in user-facing responses.
+- `before-you-refactor` adds four Fowler smells from *Refactoring*
+  (2nd ed.) ch. 3: `Fowler/LongMethod` → Extract Function,
+  `Fowler/FeatureEnvy` → Move Method, `Fowler/ShotgunSurgery` →
+  Move Field / Inline Class, `Fowler/DataClumps` → Extract Class /
   Introduce Parameter Object. Three of the four surface in the Red
-  Flags table; each pairs the diff-level signal with the canonical
-  response. `Fowler/PrimitiveObsession` is owned by `domain-modeling`
-  per the Canonical-home table and cross-referenced.
-- `domain-modeling` now carries the typed-domain canon: three
-  Wlaschin principles from *Domain Modeling Made Functional*
-  (`Wlaschin/InvalidStatesUnrepresentable`, `Wlaschin/SmartConstructors`,
-  `Wlaschin/TypesForEffects`) and `Fowler/PrimitiveObsession` as the
-  canonical home for the Primitive Obsession smell. New Red Flags
+  Flags table. `Fowler/PrimitiveObsession` is owned by
+  `domain-modeling` per the Canonical-home table; this skill
+  cross-references it.
+- `domain-modeling` adds three Wlaschin principles from *Domain
+  Modeling Made Functional* (`Wlaschin/InvalidStatesUnrepresentable`,
+  `Wlaschin/SmartConstructors`, `Wlaschin/TypesForEffects`) plus
+  `Fowler/PrimitiveObsession` as the canonical home. New Red Flags
   surface boolean flags carrying state, "valid only in some states"
-  nullable fields, string-typed identifiers that get swapped at call
-  sites, and "validate on input" without a typed wrapper. A new
-  language guard in Precedence keeps the typed-domain principles
-  from being dogmatic in dynamic languages — frozen dataclasses,
+  nullable fields, string-typed identifiers swapped at call sites,
+  and "validate on input" without a typed wrapper. A language guard
+  in Precedence keeps the typed-domain principles from being
+  dogmatic in dynamic languages — `dataclass(frozen=True)`,
   `pydantic`, `attrs`, and `TypedDict` are the dynamic-language
   reaches.
-- `build-deploy-and-tooling` now carries the cloud-native canon:
-  four 12-factor principles (`12F/III` config in environment,
-  `12F/V` strict build/release/run separation, `12F/VI` stateless
-  share-nothing processes, `12F/XI` logs as event streams) and
-  `CD/PipelineAsCode` from *Continuous Delivery* ch. 5. New Red
-  Flags surface hardcoded credentials in source, in-place patches
-  to running production, local-filesystem state on disposable
-  processes, in-process log files, and out-of-band pipeline edits.
-  `12F/XI` is the canonical home for log *transport*; the
-  `error-and-correctness-traps` skill keeps log *content limits*
-  (no secrets, no PII).
-- `error-and-correctness-traps` now carries Nygard's stability
-  patterns from *Release It!* ch. 5: `RI/Timeout` (always set a
-  timeout), `RI/CircuitBreaker` (open the breaker; fail fast
-  locally), `RI/Bulkhead` (isolate resource pools per downstream),
+- `build-deploy-and-tooling` adds four 12-factor principles
+  (`12F/III` config in environment, `12F/V` strict build/release/run
+  separation, `12F/VI` stateless share-nothing processes, `12F/XI`
+  logs as event streams) and `CD/PipelineAsCode` from *Continuous
+  Delivery* ch. 5. New Red Flags surface hardcoded credentials in
+  source, in-place patches to running production, local-filesystem
+  state on disposable processes, in-process log files, and
+  out-of-band pipeline edits. `12F/XI` is the canonical home for
+  log *transport*; `error-and-correctness-traps` keeps log *content
+  limits* (no secrets, no PII).
+- `error-and-correctness-traps` adds Nygard's stability patterns
+  from *Release It!* ch. 5: `RI/Timeout` (always set a timeout),
+  `RI/CircuitBreaker` (open the breaker; fail fast locally),
+  `RI/Bulkhead` (isolate resource pools per downstream),
   `RI/Backpressure` (bounded queues with explicit reject policy),
   `RI/FailFast` (fail before holding resources). A new
-  Production-resilience sub-section in the trap-checks list and six
-  new Red Flags surface the patterns at write time. Stakes
-  calibration applies — these checks fire hardest in production
-  code. `RI/CircuitBreaker` is the canonical home;
-  `observability` cross-references it for open-circuit visibility.
-- `api-and-interface-design` now carries Ousterhout, Liskov, and
-  King: `Ousterhout/DeepModules` (deep modules over shallow),
-  `Ousterhout/DefineErrorsOutOfExistence` (idempotent delete,
-  clamping substring, `Option<T>` lookup), `Liskov/LSP` (subtype
-  must be substitutable; prefer composition), and
+  Production-resilience sub-section and six new Red Flags surface
+  the patterns at write time. `RI/CircuitBreaker` is the canonical
+  home; `observability` cross-references it for open-circuit
+  visibility.
+- `api-and-interface-design` adds `Ousterhout/DeepModules` (deep
+  over shallow), `Ousterhout/DefineErrorsOutOfExistence` (idempotent
+  delete, clamping substring, `Option<T>` lookup), `Liskov/LSP`
+  (subtype must be substitutable; prefer composition), and
   `King/ParseDontValidate` (parse untrusted input at the boundary
-  into a domain type; this skill is the canonical home).
-  `Hyrum/Law` appears as a Red Flag reference reminding the agent
-  that any observable behavior of an API will be depended on.
-- `testing-discipline` now carries `GOOS/ListenToTestPain` (when a
-  test is hard to write, the design is wrong; reshape the
-  production code, do not mock harder) and four xUnit smells from
-  Meszaros: `xUnit/ObscureTest` (one behavior per test),
-  `xUnit/FragileTest` (assert on observable contract, not
-  internals), `xUnit/MysteryGuest` (no fixtures invisible to the
-  test reader), `xUnit/ConditionalTestLogic` (no branching that
-  changes what the test asserts). The boundary with
-  `superpowers/test-driven-development` is reaffirmed: TDD
-  decides *whether*, this skill decides *what makes the test
-  good*.
-
-### Added
-
-- New themed skill: `observability`. Closes the largest behavioral
-  gap in the bundle after v0.3 closed security: agents currently
-  produce code that is operable in dev and inert in production
-  (no tracing, no metrics, unstructured logs). Four principles:
-  `OTel/StructuredLogs` (structured key/value, stable event
-  names, request id on every line), `OTel/TraceContext` (W3C
-  Trace Context across every cross-process call; spans cover
-  meaningful units of work), `SRE/GoldenSignals` (latency,
-  traffic, errors, saturation as a coverage check for service
-  code), and `OE/CardinalityDiscipline` (high-cardinality fields
-  belong in logs and traces, not metric labels — the
-  highest-leverage single check, since per-user / per-request
-  metric labels are the canonical metrics-system outage).
-  Structured in the `error-and-correctness-traps` template;
-  applies the stakes-calibration pattern from creation. `using-97`
-  trigger map gains a row; `README.md` "What's inside" gains a row;
-  total skill count moves from 11 to 12 (bootstrap plus 11
-  themed skills).
-- Closing audit `OVERLAP-MATRIX.md` produced under
-  `.todo/done/US-v1.0-canon-expansion/`. Verifies heading
-  uniqueness, `SKILL_RULES.principles` uniqueness, and
-  Canonical-home table coverage. Result: nominal pass — the
-  up-front discipline in `0a` and `0b` held through six
-  enrichments and one new skill, with no remediation required.
-- Closing voice review pass across all enriched skills and the
-  new `observability` skill. Scanned for `humanizer` patterns —
-  inflated symbolism, promotional adjectives, trailing -ing
-  clauses, passive voice in instruction prose, em-dash overuse,
-  flatness fillers ("in fact," "essentially," "crucially"). No
-  drift found; the new canon material reads continuous with the
-  v0.x baseline. The Nygard, Fowler, Wlaschin, and OpenTelemetry
-  voices re-voice cleanly into 97's imperative register.
+  into a domain type; this skill is the canonical home for
+  parse-don't-validate). `Hyrum/Law` appears as a Red Flag reference.
+- `testing-discipline` adds `GOOS/ListenToTestPain` (when a test is
+  hard to write, the design is wrong; reshape the production code,
+  don't mock harder) and four xUnit smells from Meszaros:
+  `xUnit/ObscureTest`, `xUnit/FragileTest`, `xUnit/MysteryGuest`,
+  `xUnit/ConditionalTestLogic`. The boundary with
+  `superpowers/test-driven-development` is reaffirmed: TDD decides
+  *whether*; this skill decides *what makes the test good*.
 
 ### Documentation
 

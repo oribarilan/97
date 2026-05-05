@@ -330,7 +330,7 @@ larger tools when they are warranted.
 
 ---
 
-## Beyond *97 Things* — cloud-native canon
+## Beyond *97 Things* — 12-factor and *Continuous Delivery*
 
 The five principles below come from the Twelve-Factor App (Adam
 Wiggins / Heroku, 2011, 12factor.net) and *Continuous Delivery*

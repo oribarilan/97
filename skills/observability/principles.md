@@ -3,12 +3,12 @@
 Long-form per-principle distillations. The summary in `SKILL.md` is what
 the agent loads on trigger; this file is the on-demand reference.
 
-This skill is **predominantly original commentary** distilled from the
-modern observability canon: Google's *Site Reliability Engineering*
-(O'Reilly, 2016), the OpenTelemetry semantic conventions
-(opentelemetry.io), and *Observability Engineering* (Majors / Fong-Jones
-/ Miranda, O'Reilly, 2022). MIT plugin code license applies to the
-original text. No verbatim source reproduction.
+This skill is **predominantly original commentary** drawn from
+Google's *Site Reliability Engineering* (O'Reilly, 2016), the
+OpenTelemetry semantic conventions (opentelemetry.io), and
+*Observability Engineering* (Majors / Fong-Jones / Miranda, O'Reilly,
+2022). MIT plugin code license applies to the original text. No
+verbatim source reproduction.
 
 See `CONTENT-LICENSE.md` for the licensing posture.
 

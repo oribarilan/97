@@ -236,7 +236,7 @@ the regex anchors on `##\s+<id>` directly after the heading marker.
 Type `string[]`. One field per skill. Migration semantics: existing
 integer entries become `97/<int>` strings (e.g.
 `[6, 8, 24, 31, 74]` → `["97/6", "97/8", "97/24", "97/31", "97/74"]`).
-New canon principles append IDs to the same array. There is no
+New non-`97` principles append IDs to the same array. There is no
 parallel `canonPrinciples` field — the `97/*` and non-`97` IDs share
 the same list.
 

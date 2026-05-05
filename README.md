@@ -92,9 +92,9 @@ Works on Linux, macOS, and Windows. Node 18+.
 12 skills total (the bootstrap plus 11 themed skills). Per-skill contributor
 attributions live in each skill's `principles.md`. The
 `security-and-trust-boundaries` and `observability` skills are predominantly
-original commentary distilled from canon outside *97 Things*
+original commentary on sources outside *97 Things*
 (see `CONTENT-LICENSE.md`); the others distill book principles, with
-several enriched from adjacent canonical sources (Fowler, Wlaschin,
+several enriched from additional sources (Fowler, Wlaschin,
 Nygard, 12-factor, GOOS, Meszaros, Ousterhout, Liskov, King).
 
 ## Credits

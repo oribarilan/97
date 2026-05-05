@@ -149,7 +149,7 @@ stores when the access pattern genuinely doesn't fit.
 
 ---
 
-## Beyond *97 Things* — typed-domain canon
+## Beyond *97 Things* — typed-domain principles
 
 The four principles below come from the typed-domain school (Wlaschin's
 *Domain Modeling Made Functional*; Fowler's *Refactoring* smell catalog
@@ -227,7 +227,8 @@ non-negotiable — fallible code returns `Result`, partial code returns
 reaches for typed wrappers (`@dataclass(frozen=True)`, `pydantic`,
 `attrs`, `TypedDict`, NewType) where they help readability and
 catch the next bug; in a small script, a `dict` is fine. Background:
-*Domain Modeling Made Functional* and the broader functional canon.
+*Domain Modeling Made Functional* and the broader functional-programming
+literature.
 
 **Agent application.** Surfaces in `SKILL.md` Red Flags as
 "string-typed identifiers that get swapped at call sites" and as a

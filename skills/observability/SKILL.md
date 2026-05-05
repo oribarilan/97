@@ -7,7 +7,7 @@ description: Use when adding a request handler, RPC, or background job that will
 
 ## Overview
 
-Code that runs fine in dev and goes inert in production is the dominant operational failure mode for modern services. **When you add code that will run for users, you also add the diagnosability of that code: structured logs with the right key fields, trace context across process boundaries, metrics with cardinality the system can hold, and signals an operator can use without your help.** This skill is a per-domain trap-scan modeled on `error-and-correctness-traps`. Sources are the modern observability canon: Google's *Site Reliability Engineering*, the OpenTelemetry semantic conventions, and *Observability Engineering* (Majors et al.). See `principles.md` for citations and the `CONTENT-LICENSE.md` posture (predominantly original commentary).
+Code that runs fine in dev and goes inert in production is the dominant operational failure mode for modern services. **When you add code that will run for users, you also add the diagnosability of that code: structured logs with the right key fields, trace context across process boundaries, metrics with cardinality the system can hold, and signals an operator can use without your help.** This skill is a per-domain trap-scan modeled on `error-and-correctness-traps`. Sources are Google's *Site Reliability Engineering*, the OpenTelemetry semantic conventions, and *Observability Engineering* (Majors et al.). See `principles.md` for citations and the `CONTENT-LICENSE.md` posture (predominantly original commentary).
 
 This is a **rigid** skill. Jump to the sub-section that matches what you're writing and run that sub-section's checks.
 

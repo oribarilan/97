@@ -254,7 +254,7 @@ out the headline rule from 97/55.
 ## Beyond *97 Things* — Ousterhout, Liskov, King
 
 The four principles below sharpen the headline rule (`97/55`) with
-the modern API-design canon: Ousterhout on module depth and
+three additional sources: Ousterhout on module depth and
 designing errors out of existence; Liskov on substitutability; and
 Alexis King on parsing untrusted input at the boundary. This skill
 is the canonical home for `King/ParseDontValidate`;
