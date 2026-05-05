@@ -60,12 +60,40 @@ const SKILL_RULES = {
   'testing-discipline': {
     maxLines: 250,
     sections: ['Overview', 'When to invoke', 'Red Flags'],
-    principles: ['97/25', '97/60', '97/80', '97/81', '97/82', '97/83', '97/92', '97/95'],
+    principles: [
+      '97/25',
+      '97/60',
+      '97/80',
+      '97/81',
+      '97/82',
+      '97/83',
+      '97/92',
+      '97/95',
+      'GOOS/ListenToTestPain',
+      'xUnit/ObscureTest',
+      'xUnit/FragileTest',
+      'xUnit/MysteryGuest',
+      'xUnit/ConditionalTestLogic',
+    ],
   },
   'api-and-interface-design': {
     maxLines: 250,
     sections: ['Overview', 'When to invoke', 'Red Flags'],
-    principles: ['97/7', '97/19', '97/32', '97/35', '97/55', '97/59', '97/65', '97/66', '97/84'],
+    principles: [
+      '97/7',
+      '97/19',
+      '97/32',
+      '97/35',
+      '97/55',
+      '97/59',
+      '97/65',
+      '97/66',
+      '97/84',
+      'Ousterhout/DeepModules',
+      'Ousterhout/DefineErrorsOutOfExistence',
+      'Liskov/LSP',
+      'King/ParseDontValidate',
+    ],
   },
   'pre-commit-self-review': {
     maxLines: 250,
@@ -75,7 +103,22 @@ const SKILL_RULES = {
   'error-and-correctness-traps': {
     maxLines: 250,
     sections: ['Overview', 'When to invoke', 'Red Flags'],
-    principles: ['97/21', '97/26', '97/29', '97/33', '97/41', '97/46', '97/57', '97/73', '97/89'],
+    principles: [
+      '97/21',
+      '97/26',
+      '97/29',
+      '97/33',
+      '97/41',
+      '97/46',
+      '97/57',
+      '97/73',
+      '97/89',
+      'RI/Timeout',
+      'RI/CircuitBreaker',
+      'RI/Bulkhead',
+      'RI/Backpressure',
+      'RI/FailFast',
+    ],
   },
   'build-deploy-and-tooling': {
     maxLines: 250,
@@ -126,6 +169,16 @@ const SKILL_RULES = {
     // canonically by error-and-correctness-traps. This skill cross-references
     // them in SKILL.md but does not own them.
     principles: [],
+  },
+  observability: {
+    maxLines: 250,
+    sections: ['Overview', 'When to invoke', 'Red Flags'],
+    principles: [
+      'OTel/StructuredLogs',
+      'OTel/TraceContext',
+      'SRE/GoldenSignals',
+      'OE/CardinalityDiscipline',
+    ],
   },
 };
 

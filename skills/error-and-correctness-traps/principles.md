@@ -300,3 +300,139 @@ structure choice and loop-invariant hoisting) and two Red Flags. The
 skill carries van Winkel's two stories — pick the structure for the
 access pattern, and never recompute invariants in a hot loop — into the
 agent's per-domain checks.
+
+---
+
+## Beyond *97 Things* — Release It! stability patterns
+
+The five principles below come from Michael Nygard's *Release It!*
+(2nd ed., Pragmatic Bookshelf, 2018), ch. 5 ("Stability Patterns").
+They sit naturally in this skill because the trigger is the same —
+*the call can fail* — but Nygard's lens is the one that fires hardest
+when a remote call will run under load in production. Stakes
+calibration in the skill's Overview and Non-triggers applies: in
+MVPs, prototypes, internal dev tools, and one-off scripts, prefer
+the simplest thing that works.
+
+`RI/CircuitBreaker` is the canonical home for the circuit-breaker
+pattern; `observability` cross-references it because open-circuit
+events should be observable.
+
+---
+
+## RI/Timeout — Always Set a Timeout
+
+**Author:** Michael Nygard
+**Source:** Release It!, 2nd ed., Pragmatic Bookshelf 2018, ch. 5
+**License:** fair-use commentary
+
+**Distillation.** Library defaults for HTTP / DB / RPC clients are
+frequently `None`, "infinity", or "minutes-to-hours" — wrong defaults
+for any production caller. A request with no timeout becomes a
+thread, connection, and queue slot held forever once the downstream
+hangs; saturate enough of those and the local service stops accepting
+work. Set an explicit per-call timeout based on the downstream's
+realistic latency budget plus a margin; cap retries inside that
+budget. The timeout is not a polite suggestion — it is a contract
+with the caller about how long they will wait before getting an
+error.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as "HTTP
+call with no explicit timeout" and reinforces checklist step 9 (the
+retry rule). Pairs with `RI/CircuitBreaker` — circuit breakers need
+timeouts to recognize "this is taking too long" before opening.
+
+---
+
+## RI/CircuitBreaker — Circuit Breaker
+
+**Author:** Michael Nygard
+**Source:** Release It!, 2nd ed., Pragmatic Bookshelf 2018, ch. 5
+**License:** fair-use commentary
+
+**Distillation.** When a downstream is failing, calling it harder
+makes both services worse. A circuit breaker tracks recent failures
+per downstream; once failures cross a threshold, it *opens* and
+short-circuits subsequent calls (instant failure with a clear error)
+for a window. After the window, it allows a probe call; success
+closes the circuit. The pattern decouples the caller's health from
+the callee's by giving the caller a fast local "no" instead of a
+long blocking failure. Distinct from retry/backoff (which is the
+"how long to wait between attempts" axis); the circuit breaker is
+"should we attempt at all right now."
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as "retrying
+a failing downstream in a tight loop" / "no breaker on a critical
+external call." Cross-referenced from `observability` — open-circuit
+events should be observable so operators know when a downstream is
+out.
+
+---
+
+## RI/Bulkhead — Bulkhead
+
+**Author:** Michael Nygard
+**Source:** Release It!, 2nd ed., Pragmatic Bookshelf 2018, ch. 5
+**License:** fair-use commentary
+
+**Distillation.** Isolate resources per downstream so a single failing
+dependency cannot exhaust capacity for the healthy ones. Concretely:
+separate thread pools, connection pools, queues, or even processes
+for different downstreams; a 50-slot pool for the slow third-party
+API does not share with the 200-slot pool for the local DB. When the
+third-party stalls, the third-party pool fills and rejects further
+calls; the DB pool keeps serving requests that don't depend on the
+third-party. Without bulkheads, one stalled downstream consumes every
+free thread and the whole service goes dark.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as "all
+downstreams share one connection / thread pool" / "one slow third
+party blocks the whole service." Pairs with `RI/Timeout` and
+`RI/CircuitBreaker` — bulkheads contain the blast radius the other
+two patterns reduce.
+
+---
+
+## RI/Backpressure — Backpressure / Bounded Queues
+
+**Author:** Michael Nygard
+**Source:** Release It!, 2nd ed., Pragmatic Bookshelf 2018, ch. 5
+**License:** fair-use commentary
+
+**Distillation.** An unbounded queue is an OOM in slow motion. When
+producers outrun consumers, every additional item buffers in memory
+forever; the system reports healthy throughput right up to the
+moment it falls over. Use bounded queues with an explicit reject
+policy (drop oldest, drop newest, reject with backpressure to the
+caller). Backpressure is the only way the system tells callers
+"slow down" instead of accumulating until it dies. Concrete trap:
+a metrics-collection background queue with no upper bound that
+accumulates entries during a brief downstream outage and never
+drains.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as
+"unbounded queue / channel / list grows on retry." Pairs with
+`RI/Timeout` — bounded waits at every layer.
+
+---
+
+## RI/FailFast — Fail Fast
+
+**Author:** Michael Nygard
+**Source:** Release It!, 2nd ed., Pragmatic Bookshelf 2018, ch. 5
+**License:** fair-use commentary
+
+**Distillation.** When a request cannot succeed, fail it now; do not
+hold resources hoping the situation improves. Concrete patterns:
+validate inputs at the entry point (return 400 before reaching the
+DB); check feature flags and dependency health before doing
+expensive setup; if a circuit is open, return immediately with the
+appropriate error rather than queuing. Late failure burns the
+resources the request held — DB connections, locks, downstream
+quota — and amplifies cascading collapse. Fast failure is an act
+of mercy toward the rest of the system.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as "request
+validation happens after expensive work" and "no early-return on a
+known-impossible request." Pairs with `RI/Timeout` (don't hang) and
+`RI/CircuitBreaker` (when open, fail fast locally).

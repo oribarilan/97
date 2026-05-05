@@ -85,6 +85,11 @@ These thoughts mean STOP — restart the decisions:
 | "Callers can `if` on the type tag — it's only three cases." | Three cases become thirty, scattered across every caller. Move the choice inside the type with polymorphism. (97/59) |
 | "If they pass bad input, they'll see a clear error message." | Errors are a sign of broken communication, not a feature. Eliminate the error condition or accept the common formats. (97/66) |
 | "It's an internal API — the rules don't apply." | Internal today is exposed tomorrow, and the wrong-use bugs accumulate either way. The rules apply. (97/55) |
+| "I'll add another thin method that just forwards to an internal." | Shallow modules pay no abstraction tax. Make the module deep — fewer, more-powerful methods that hide implementation, not more thin pass-throughs. (`Ousterhout/DeepModules`) |
+| "I'll throw `NotFound` if the file doesn't exist on `delete`." | Define the error out of existence: idempotent delete, clamping substring, `Option<T>` lookup. Fewer error paths the caller has to remember. (`Ousterhout/DefineErrorsOutOfExistence`) |
+| "I'll subclass and override the method to throw — callers shouldn't use it." | Subtype must be substitutable. If the override breaks caller assumptions, the hierarchy is wrong. Prefer composition. (`Liskov/LSP`) |
+| "I'll validate the input and pass the raw `string` downstream." | Parse, don't validate. Return a parsed domain type from the boundary; downstream code receives the proven shape, not the raw primitive. (`King/ParseDontValidate`) |
+| "Callers will only use the documented behavior — internals can change freely." | Hyrum's Law: any observable behavior will be depended on by someone. Reason about the new API as if its current observable behavior were private. (`Hyrum/Law`) |
 
 ## What "done" looks like
 
@@ -115,5 +120,9 @@ If any box is unchecked, you are not done designing — you are mid-design. Eith
 | 97/65 | Prefer Domain-Specific Types to Primitive Types | Einar Landre |
 | 97/66 | Prevent Errors | Giles Colborne |
 | 97/84 | Thinking in States | Niclas Nilsson |
+| `Ousterhout/DeepModules` | Deep Modules | John Ousterhout |
+| `Ousterhout/DefineErrorsOutOfExistence` | Define Errors Out of Existence | John Ousterhout |
+| `Liskov/LSP` | Liskov Substitution Principle | Barbara Liskov |
+| `King/ParseDontValidate` | Parse, Don't Validate | Alexis King |
 
 See `principles.md` for the long-form distillations, citations, and source links.

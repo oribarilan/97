@@ -248,3 +248,134 @@ reject illegal operations by type or guard") and the Red Flag about
 implicit ordering of method calls. Pairs with 97/65 (types for values) and
 97/59 (polymorphism for dispatch) to form the type-system tactics that cash
 out the headline rule from 97/55.
+
+---
+
+## Beyond *97 Things* — Ousterhout, Liskov, King
+
+The four principles below sharpen the headline rule (`97/55`) with
+the modern API-design canon: Ousterhout on module depth and
+designing errors out of existence; Liskov on substitutability; and
+Alexis King on parsing untrusted input at the boundary. This skill
+is the canonical home for `King/ParseDontValidate`;
+`domain-modeling` cross-references it for the related
+make-invalid-states-unrepresentable principle.
+
+Hyrum's Law is registered as a Red Flag reference (`Hyrum/Law`) but
+not as a principle row — see the file-level note below the four
+principles.
+
+---
+
+## Ousterhout/DeepModules — Deep Modules
+
+**Author:** John Ousterhout
+**Source:** A Philosophy of Software Design, 2nd ed., Yaknyam Press 2021, ch. 4
+**License:** fair-use commentary
+
+**Distillation.** A *deep* module hides a lot of implementation
+behind a small interface; a *shallow* module exposes most of its
+implementation through its interface and gives the caller little
+benefit. The cost of an interface is the complexity it forces every
+caller to learn; the value is the complexity it hides. When designing
+an interface, prefer fewer / more-powerful methods that hide
+complexity over many / thin methods that expose it. A class with
+twelve public methods that each forward to one private method is
+shallow — the abstraction did not pay for itself.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as "interface
+with twelve methods that mostly forward to internals" and as a
+checklist step at design time. Sharpens the headline rule (`97/55`):
+deep modules make wrong code hard to write because the surface area
+is small.
+
+---
+
+## Ousterhout/DefineErrorsOutOfExistence — Define Errors Out of Existence
+
+**Author:** John Ousterhout
+**Source:** A Philosophy of Software Design, 2nd ed., Yaknyam Press 2021, ch. 10
+**License:** fair-use commentary
+
+**Distillation.** Design APIs so error conditions cannot arise rather
+than building handlers for them. Concrete patterns: a
+`substring(start, end)` that clamps out-of-range indices instead of
+throwing; a `delete(file)` that is idempotent so "file does not
+exist" is not an error; a `lookup` that returns `Option`/`Maybe`
+rather than throwing `NotFound`. The principle is not "swallow
+errors"; it is "redefine the operation so the case the caller would
+have to handle is no longer exceptional." Fewer error paths to test;
+fewer caller-side `if (err != nil)` branches; fewer ways for the
+caller to forget to handle the case.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as "an API
+that throws on a case the caller commonly faces" and pairs with
+`97/66` (Prevent Errors). Pairs with `King/ParseDontValidate` —
+parsing turns "is this a valid email?" from a runtime check into a
+type the caller cannot construct from invalid input.
+
+---
+
+## Liskov/LSP — Liskov Substitution Principle
+
+**Author:** Barbara Liskov
+**Source:** "Data Abstraction and Hierarchy", CACM 1987
+**License:** fair-use commentary
+
+**Distillation.** A subtype must be substitutable for its supertype
+without breaking caller assumptions. If overriding a method
+strengthens preconditions ("only accepts non-empty input now"),
+weakens postconditions ("now returns `null` sometimes"), or throws
+on inputs the parent accepts, the hierarchy is wrong. Concrete
+trap: `Square extends Rectangle` and overrides `setWidth` to also
+set height — caller code written against `Rectangle` breaks. The
+principle fires when designing inheritance hierarchies, not as a
+general-purpose API rule.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as "subclass
+overriding to throw `NotImplementedError`" and as a check before
+introducing inheritance. The pragmatic version: prefer composition
+over inheritance unless the substitutability test passes for every
+caller of the supertype.
+
+---
+
+## King/ParseDontValidate — Parse, Don't Validate
+
+**Author:** Alexis King
+**Source:** https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/
+**License:** fair-use commentary
+
+**Distillation.** At a public API boundary, parse untrusted input
+into a domain type that proves its shape; do not "validate and pass
+through" a primitive. The parser returns `Result<T, E>` (or in
+dynamic languages: a parsed domain object or a structured error,
+with no path that returns the raw input). After the boundary, the
+rest of the code works in domain types — `EmailAddress`, not
+`string`; `NonEmpty<User>`, not `List<User>` plus a runtime check.
+The contract is encoded once at the parser; downstream code stops
+re-checking. **This skill is the canonical home for parse-don't-
+validate**; `domain-modeling` cross-references it for the internal-
+invariant counterpart `Wlaschin/InvalidStatesUnrepresentable`, and
+`security-and-trust-boundaries` cross-references it for the
+trust-boundary case.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as "boundary
+handler returns the raw input type with `validated = true` flag"
+and as a checklist step. Pairs with `Ousterhout/DefineErrorsOutOfExistence`
+— a parsed type defines "invalid input" out of existence after the
+parser.
+
+---
+
+## Hyrum's Law — failure-mode reference (no principle row)
+
+`Hyrum/Law` (https://www.hyrumslaw.com/) is the failure mode for any
+long-lived public API: **any observable behavior of an API will be
+depended on by someone**. The implication is that the de facto
+contract is broader than the documented one. We do not give Hyrum's
+Law a principle row of its own — it is the reason the principles
+above matter rather than a separate principle. It surfaces in
+`SKILL.md` Red Flags as a single row reminding the agent to reason
+about the new API as if its current observable behavior were
+private.

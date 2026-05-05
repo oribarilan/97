@@ -236,3 +236,133 @@ next person who has to read it") and two Red Flags ("I know what this test
 means" and "`test17` is a fine name"). Also feeds the "done" checklist's
 requirement that the test fail for the right reason on a deliberate bug
 injection.
+
+---
+
+## Beyond *97 Things* — GOOS test-listening + xUnit smells
+
+The five principles below come from *Growing Object-Oriented Software,
+Guided by Tests* (Freeman & Pryce, Addison-Wesley, 2009) and *xUnit
+Test Patterns* (Meszaros, Addison-Wesley, 2007). GOOS supplies the
+test-as-design-pressure lens — when a test is hard to write, the
+design is wrong; reshape the production code rather than mocking
+harder. Meszaros supplies the named smell catalog the agent can
+recognize from the test code itself.
+
+Boundary with `superpowers/test-driven-development`: TDD decides
+*whether and when* to write a test; this skill decides *what makes
+the test good*. The principles below sit on the second axis.
+
+---
+
+## GOOS/ListenToTestPain — Listen to Test Pain
+
+**Author:** Steve Freeman & Nat Pryce
+**Source:** Growing Object-Oriented Software, Guided by Tests, Addison-Wesley 2009, ch. 20
+**License:** fair-use commentary
+
+**Distillation.** When a test is hard to write, the design is wrong.
+Operationalized check: *if the test setup is longer than the test
+body, or mocking the collaborators is harder than mocking the system
+under test, stop — reshape the production code instead of mocking
+harder.* Concrete signals: a constructor that takes seven
+collaborators (split the type); a method that depends on a deep
+graph the test must hand-build (move the dependency or pass the
+already-built thing in); a test that has to set a private field via
+reflection (the public API is missing a seam). Test pain is design
+pressure surfacing through the only channel that makes it concrete.
+The fix is on the production side, not the test side.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as "test
+setup is longer than the test body" — the highest-leverage single
+addition in this skill. Sharpens the boundary with
+`superpowers/test-driven-development`: TDD's red/green/refactor
+loop is where this signal fires.
+
+---
+
+## xUnit/ObscureTest — Obscure Test
+
+**Author:** Gerard Meszaros
+**Source:** xUnit Test Patterns, Addison-Wesley 2007, ch. 16
+**License:** fair-use commentary
+
+**Distillation.** Too much in one test; the reader cannot tell what
+behavior is being asserted. The test mixes setup, several actions,
+and several assertions across unrelated properties; failure
+messages identify the test name but not which property failed. The
+fix is one of: extract setup into a named fixture or factory
+function; split the test into multiple tests, one per behavior; add
+named intermediate variables that read like the scenario. The test
+should read top-to-bottom as Arrange / Act / Assert, with the Act
+section being one line if possible.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as "the
+test asserts on five unrelated properties" and as a check during
+the test-quality checklist.
+
+---
+
+## xUnit/FragileTest — Fragile Test
+
+**Author:** Gerard Meszaros
+**Source:** xUnit Test Patterns, Addison-Wesley 2007, ch. 18
+**License:** fair-use commentary
+
+**Distillation.** A test breaks on changes unrelated to its intent —
+a refactor that preserves behavior, a fixture rebuild that doesn't
+affect the assertion, a downstream dependency upgrade. Common causes:
+the test asserts on internals (private fields, exact log strings,
+exact call counts to mocks) instead of on observable behavior;
+over-specified mock interactions (`verify(repo).save(any()) was
+called exactly 3 times`) where the contract is "the data was
+saved." The fix is to assert on what the caller cares about, not on
+what the implementation does.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as
+"over-specified mock interactions" and "test asserts on private
+internals." Sharpens `97/80` (assert required, not incidental).
+
+---
+
+## xUnit/MysteryGuest — Mystery Guest
+
+**Author:** Gerard Meszaros
+**Source:** xUnit Test Patterns, Addison-Wesley 2007, ch. 16
+**License:** fair-use commentary
+
+**Distillation.** The test depends on data not visible in the test —
+a file at a magic path, a shared DB row, an env var, a global state
+left over from another test. Reading the test alone, you cannot tell
+what input is being exercised; the failure depends on whatever that
+external resource happens to be when the test runs. The fix is
+in-test fixtures or a named factory function: every input the test
+depends on is constructed inside the test or returned by a function
+named for what it returns (`a_user_with_no_orders()`).
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as "test
+reads from a file at a magic path" and as a check on shared
+fixtures. Pairs with `97/95` (write tests for people) — the
+reader-of-the-test-six-months-from-now case.
+
+---
+
+## xUnit/ConditionalTestLogic — Conditional Test Logic
+
+**Author:** Gerard Meszaros
+**Source:** xUnit Test Patterns, Addison-Wesley 2007, ch. 18
+**License:** fair-use commentary
+
+**Distillation.** No branching that changes *what the test
+asserts*. Operationalized: an `if` / `for` / `switch` inside a test
+body that affects which assertion runs is a smell — split into
+multiple tests or use named parameterized cases. Loops or
+conditionals over fixed test *data* (table-driven tests, parameter
+matrices) are fine; the rule is about branching over assertion
+*logic*. A test that asserts different things depending on the
+return value is two tests fighting for one name.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as "`if`
+inside the test body affects what is asserted." Pairs with
+`xUnit/ObscureTest` — the conditional is often the symptom of
+several behaviors crammed into one test.

@@ -35,7 +35,7 @@ If you're not sure whether a change counts as "writing a test," **invoke anyway*
 
 ## Precedence
 
-- `superpowers/test-driven-development` decides *whether and when* to write a test (the process: red, green, refactor; test first; one failing test at a time). This skill decides *what makes the test itself good* (the quality: what to assert, how to name it, what data to use).
+- `superpowers/test-driven-development` decides *whether and when* to write a test (the process: red, green, refactor; test first; one failing test at a time). This skill decides *what makes the test itself good* (the quality: what to assert, how to name it, what data to use). When mocking gets harder than the production code, fall back to `GOOS/ListenToTestPain` — the design is wrong, not the test.
 - `before-you-refactor` precedes this skill when the trigger is "I want to restructure existing test code" rather than "I'm writing a new test."
 - `domain-modeling` governs the names of the *types under test*; this skill governs the names of the tests.
 
@@ -66,6 +66,10 @@ These thoughts mean STOP — restart the checklist:
 | "I know what this test means — I just wrote it." | You will not, in six months. Tests are read more than they are written. Name the scenario, structure as context/act/assert, hide scaffolding. (97/95) |
 | "The soak test takes 8 hours — we'll skip it." | Schedule it overnight. The build server is idle from 6pm to 8am and all weekend; that is free coverage you are throwing away. (97/82) |
 | "`test17` is a fine name — the body explains it." | Test names are scanned to verify coverage and to read failure reports. Encode the scenario and the entry point in the name. (97/95) |
+| "The test setup is fifty lines, then a one-line assert — but it works." | Test pain is design pressure. If the setup dwarfs the body, reshape the production code. Do not mock harder. (`GOOS/ListenToTestPain`) |
+| "I'll assert that `repo.save` was called exactly three times." | Over-specifying mock interactions makes the test red on innocent refactors. Assert on the observable contract, not the call shape. (`xUnit/FragileTest`) |
+| "The test reads from `/tmp/fixtures/users.json` set up in `conftest.py`." | Mystery Guest. The test cannot be read in isolation. Build the fixture in the test or in a function named for what it returns. (`xUnit/MysteryGuest`) |
+| "I'll branch on the return value and assert different things in each branch." | One test, two scenarios fighting for one name. Split into two tests, or use named parameterized cases. (`xUnit/ConditionalTestLogic`) |
 
 ## What "done" looks like
 
@@ -94,5 +98,10 @@ If any box is unchecked, the test is not done — it is mid-written. Either fini
 | 97/83 | Testing Is the Engineering Rigor of Software Development | Neal Ford |
 | 97/92 | When Programmers and Testers Collaborate | Janet Gregory |
 | 97/95 | Write Tests for People | Gerard Meszaros |
+| `GOOS/ListenToTestPain` | Listen to Test Pain | Steve Freeman & Nat Pryce |
+| `xUnit/ObscureTest` | Obscure Test | Gerard Meszaros |
+| `xUnit/FragileTest` | Fragile Test | Gerard Meszaros |
+| `xUnit/MysteryGuest` | Mystery Guest | Gerard Meszaros |
+| `xUnit/ConditionalTestLogic` | Conditional Test Logic | Gerard Meszaros |
 
 See `principles.md` for the long-form distillations, citations, and source links.

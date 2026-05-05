@@ -88,6 +88,16 @@ A singleton is a global variable wearing a class.
 13. **Resist the singleton.** Most singletons encode a single-instance assumption that turns out to be premature, broadcast across the design as hidden coupling. They wreck unit-test independence (you can't substitute a mock), introduce subtle multi-threading bugs (naive locking slow, double-checked locking famously broken in several languages), and have no defined cleanup order at shutdown. Concrete trap: a `Logger.getInstance()` called from every layer means tests can't intercept output, can't run in parallel, and inherit log state from previous tests.
 14. **If you genuinely need one instance, hide it behind an interface.** Restrict the global access to a few well-defined construction sites; everywhere else, accept the dependency through a parameter typed by interface. Callers don't know whether a singleton or a fresh object satisfies the interface — and tests can substitute either. *(Saariste, 97/73.)*
 
+### Production resilience (`RI/*`)
+
+When the call will run under load against a downstream that can fail, the per-call hardening *is* the first write. Calibration applies — these checks fire hardest in production code.
+
+15. **Set an explicit timeout on every remote call.** Library defaults are wrong (`None`, "infinity", "many minutes"). Pick a per-call budget based on the downstream's realistic latency plus margin, and cap retries inside that budget. *(`RI/Timeout`.)*
+16. **Wrap critical downstreams in a circuit breaker.** Tracked per-downstream failures; once threshold crossed, fail fast locally for a window; probe; close on success. Distinct from retry/backoff: this is "should we attempt at all right now." *(`RI/CircuitBreaker`.)*
+17. **Bulkhead resource pools per downstream.** Separate thread pools, connection pools, or queues per external dependency so one stalled downstream cannot exhaust capacity for healthy ones. *(`RI/Bulkhead`.)*
+18. **Bounded queues only.** Unbounded queues are OOMs in slow motion. Pick a cap and an explicit reject policy (drop oldest, drop newest, backpressure to caller). *(`RI/Backpressure`.)*
+19. **Fail fast when the request cannot succeed.** Validate at the entry point; check circuit-breaker state and feature flags before expensive setup; return a clear error before holding DB connections, locks, or downstream quota. *(`RI/FailFast`.)*
+
 ## Red Flags
 
 These thoughts mean STOP — apply the domain check before committing:
@@ -105,6 +115,11 @@ These thoughts mean STOP — apply the domain check before committing:
 | "It's just `for (i = 0; i < strlen(s); ++i)` — looks normal." | `strlen` runs every iteration; an O(n) loop becomes O(n²). Hoist invariants out of hot loops. (97/89) |
 | "Linked list is fine, n won't get that big." | "Won't get that big" is how production timeouts are born. Pick the structure by access pattern and confirm with measurement. (97/89, 97/46) |
 | "Singleton — there'll only ever be one." | Single-instance is an assumption that ages badly, and the global access point destroys testability. Hide behind an interface, inject the dependency. (97/73) |
+| "I'll let the HTTP client default the timeout — it's fine." | Defaults are `None` or hours. Held connections, threads, and queue slots add up under load. Set an explicit per-call timeout. (`RI/Timeout`) |
+| "The downstream's flaky — I'll just retry." | Retry without a circuit breaker is "kick a downed service harder." Wrap critical downstreams in a breaker; fail fast locally when open. (`RI/CircuitBreaker`) |
+| "One pool for all downstreams keeps the code simpler." | One slow third party fills the pool and the whole service stops. Bulkhead per downstream; isolate failure domains. (`RI/Bulkhead`) |
+| "I'll buffer events in an in-memory queue — it'll catch up." | Unbounded queues are OOMs in slow motion. Pick a cap and a reject policy; let backpressure inform callers. (`RI/Backpressure`) |
+| "I'll validate after the DB lookup — saves a branch." | Late failure holds DB connections, locks, and quota for a request that can't succeed. Validate at the entry; fail fast. (`RI/FailFast`) |
 
 ## What "done" looks like
 
@@ -115,6 +130,7 @@ You are done when **all** of the following are true for every trap domain your c
 - [ ] **Concurrency & IPC:** shared mutable state is justified or replaced by message passing; remote calls per user stimulus are counted and bounded; retries have backoff, jitter, and a ceiling.
 - [ ] **Limits & Performance:** the data structure matches the access pattern; no invariants recomputed inside hot loops; perf claims are measured, not reasoned.
 - [ ] **Globals & Singletons:** any new singleton is justified, narrowly scoped, and accessed through an interface that can be substituted in tests.
+- [ ] **Production resilience:** every remote call has an explicit timeout; critical downstreams have a circuit breaker; resource pools are bulkheaded per downstream; queues are bounded with an explicit reject policy; the request fails fast when it cannot succeed.
 
 If any box that applies to your change is unchecked, you are not done — you are mid-trap.
 
@@ -131,5 +147,10 @@ If any box that applies to your change is unchecked, you are not done — you ar
 | 97/57 | Message Passing Leads to Better Scalability in Parallel Systems | Russel Winder |
 | 97/73 | Resist the Temptation of the Singleton | Sam Saariste |
 | 97/89 | Use the Right Algorithm and Data Structure | Jan Christiaan "JC" van Winkel |
+| `RI/Timeout` | Always Set a Timeout | Michael Nygard |
+| `RI/CircuitBreaker` | Circuit Breaker | Michael Nygard |
+| `RI/Bulkhead` | Bulkhead | Michael Nygard |
+| `RI/Backpressure` | Backpressure / Bounded Queues | Michael Nygard |
+| `RI/FailFast` | Fail Fast | Michael Nygard |
 
 See `principles.md` for the long-form distillations, citations, and source links.

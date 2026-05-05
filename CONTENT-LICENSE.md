@@ -62,6 +62,36 @@ those labels are the source's vocabulary for the concept.
   V (build/release/run), VI (processes, paired with VIII concurrency),
   and XI (logs). Also cites Jez Humble & David Farley, *Continuous
   Delivery* (Addison-Wesley, 2010), ch. 5, for pipeline-as-code.
+- `error-and-correctness-traps` cites Michael Nygard, *Release It!*
+  (2nd ed., Pragmatic Bookshelf, 2018), ch. 5 — for the timeout,
+  circuit-breaker, bulkhead, backpressure / bounded-queues, and
+  fail-fast stability patterns.
+- `api-and-interface-design` cites John Ousterhout, *A Philosophy of
+  Software Design* (2nd ed., Yaknyam Press, 2021), chapters 4 and 10
+  — for deep modules and define-errors-out-of-existence. Also cites
+  Barbara Liskov, "Data Abstraction and Hierarchy" (CACM, 1987), for
+  the substitution principle, and Alexis King, "Parse, don't
+  validate" (lexi-lambda.github.io, 2019). Hyrum's Law
+  (hyrumslaw.com) is referenced in a Red Flag without a principle row.
+- `testing-discipline` cites Steve Freeman & Nat Pryce, *Growing
+  Object-Oriented Software, Guided by Tests* (Addison-Wesley, 2009),
+  ch. 20 — for "listen to test pain." Also cites Gerard Meszaros,
+  *xUnit Test Patterns* (Addison-Wesley, 2007), chapters 16 and 18,
+  for the obscure-test, fragile-test, mystery-guest, and
+  conditional-test-logic smells.
+
+## `observability` — predominantly original
+
+The `observability` skill is the project's second acknowledged
+"net-add canon" skill. The book has no direct coverage of structured
+logging, distributed tracing, or metrics cardinality. Distillations
+draw on Google's *Site Reliability Engineering* (O'Reilly, 2016,
+ch. 6 — golden signals); the OpenTelemetry semantic conventions
+(opentelemetry.io, Apache-2.0 / CC-BY-4.0); and *Observability
+Engineering* (Charity Majors, Liz Fong-Jones, George Miranda, O'Reilly,
+2022 — cardinality discipline). The MIT plugin code license applies
+to the original text; no source text is reproduced. See
+`skills/observability/principles.md` for per-principle citations.
 
 ## `security-and-trust-boundaries` — predominantly original
 

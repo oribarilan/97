@@ -84,6 +84,58 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
   `12F/XI` is the canonical home for log *transport*; the
   `error-and-correctness-traps` skill keeps log *content limits*
   (no secrets, no PII).
+- `error-and-correctness-traps` now carries Nygard's stability
+  patterns from *Release It!* ch. 5: `RI/Timeout` (always set a
+  timeout), `RI/CircuitBreaker` (open the breaker; fail fast
+  locally), `RI/Bulkhead` (isolate resource pools per downstream),
+  `RI/Backpressure` (bounded queues with explicit reject policy),
+  `RI/FailFast` (fail before holding resources). A new
+  Production-resilience sub-section in the trap-checks list and six
+  new Red Flags surface the patterns at write time. Stakes
+  calibration applies — these checks fire hardest in production
+  code. `RI/CircuitBreaker` is the canonical home;
+  `observability` cross-references it for open-circuit visibility.
+- `api-and-interface-design` now carries Ousterhout, Liskov, and
+  King: `Ousterhout/DeepModules` (deep modules over shallow),
+  `Ousterhout/DefineErrorsOutOfExistence` (idempotent delete,
+  clamping substring, `Option<T>` lookup), `Liskov/LSP` (subtype
+  must be substitutable; prefer composition), and
+  `King/ParseDontValidate` (parse untrusted input at the boundary
+  into a domain type; this skill is the canonical home).
+  `Hyrum/Law` appears as a Red Flag reference reminding the agent
+  that any observable behavior of an API will be depended on.
+- `testing-discipline` now carries `GOOS/ListenToTestPain` (when a
+  test is hard to write, the design is wrong; reshape the
+  production code, do not mock harder) and four xUnit smells from
+  Meszaros: `xUnit/ObscureTest` (one behavior per test),
+  `xUnit/FragileTest` (assert on observable contract, not
+  internals), `xUnit/MysteryGuest` (no fixtures invisible to the
+  test reader), `xUnit/ConditionalTestLogic` (no branching that
+  changes what the test asserts). The boundary with
+  `superpowers/test-driven-development` is reaffirmed: TDD
+  decides *whether*, this skill decides *what makes the test
+  good*.
+
+### Added
+
+- New themed skill: `observability`. Closes the largest behavioral
+  gap in the bundle after v0.3 closed security: agents currently
+  produce code that is operable in dev and inert in production
+  (no tracing, no metrics, unstructured logs). Four principles:
+  `OTel/StructuredLogs` (structured key/value, stable event
+  names, request id on every line), `OTel/TraceContext` (W3C
+  Trace Context across every cross-process call; spans cover
+  meaningful units of work), `SRE/GoldenSignals` (latency,
+  traffic, errors, saturation as a coverage check for service
+  code), and `OE/CardinalityDiscipline` (high-cardinality fields
+  belong in logs and traces, not metric labels — the
+  highest-leverage single check, since per-user / per-request
+  metric labels are the canonical metrics-system outage).
+  Structured in the `error-and-correctness-traps` template;
+  applies the stakes-calibration pattern from creation. `using-97`
+  trigger map gains a row; `README.md` "What's inside" gains a row;
+  total skill count moves from 11 to 12 (bootstrap plus 11
+  themed skills).
 
 ### Documentation
 

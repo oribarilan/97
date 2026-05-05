@@ -5,7 +5,7 @@ description: Use when starting any coding task — establishes the 97 trigger ma
 
 ## Overview
 
-**97** distills principles from *97 Things Every Programmer Should Know* (O'Reilly, ed. Kevlin Henney; CC-BY-3.0 originals at https://github.com/97-things/97-things-every-programmer-should-know) and adjacent canonical sources into trigger-based skills. You have ten themed skills plus this bootstrap. Each one activates on a specific situation — refactoring, writing tests, designing an API, committing — and brings the relevant principles to bear. Per-skill `principles.md` files list every source. Unofficial companion, not affiliated with O'Reilly or any contributor.
+**97** distills principles from *97 Things Every Programmer Should Know* (O'Reilly, ed. Kevlin Henney; CC-BY-3.0 originals at https://github.com/97-things/97-things-every-programmer-should-know) and adjacent canonical sources into trigger-based skills. You have eleven themed skills plus this bootstrap. Each one activates on a specific situation — refactoring, writing tests, designing an API, committing — and brings the relevant principles to bear. Per-skill `principles.md` files list every source. Unofficial companion, not affiliated with O'Reilly or any contributor.
 
 ## Trigger Map
 
@@ -19,6 +19,7 @@ When the situation matches, invoke the named skill **before** you act. Use the `
 | `pre-commit-self-review` | About to commit, finish a task, open a PR, summarize work, or when asked for a review or hand-off |
 | `error-and-correctness-traps` | Writing error handling, comparing/calculating with floats, writing concurrent code, calling a remote process, adding a singleton/global, choosing a data structure for a hot path, or adding/changing log statements |
 | `security-and-trust-boundaries` | Parsing user input, writing/executing SQL or shell commands, handling secrets/tokens/credentials, hashing passwords, adding/changing an auth check, deserializing untrusted data, or constructing file paths/URLs from input |
+| `observability` | Adding a request handler, RPC, or background job that will run in production; adding tracing, metrics, or structured-log calls; or making cross-process diagnosability decisions |
 | `build-deploy-and-tooling` | Authoring/changing build scripts, CI config, deploy pipelines, repo setup, or evaluating a new tool/dependency for adoption |
 | `domain-modeling` | Introducing a new top-level type/table/domain concept, renaming a domain concept, or deciding where state lives |
 | `working-with-users-and-team` | Gathering or interpreting requirements, estimating effort, or communicating with stakeholders about what to build |

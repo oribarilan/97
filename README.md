@@ -84,14 +84,18 @@ Works on Linux, macOS, and Windows. Node 18+.
 | `testing-discipline` | Writing tests, designing test data, naming a test, choosing what to assert, or writing test helpers/mocks/fixtures |
 | `error-and-correctness-traps` | Writing error handling, comparing/calculating with floats, writing concurrent code, calling a remote process, adding a singleton, choosing a data structure for a hot path, or changing log statements |
 | `security-and-trust-boundaries` | Parsing user input, writing SQL or shell commands, handling secrets/tokens, hashing passwords, adding/changing an auth check, deserializing untrusted data, or constructing file paths/URLs from input |
+| `observability` | Adding a request handler, RPC, or background job that will run in production; adding tracing, metrics, or structured-log calls; or making cross-process diagnosability decisions |
 | `build-deploy-and-tooling` | Authoring/changing build scripts, CI workflows, deploy pipelines, repo setup, or evaluating a new tool for adoption |
 | `pre-commit-self-review` | About to commit, finish a task, open a PR, summarize work, or when asked for a review or hand-off |
 | `working-with-users-and-team` | Gathering or interpreting requirements, estimating effort, or communicating with stakeholders about what to build |
 
-11 skills total (the bootstrap plus 10 themed skills). Per-skill contributor
+12 skills total (the bootstrap plus 11 themed skills). Per-skill contributor
 attributions live in each skill's `principles.md`. The
-`security-and-trust-boundaries` skill is mostly original commentary
-(see `CONTENT-LICENSE.md`); the others distill book principles.
+`security-and-trust-boundaries` and `observability` skills are predominantly
+original commentary distilled from canon outside *97 Things*
+(see `CONTENT-LICENSE.md`); the others distill book principles, with
+several enriched from adjacent canonical sources (Fowler, Wlaschin,
+Nygard, 12-factor, GOOS, Meszaros, Ousterhout, Liskov, King).
 
 ## Credits
 
