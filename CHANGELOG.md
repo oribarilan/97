@@ -13,156 +13,74 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [0.3.0] — 2026-05-05
 
-Council-feedback release. Sharpens content over breadth: prunes urgency
-theater from the bootstrap, tightens `writing-clean-code` and
-`working-with-users-and-team` toward the `error-and-correctness-traps`
-density, replaces the bash+cmd polyglot SessionStart hook with a
-pure-Node port, asserts bootstrap injection in smoke, freezes harness
-scope through v1.0, and adds the project's first
-`security-and-trust-boundaries` skill. Net: more is removed than added.
+Mostly a trim. Shorter bootstrap, denser skills, no more bash in the
+SessionStart hook. One new skill: `security-and-trust-boundaries`.
 
 ### Added
 
-- **Harness scope policy** documented in `CONTRIBUTE.md` (and cross-
-  referenced from `AGENTS.md` rule 8): supported harnesses through
-  v1.0 are Claude Code, Copilot CLI, and OpenCode. Adding a new
-  harness adapter requires both demonstrated user demand and
-  behavioral evidence that existing skills change agent output. PRs
-  adding a fourth harness without meeting both bars will be deferred.
-- `security-and-trust-boundaries` skill — closes the largest behavioral
-  gap in the v0.2 bundle (council consensus). Modeled on the
-  `error-and-correctness-traps` template: five trap domains
-  (injection, untrusted-input boundaries, secrets, crypto misuse, and
-  authentication/authorization) with concrete worked examples. The
-  skill is the project's one acknowledged "97-inspired plus extension":
-  #26 and #29 generalize cleanly to trust-boundary discipline; the
-  rest is original commentary drawing on standard industry references.
-  See `CONTENT-LICENSE.md` for the licensing posture.
+- `security-and-trust-boundaries` skill — injection, untrusted input,
+  secrets, crypto misuse, authn/authz. Modeled on
+  `error-and-correctness-traps` (worked examples per trap). Mostly
+  original commentary; #26 and #29 generalize cleanly to trust
+  boundaries. See `CONTENT-LICENSE.md`.
+- Harness scope policy in `CONTRIBUTE.md` and `AGENTS.md` rule 8:
+  supported through v1.0 are Claude Code, Copilot CLI, OpenCode.
+  Adding another harness requires both user demand and behavioral
+  evidence that the existing skills do real work.
 
 ### Removed
 
-- The unused Cursor adapter branch from `hooks/session-start` (carried
-  forward as a no-op into the Node port via deletion). Cursor was never
-  a documented supported harness; engineering investment in adapter
-  logic for harnesses without users is the wrong investment for v0.3.
-  See "Harness scope policy" in `CONTRIBUTE.md`.
-- `hooks/run-hook.cmd` and the bash `hooks/session-start` script. The
-  bash+cmd polyglot silently no-op'd on Windows hosts without Git Bash;
-  the SessionStart bootstrap was never injected and users had no
-  warning. Replaced by a pure-Node port (see Changed).
-- `CLAUDE.md` — `AGENTS.md` is now the single source of truth for
-  contributor docs. The repo previously kept the two files
-  byte-identical with a smoke-test enforcement; that was reframed in
-  v0.3 (`decide-agents-claude-md-strategy`, revised) — these are
-  contributor-facing docs, the maintenance tax exceeded the value of
-  automatic Claude Code priming, and most modern agents (OpenCode,
-  Copilot CLI, Cursor, Codex) read `AGENTS.md` directly. Claude Code
-  contributors can manually load `AGENTS.md` at session start.
+- The unused Cursor branch in the SessionStart hook. Cursor was never
+  a documented supported harness.
+- `hooks/run-hook.cmd` and the bash `hooks/session-start`. The
+  bash+cmd polyglot silently no-op'd on Windows without Git Bash;
+  users got no warning. Replaced by a Node port.
+- `CLAUDE.md`. `AGENTS.md` is the single source of truth for
+  contributor docs. Claude Code contributors load it manually at
+  session start.
 
 ### Changed
 
+- New `hooks/session-start.mjs`: pure-Node SessionStart hook invoked
+  directly via `node`. Same behavior on Linux, macOS, and Windows;
+  emits the right JSON envelope per harness (Claude Code's nested
+  `hookSpecificOutput.additionalContext` by default; top-level
+  `additionalContext` when `COPILOT_CLI` is set).
+- `using-97/SKILL.md` rewritten for signal, not urgency. The
+  `<EXTREMELY_IMPORTANT>` wrapper is gone; body went from 58 to 39
+  lines; the eight-row Red Flags table is down to three; the "1%
+  chance" framing is replaced with "when in doubt, invoke." Both
+  adapters now wrap the bootstrap in a calm
+  `<bootstrap name="using-97">` envelope and key idempotency on it.
+- Two new lines in the Priority section: read a file before editing
+  it, and defer to `superpowers/systematic-debugging` for debugging
+  (with `error-and-correctness-traps` and `pre-commit-self-review`
+  step 2 as fallbacks). Two further trigger gaps — reviewing others'
+  code, and data/schema migrations — are on the v0.4+ backlog.
+- `writing-clean-code`: 12 decisions cut to 8, 142 lines down to 107.
+  Each retained decision now pairs with a check a reviewer can apply
+  from the diff. The "once per file per session" rate limit is gone;
+  it was honor-system and didn't actually control firing. Principles
+  #5, #39, #62, and #93 moved to `principles.md`; #91 folded into the
+  DRY decision.
+- `working-with-users-and-team` pruned to requirements interpretation,
+  estimation, and "start from yes." Pairing rotation, watching real
+  users, leaving the next reader better off, and compensating-defect
+  debugging all moved to `principles.md`. Skill body shrank from 125
+  to 79 lines.
 - "What 'done' looks like" sections swept across skills against an
-  observable-property rubric: keep items a reviewer can verify by
-  reading the diff/code/CI output; cut self-grading vibes, motivational
-  framing, and unfalsifiable judgments. Affected skills:
-  `domain-modeling` (cut "describe to your human partner in one
-  sentence" — self-grading) and `pre-commit-self-review` (cut "re-read
-  as stranger and it explains itself", "comments help next reader, none
-  stale", "nothing you'd want to undo after a night's sleep" —
-  motivational, agents don't sleep). `error-and-correctness-traps`
-  remains the template; its checks were already concrete.
-  `working-with-users-and-team` and `writing-clean-code` "done"
-  sections were tightened in their own tasks.
-- `writing-clean-code` tightened toward `error-and-correctness-traps`
-  density. Cut from 12 decisions to 8 (107 lines, was 142). Each
-  retained decision now pairs with a concrete *check* a reviewer can
-  apply by reading the diff (no more self-graded vibes). #5 (Beauty Is
-  in Simplicity), #39 (Improve Code by Removing It — folded into #75),
-  #62 (Only the Code Tells the Truth — distilled into decision 6), and
-  #93 (Write As If You'll Support It for Years — motivational framing
-  cut) are demoted to `principles.md` for attribution. #91 (WET
-  Dilutes Bottlenecks) folded into the DRY decision. The "What 'done'
-  looks like" checklist drops the unfalsifiable self-grading items
-  ("you can describe each block to your human partner without reading
-  it aloud") and keeps only checks observable from the diff.
-- `working-with-users-and-team` pruned to its agent-relevant spine:
-  requirements interpretation, estimation discipline, and "start from
-  yes" on incoming requests. Pairing rotation, knowledge-gradient
-  pairing, watching real users, leaving the next reader better off,
-  and compensating-defect debugging — all genuinely human-to-human or
-  duplicative with `error-and-correctness-traps` — were demoted from
-  `SKILL.md` to `principles.md` (kept for attribution but no longer
-  loaded on trigger). Skill body shrank from ~125 to ~79 lines.
-  Trigger description and bootstrap trigger row drop "designing UX"
-  language; that was a watching-real-users hook the agent cannot
-  satisfy. `lint-skills.mjs` principle list updated to match what's
-  actually cited in `SKILL.md`. `README.md` "What's inside" row
-  updated.
-- `using-97/SKILL.md` Priority section grew two new items addressing
-  trigger-coverage gaps council flagged: §4 reminds the agent to read a
-  file before editing it (no skill load — a one-line cheap reminder
-  for the most common avoidable failure mode), and §5 adds explicit
-  debugging fallback precedence (`superpowers/systematic-debugging`
-  first; otherwise `error-and-correctness-traps` for trap-shaped bugs
-  and `pre-commit-self-review` step 2 for general debugging). Two
-  other gaps — reviewing others' code, and data/schema migrations —
-  were deferred to v0.4+ with backlog tasks recorded at
-  `.todo/backlog/add-code-review-skill.md` and
-  `.todo/backlog/add-data-and-schema-changes-skill.md`.
-- `writing-clean-code` no longer carries the "at most once per file per
-  session" rate limit. The constraint was honor-system: agents have no
-  reliable session-scoped ledger of "files I've fired on", so the rule
-  appeared to control firing without actually doing so. Removing it
-  restores coverage on the second-edit-in-a-file case (often the more
-  interesting change, made under more pressure). If `writing-clean-code`
-  is too expensive to fire twice in one file, the fix is a denser
-  skill, not a fragile rule. Removed from the trigger description, the
-  bootstrap trigger row, the skill body, and `README.md`.
-- `skills/using-97/SKILL.md` rewritten for signal over urgency. Dropped
-  the "If even a 1% chance the trigger applies, invoke" framing, the
-  eight-row Red Flags table, and the H1 cosmetic header. The bootstrap
-  is now ~33% shorter (58 → 39 lines) with three high-signal Red Flags
-  rows: almost-matches, two-skills-could-fit, and stale-memory. Mature
-  instruction-tuned models discount shouted urgency and pattern-match
-  it to coercive prompting; the trigger map carries the actual signal.
-  If a future eval shows invocation rate dropped after this, the fix
-  is sharper triggers, not re-adding the urgency theater.
-- Bootstrap wrapper across both adapters
-  (`.opencode/plugins/97.js`, `hooks/session-start.mjs`) replaced
-  `<EXTREMELY_IMPORTANT>...</EXTREMELY_IMPORTANT>` and its "ALREADY
-  LOADED" preamble with a calm `<bootstrap name="using-97">...</bootstrap>`
-  envelope. Wrapper preamble drops ≥4 lines per adapter; total injected
-  bootstrap chars per harness drop well over 30%.
-- The OpenCode plugin's bootstrap idempotency check now keys on the
-  stable `<bootstrap name="using-97">` substring instead of
-  `EXTREMELY_IMPORTANT`.
-- `scripts/smoke-load.mjs` now asserts the bootstrap actually arrives in
-  agent context: the OpenCode `experimental.chat.messages.transform`
-  hook prepends a part containing the stable "Trigger Map" marker and
-  the OpenCode tool-mapping appendix, and the second invocation is
-  idempotent. It also spawns `hooks/session-start.mjs` as a subprocess
-  and verifies both the Claude Code (`hookSpecificOutput.additionalContext`)
-  and Copilot CLI (`additionalContext`) envelope shapes. Catches silent
-  breakage from transform renames, frontmatter parsing changes, or
-  wrapper-string drift — without requiring a real harness in CI.
-- `hooks/session-start.mjs` (new) — pure-Node SessionStart hook invoked
-  directly via `node`, replacing the bash+cmd polyglot. Reads
-  `skills/using-97/SKILL.md`, strips frontmatter to mirror the OpenCode
-  adapter, and emits the harness-shaped JSON envelope (Claude Code's
-  nested `hookSpecificOutput.additionalContext` by default;
-  `additionalContext` at top level when `COPILOT_CLI` is set). One
-  language for hooks, no hidden bash dependency, identical behavior on
-  Linux, macOS, and Windows.
-- `hooks/hooks.json` `command` invokes
-  `node "${CLAUDE_PLUGIN_ROOT}/hooks/session-start.mjs"`.
-- `scripts/smoke-load.mjs` no longer asserts `AGENTS.md`/`CLAUDE.md`
-  byte-equality. It now actively rejects a re-introduced `CLAUDE.md`
-  to prevent drift back into the two-file world.
-- `scripts/lint-skills.mjs` documents the per-skill `maxLines` budget
-  philosophy explicitly: caps are tight by design, the gold-standard
-  `error-and-correctness-traps` is the density target for new skills,
-  and a single skill bump with a documented reason is preferred over
-  a blanket loosening. Caps themselves are unchanged from v0.2.
+  observable-property rubric: keep checks a reviewer can verify from
+  the diff or CI output, cut self-grading and motivational items.
+  Trims in `domain-modeling` and `pre-commit-self-review`;
+  `error-and-correctness-traps` stays as the template.
+- `scripts/smoke-load.mjs` now asserts the bootstrap actually arrives.
+  The OpenCode transform hook is exercised against a fake user
+  message and checked for idempotency; the Node hook is spawned as a
+  subprocess and both envelope shapes are verified. It also rejects a
+  re-introduced `CLAUDE.md`.
+- `scripts/lint-skills.mjs` documents the per-skill `maxLines`
+  philosophy: caps are a forcing function for density, not a budget
+  to spend. Caps unchanged from v0.2.
 
 ## [0.2.0] — 2026-05-04
 
