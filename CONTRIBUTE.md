@@ -219,9 +219,29 @@ same PR** as the change:
 
 ### Style for changelog entries
 
-- Past tense, reader's perspective, ends with a period.
-- Name skills and files in backticks.
-- One bullet per logical change. Don't pad.
+Write for a user reading the GitHub release notes, not for a release
+historian or a contributor justifying their PR. The
+[`[0.3.0]` section in `CHANGELOG.md`](./CHANGELOG.md) is the canonical
+example — match its shape.
+
+- **Open each version with a 1–2 sentence framing line** above the
+  subsection headings. Plain prose, says what the release actually
+  does. "Mostly a trim. Shorter bootstrap, denser skills, no more
+  bash in the SessionStart hook." beats "v0.3 sharpens content over
+  breadth."
+- **Past tense, reader's perspective.** What changed for them, not
+  what process produced it.
+- **Bullets describe the change, not the deliberation.**
+  "`writing-clean-code` cut from 12 decisions to 8" — yes. "After
+  council review and synthesis, consensus emerged that..." — no.
+- **One bullet per logical change. Don't pad.** If a bullet runs past
+  six or seven lines, you're explaining yourself; cut it.
+- **Keep internal references out.** Task IDs, story slugs, council
+  names, `.todo/` paths, and PR-process artifacts belong in commit
+  bodies and task files, not the user-facing changelog.
+- Name skills, files, and config keys in backticks.
+- Voice rules from §10 apply: no AI vocabulary, no copula avoidance,
+  no rule-of-three padding, em dashes in moderation.
 
 ### When you don't need a changelog entry
 
@@ -310,9 +330,19 @@ versions or tag as part of unrelated feature work.
    This asserts version equality across the three manifests, the
    `AGENTS.md`-only single-source rule, structural lint, and Prettier formatting.
 
-6. **Commit, tag, push.** Use the `Release vX.Y.Z: <one-line summary>`
-   commit message convention (mirrors superpowers; the commit message is
-   how downstream readers spot release commits at a glance):
+6. **Commit, tag, push.** The release commit subject is
+   `Release vX.Y.Z: <one-line summary>`. The summary is the same kind
+   of plain-prose line you'd put at the top of the changelog section:
+   concrete, no internal jargon, no `+`-separated process artifacts.
+   Aim for ≤ 60 characters after the colon.
+
+   - Yes: `Release v0.3.0: shorter bootstrap, Node hook port, security skill`
+   - No: `Release v0.3.0: council-feedback content sharpening + Node hook port + security skill`
+
+   If you write a commit body, it should mirror the changelog framing
+   line and skip the deliberation history. Readers find that in the
+   changelog and the task files; the commit message is the index, not
+   the archive.
 
    ```sh
    git add CHANGELOG.md package.json .claude-plugin/

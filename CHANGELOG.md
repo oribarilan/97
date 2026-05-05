@@ -11,6 +11,16 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [Unreleased]
 
+### Documentation
+
+- `CONTRIBUTE.md` §4 (changelog style) and §6 (release commit message)
+  now spell out the plain-prose voice we used for v0.3: open each
+  version with a 1–2 sentence framing line, describe the change rather
+  than the deliberation, keep internal references (task IDs, council
+  names, `.todo/` paths) out of the user-facing notes, and keep release
+  commit subjects under ~60 chars after the colon. The `[0.3.0]`
+  changelog entry is named as the canonical example.
+
 ## [0.3.0] — 2026-05-05
 
 Mostly a trim. Shorter bootstrap, denser skills, no more bash in the
