@@ -146,3 +146,119 @@ maps for relational data and hand-rolled consistency between collections.
 Spinellis's framing is specifically about RDBMSs; we apply it as the default
 for size/persistence/interconnectedness, while leaving room for non-relational
 stores when the access pattern genuinely doesn't fit.
+
+---
+
+## Beyond *97 Things* — typed-domain canon
+
+The four principles below come from the typed-domain school (Wlaschin's
+*Domain Modeling Made Functional*; Fowler's *Refactoring* smell catalog
+for the primitive-obsession entry). They fire hardest in languages
+with sum types and pattern matching (TypeScript, Rust, F#, Haskell,
+Scala, Kotlin, modern C#) and degrade gracefully in dynamic languages
+(Python, JavaScript, Ruby) where the agent reaches for typed wrappers,
+frozen dataclasses, `pydantic`, or `attrs`. **Do not be
+type-system-evangelical** — in a small Python script, a `dict` is
+the right answer.
+
+---
+
+## Wlaschin/InvalidStatesUnrepresentable — Make Invalid States Unrepresentable
+
+**Author:** Scott Wlaschin
+**Source:** Domain Modeling Made Functional, Pragmatic Bookshelf 2018, ch. 6
+**License:** fair-use commentary
+
+**Distillation.** Encode the domain's constraints into the types so
+illegal combinations cannot be constructed. A `User` that is either
+`Pending`, `Active`, or `Banned { reason: string }` is a discriminated
+union; the compiler refuses code that reads `banned.reason` on an
+active user. Boolean flags carrying state (`isActive`, `isBanned`) and
+nullable-fields-only-valid-in-some-states (a `bannedReason: string?`
+that "should be set when status == banned") permit invalid
+combinations the language won't catch — drop them in favor of the
+sum type. Internal counterpart to `King/ParseDontValidate` (which
+fires at the boundary); this principle fires when designing
+*internal* invariants.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as "boolean
+flags carrying state" and as a checklist step in the type-design
+flow. Cross-references `King/ParseDontValidate` (canonical home in
+`api-and-interface-design`) for the boundary-parsing counterpart.
+
+---
+
+## Wlaschin/SmartConstructors — Smart Constructors
+
+**Author:** Scott Wlaschin
+**Source:** Domain Modeling Made Functional, Pragmatic Bookshelf 2018, ch. 6
+**License:** fair-use commentary
+
+**Distillation.** A domain type is constructed only through a function
+that enforces its invariant. `EmailAddress.parse(s)` returns
+`Result<EmailAddress, InvalidEmail>`; the raw constructor is private
+or unavailable; downstream code receives an `EmailAddress` and never
+re-checks. In dynamic languages: a parser that returns the parsed
+domain object or raises a structured error, with no way to skip the
+parser and pass a raw string into the same function. The discipline
+turns "have we validated this yet?" from a question every caller
+must answer into a property of the type itself. Pairs with
+`King/ParseDontValidate`: parse-don't-validate is the
+*boundary*-side rule; smart constructors are the *internal* shape.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as
+"constructor that does not validate, then private setters that
+do" and as part of the type-design flow.
+
+---
+
+## Wlaschin/TypesForEffects — Types for Effects
+
+**Author:** Scott Wlaschin
+**Source:** Domain Modeling Made Functional, Pragmatic Bookshelf 2018
+**License:** fair-use commentary
+
+**Distillation.** Use the type system to track effects and state
+explicitly: `Result<T, E>` for fallible operations, `Option<T>` /
+`Maybe<T>` for absence, branded types (`UserId`, not `string`) for
+identifiers that must not be confused. In typed languages this is
+non-negotiable — fallible code returns `Result`, partial code returns
+`Option`, identifiers wear their type. In dynamic languages the agent
+reaches for typed wrappers (`@dataclass(frozen=True)`, `pydantic`,
+`attrs`, `TypedDict`, NewType) where they help readability and
+catch the next bug; in a small script, a `dict` is fine. Background:
+*Domain Modeling Made Functional* and the broader functional canon.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as
+"string-typed identifiers that get swapped at call sites" and as a
+checklist step. The language guard in this skill's Precedence
+section keeps it from being dogmatic in dynamic-language contexts.
+
+---
+
+## Fowler/PrimitiveObsession — Primitive Obsession
+
+**Author:** Martin Fowler
+**Source:** Refactoring, 2nd ed., Addison-Wesley 2018, ch. 3
+**License:** fair-use commentary
+
+**Distillation.** Reaching for primitives — `string` for an email,
+`int` for a money amount, a `Map<int, Map<int, int>>` for what is
+really a domain relationship — gives the value no name, no behavior,
+and no identity in the type system. The same primitive flows through
+unrelated functions, gets confused at call sites (Mars Climate
+Orbiter), and accumulates duplicated validation. The response is
+**Replace Primitive with Object** (or, in dynamic languages, a small
+wrapper class / dataclass / branded type). The new type carries the
+operations that depend on it and gives the compiler or a reader a
+name for what the value means. Canonical home for this principle is
+`domain-modeling` because the strongest trigger is "introducing a
+new domain concept"; cross-references in `before-you-refactor`,
+`api-and-interface-design`, and `writing-clean-code` surface the
+diff-level signal under their respective triggers. Pairs with
+`Wlaschin/TypesForEffects` for the typed-language counterpart.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as the
+nested-generic-collection check (97/11 already covers part of this)
+and as part of decision 2 (replace primitive obsession with named
+types and operations).

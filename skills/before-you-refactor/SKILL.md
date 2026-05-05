@@ -79,6 +79,9 @@ These thoughts mean STOP — restart the checklist:
 | "I can patch it directly on the staging/production server, just this once." | No. Refactors flow through your normal commit → test → review → deploy path. "Just this once" is how outages happen. (97/31) |
 | "The tests are failing but it's just flaky — I'll keep going." | Failing tests during a refactor mean the refactor changed behavior. Stop, investigate, fix or revert. Don't push through. (97/6) |
 | "Estimating is too hard — I'll figure it out as I go." | Open-ended refactors balloon. Identify the coupling hotspots up front and re-estimate. If it's now bigger than the ask, escalate. (97/74) |
+| "I'll just rename some variables — the function isn't *that* long." | If the function scrolls, rename is theater. Extract helpers whose names explain the *why*; the body shrinks to a sequence of named steps. (`Fowler/LongMethod`) |
+| "The same change keeps forcing me to edit the same eight files." | Shotgun surgery: the behavior is conceptually one thing, physically scattered. Move related fields and methods together until the next instance of the change is one file. (`Fowler/ShotgunSurgery`) |
+| "This function already takes seven primitives — I'll just add an eighth." | Data clump. The fields are a missing type. Extract a class / dataclass / parameter object before adding the eighth. (`Fowler/DataClumps`) |
 
 ## What "done" looks like
 
@@ -103,5 +106,9 @@ If any box is unchecked, you are not done — you are mid-refactor. Either finis
 | 97/24 | Don't Be Afraid to Break Things | Mike Lewis |
 | 97/31 | Don't Touch That Code! | Cal Evans |
 | 97/74 | The Road to Performance Is Littered with Dirty Code Bombs | Kirk Pepperdine |
+| `Fowler/LongMethod` | Long Method → Extract Function | Martin Fowler |
+| `Fowler/FeatureEnvy` | Feature Envy → Move Method | Martin Fowler |
+| `Fowler/ShotgunSurgery` | Shotgun Surgery → Move Field / Inline Class | Martin Fowler |
+| `Fowler/DataClumps` | Data Clumps → Extract Class / Introduce Parameter Object | Martin Fowler |
 
 See `principles.md` for the long-form distillations, citations, and source links.

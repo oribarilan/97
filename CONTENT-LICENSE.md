@@ -39,6 +39,30 @@ The full registry of accepted source keys and the format spec live in
 and essay number (`97/N`); citation of other sources is by author,
 book, and chapter as documented in each skill's `principles.md`.
 
+## Beyond *97 Things* — fair-use commentary on canonical sources
+
+Some skills draw on canonical programming-practice sources outside the
+*97 Things* essay set. Distillations are written in our own words and
+function as commentary; we cite each source by author + book +
+chapter, do not reproduce source text, and use only standard
+descriptive labels (smell names, pattern names, factor numbers) where
+those labels are the source's vocabulary for the concept.
+
+- `before-you-refactor` cites Martin Fowler, *Refactoring* (2nd ed.,
+  Addison-Wesley, 2018), ch. 3 — for the Long Method, Feature Envy,
+  Shotgun Surgery, and Data Clumps smells.
+- `domain-modeling` cites Scott Wlaschin, *Domain Modeling Made
+  Functional* (Pragmatic Bookshelf, 2018), ch. 6 — for the
+  make-invalid-states-unrepresentable, smart-constructors, and
+  types-for-effects principles. Also cites Fowler, *Refactoring*,
+  ch. 3, for the canonical Primitive Obsession entry (the smell is
+  cross-referenced from `before-you-refactor`).
+- `build-deploy-and-tooling` cites the Twelve-Factor App (Adam
+  Wiggins / Heroku, 2011, 12factor.net) — for factors III (config),
+  V (build/release/run), VI (processes, paired with VIII concurrency),
+  and XI (logs). Also cites Jez Humble & David Farley, *Continuous
+  Delivery* (Addison-Wesley, 2010), ch. 5, for pipeline-as-code.
+
 ## `security-and-trust-boundaries` — predominantly original
 
 The `security-and-trust-boundaries` skill is the project's one acknowledged

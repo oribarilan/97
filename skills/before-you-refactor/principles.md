@@ -120,3 +120,116 @@ complexity hotspots before you cut") and the "estimating is too hard" /
 "small cleanup" Red Flags. Pepperdine's framing was about performance tuning
 specifically; the underlying lesson — coupling makes change estimates lie —
 generalizes to any refactor.
+
+---
+
+## Fowler smells (this skill's "what to look for, what to do")
+
+The principles above govern *whether and when* to refactor. The four
+Fowler smells below govern *what to look for in the diff and what
+refactoring to apply when you see it*. Each entry pairs a recognizable
+pattern with its canonical response. Background: *Refactoring*, Martin
+Fowler, 2nd ed., Addison-Wesley, 2018, ch. 3 ("Bad Smells in Code").
+
+The full smell catalog is broader than what this skill surfaces.
+Three additional smells live under their canonical homes elsewhere in
+the bundle — `Fowler/PrimitiveObsession` is owned by `domain-modeling`
+(introducing a domain concept is a stronger trigger than the refactor
+itself); duplicated code is covered by the existing `97/30` (DRY) in
+`writing-clean-code`; long parameter lists fold into the data-clumps
+response below.
+
+---
+
+## Fowler/LongMethod — Long Method
+
+**Author:** Martin Fowler
+**Source:** Refactoring, 2nd ed., Addison-Wesley 2018, ch. 3
+**License:** fair-use commentary
+
+**Distillation.** A function that has grown past the point a reader
+can hold in their head is doing too many things. The signal is not a
+strict line count — it is the moment a reader has to scroll, or skim
+sub-sections, or invent comments to keep their place. The response is
+**Extract Function**: pull each meaningful sub-task into a named
+helper whose name explains the *why*. The original body shrinks to a
+sequence of named steps; the helpers carry the detail. When not to:
+some genuinely linear pipelines (parsers, code generators) are easier
+to read as one block — extracting helpers spreads the logic across
+files for no reader benefit. Use judgement; default to extract.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as "the
+function I'm refactoring scrolls; I'll just rename a few variables."
+Pairs with checklist step 5 — extract before any larger restructure.
+
+---
+
+## Fowler/FeatureEnvy — Feature Envy
+
+**Author:** Martin Fowler
+**Source:** Refactoring, 2nd ed., Addison-Wesley 2018, ch. 3
+**License:** fair-use commentary
+
+**Distillation.** A method on `A` that calls `b.x()`, `b.y()`,
+`b.z()` and barely touches `A`'s own state is on the wrong type. The
+data and the behavior have drifted apart. The response is **Move
+Method**: relocate the method onto `B`, where its inputs already live;
+`A` calls the new method through a one-line forwarder if any callers
+still need it on `A`. When not to: if the method genuinely needs
+fields from both types, split it into two — one on each — rather than
+forcing it onto whichever has more references.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as a method
+whose body is mostly `other.foo` calls. Often shows up after a
+domain refactor split a god-class — one half takes the data and the
+other half kept the methods.
+
+---
+
+## Fowler/ShotgunSurgery — Shotgun Surgery
+
+**Author:** Martin Fowler
+**Source:** Refactoring, 2nd ed., Addison-Wesley 2018, ch. 3
+**License:** fair-use commentary
+
+**Distillation.** One conceptual change forces edits in many places —
+adding a payment method touches eight files, a new role touches every
+controller. The behavior is conceptually one thing but is physically
+distributed. The response is **Move Method** / **Move Field** /
+**Inline Class** until the conceptually-related code lives together;
+new instances of the change become single-file edits. When not to: if
+the distribution is genuinely orthogonal (a cross-cutting logging
+concern, an event-handler fan-out where each handler is independent),
+the smell is fake — leave it alone.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as "this
+change pattern keeps making me edit the same eight files." Reinforces
+checklist step 6 (coupling hotspots) — shotgun surgery is what high
+fan-out feels like at the diff level.
+
+---
+
+## Fowler/DataClumps — Data Clumps
+
+**Author:** Martin Fowler
+**Source:** Refactoring, 2nd ed., Addison-Wesley 2018, ch. 3
+**License:** fair-use commentary
+
+**Distillation.** The same group of fields appears together
+repeatedly — `(street, city, state, postcode)` in three function
+signatures, a record, and a form-validation function; or
+`(start, end, timezone)` everywhere a date range is passed. The
+clump is a missing type. The response is **Extract Class** (or
+**Introduce Parameter Object** in dynamic languages: a frozen
+dataclass / `attrs` / `pydantic` model). The new type carries the
+fields and the operations that depend on them; long parameter lists
+collapse into one parameter. When not to: a clump that appears in
+exactly two places, with no behavior depending on the combination, is
+not yet a type — wait for the third occurrence.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as "this
+function takes seven primitives." Pairs with `domain-modeling` —
+`Fowler/PrimitiveObsession` (canonical home there) is the parent
+concept; data clumps are the diff-level signal. Cross-references
+`Wlaschin/InvalidStatesUnrepresentable` for the typed-language
+counterpart.

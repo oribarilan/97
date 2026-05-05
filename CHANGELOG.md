@@ -53,6 +53,37 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
   Priority rule tells the agent to match principle weight to stage
   and stakes: production guidance fires hardest when code is reaching
   users; in MVPs and dev tools, prefer the simplest thing that works.
+- `before-you-refactor` now carries four Fowler smells from
+  *Refactoring* (2nd ed.) ch. 3: `Fowler/LongMethod` → Extract
+  Function, `Fowler/FeatureEnvy` → Move Method, `Fowler/ShotgunSurgery`
+  → Move Field / Inline Class, `Fowler/DataClumps` → Extract Class /
+  Introduce Parameter Object. Three of the four surface in the Red
+  Flags table; each pairs the diff-level signal with the canonical
+  response. `Fowler/PrimitiveObsession` is owned by `domain-modeling`
+  per the Canonical-home table and cross-referenced.
+- `domain-modeling` now carries the typed-domain canon: three
+  Wlaschin principles from *Domain Modeling Made Functional*
+  (`Wlaschin/InvalidStatesUnrepresentable`, `Wlaschin/SmartConstructors`,
+  `Wlaschin/TypesForEffects`) and `Fowler/PrimitiveObsession` as the
+  canonical home for the Primitive Obsession smell. New Red Flags
+  surface boolean flags carrying state, "valid only in some states"
+  nullable fields, string-typed identifiers that get swapped at call
+  sites, and "validate on input" without a typed wrapper. A new
+  language guard in Precedence keeps the typed-domain principles
+  from being dogmatic in dynamic languages — frozen dataclasses,
+  `pydantic`, `attrs`, and `TypedDict` are the dynamic-language
+  reaches.
+- `build-deploy-and-tooling` now carries the cloud-native canon:
+  four 12-factor principles (`12F/III` config in environment,
+  `12F/V` strict build/release/run separation, `12F/VI` stateless
+  share-nothing processes, `12F/XI` logs as event streams) and
+  `CD/PipelineAsCode` from *Continuous Delivery* ch. 5. New Red
+  Flags surface hardcoded credentials in source, in-place patches
+  to running production, local-filesystem state on disposable
+  processes, in-process log files, and out-of-band pipeline edits.
+  `12F/XI` is the canonical home for log *transport*; the
+  `error-and-correctness-traps` skill keeps log *content limits*
+  (no secrets, no PII).
 
 ### Documentation
 

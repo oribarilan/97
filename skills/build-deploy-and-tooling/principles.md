@@ -327,3 +327,142 @@ toolchest before reaching for a custom script") and the "I'll write a
 Python script for this one-line text munge" Red Flag. The skill applies
 Spinellis's argument as a *first-reach* heuristic, not a prohibition on
 larger tools when they are warranted.
+
+---
+
+## Beyond *97 Things* — cloud-native canon
+
+The five principles below come from the Twelve-Factor App (Adam
+Wiggins / Heroku, 2011, 12factor.net) and *Continuous Delivery*
+(Humble & Farley, Addison-Wesley, 2010). They cover patterns the
+existing essays only partially address — explicit config-in-environment,
+strict build/release/run separation, share-nothing processes,
+logs-as-event-streams, and pipeline-as-code. Roman numerals on
+12-factor IDs are preserved because that is the source's own
+numbering.
+
+`12F/XI` (logs as event streams) is the canonical home for the
+log-transport rule. `error-and-correctness-traps` cross-references
+it for the "what not to log" axis (secrets, PII); the
+`observability` skill cross-references it for log content shape.
+
+---
+
+## 12F/III — Config in the Environment
+
+**Author:** Adam Wiggins / Heroku
+**Source:** https://12factor.net/config
+**License:** fair-use commentary
+
+**Distillation.** Anything that varies between deploys — credentials,
+endpoints, feature flags, log levels, third-party API keys — lives in
+the environment (env vars, mounted files, a secrets manager), never
+in source. The litmus test: could you open-source this repo right now
+without leaking a credential? If no, the config is in the wrong
+place. Avoid "config files committed to the repo with environment-
+specific overrides loaded by name" patterns — that conflates *what
+the app needs* with *which deploy this is*. Cross-references
+`security-and-trust-boundaries` on secret-handling specifics
+(rotation, never-bake-into-image).
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as
+"endpoint or API key hardcoded in source" and reinforces the
+existing `97/61` "environment-specific values live in the
+environment" framing. Pairs with `12F/V` — config is what makes
+release distinct from build.
+
+---
+
+## 12F/V — Strict Build, Release, Run Separation
+
+**Author:** Adam Wiggins / Heroku
+**Source:** https://12factor.net/build-release-run
+**License:** fair-use commentary
+
+**Distillation.** Three stages, distinct and ordered. **Build**
+turns a tagged commit into an executable artifact. **Release**
+combines that artifact with the target environment's config to
+produce an immutable release identifier. **Run** executes the
+release in the runtime environment and does not mutate it. Hot-fixing
+code on a running production box collapses run back into build and
+destroys the property that "what runs is what was tested." If a
+release is broken, roll forward to a new release; do not edit the
+running one. Sharpens the existing `97/61` "one binary" principle
+with explicit stage names.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as "I'll
+patch this on the running server" / "I'll edit the deployed config
+in place." Pairs with `12F/III` (config) and the existing `97/61`
+(build-once-promote).
+
+---
+
+## 12F/VI — Stateless, Share-Nothing, Disposable Processes
+
+**Author:** Adam Wiggins / Heroku
+**Source:** https://12factor.net/processes
+**License:** fair-use commentary
+
+**Distillation.** A process is a stateless worker that scales
+horizontally by running more copies (the canonical pairing with
+factor VIII, concurrency). State lives in backing services
+(database, cache, object store, queue), never on the local
+filesystem or in process memory across requests. Sticky sessions, a
+local-file upload cache that "the next request will read," or a
+worker that holds connection state for an hour all turn the
+horizontal-scale model into something that breaks under restart.
+Concretely: any local write the process makes is throwaway by the
+next deploy or restart. If the data needs to survive that, it
+belongs in a backing service.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as "process
+writes user uploads to a local directory" and "in-memory session
+state shared across requests." Cross-references the existing
+`97/61` (one binary) — share-nothing is what makes the same binary
+runnable on N hosts.
+
+---
+
+## 12F/XI — Logs as Event Streams
+
+**Author:** Adam Wiggins / Heroku
+**Source:** https://12factor.net/logs
+**License:** fair-use commentary
+
+**Distillation.** Treat logs as time-ordered event streams. The
+process writes to stdout/stderr; the platform aggregates, routes,
+and persists. The process does not open a log file, does not rotate
+logs, does not implement log shipping. Log files on the running host
+are an operational dead-end (they vanish on container restart, fill
+disks, and require per-host shell access to read). Canonical home
+for log *transport*; `observability` owns log *content shape*
+(`OTel/StructuredLogs`); `error-and-correctness-traps` owns log
+*content limits* (no secrets, no PII, no raw stack traces in prod).
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as "process
+writes to a local log file" / "process rotates logs in-process."
+Cross-references `OTel/StructuredLogs` (in `observability`) for
+what to put on each line.
+
+---
+
+## CD/PipelineAsCode — Pipeline as Code
+
+**Author:** Jez Humble & David Farley
+**Source:** Continuous Delivery, Addison-Wesley 2010, ch. 5 ("Anatomy of the Deployment Pipeline")
+**License:** fair-use commentary
+
+**Distillation.** The deploy pipeline is production code: versioned,
+reviewed, tested, in the same repo as the application (or a sibling
+repo with the same review discipline). Hand-edited Jenkins jobs that
+no PR touched, GitHub Actions workflows that diverge from the
+versioned `.github/workflows/*` because someone tweaked the UI,
+configuration drift between staging and prod pipelines — each is the
+"works on my pipeline" version of the dev-laptop bug. The pipeline
+ships through code review the way the application does.
+
+**Agent application.** Surfaces in `SKILL.md` Red Flags as
+"pipeline configuration changed but not under code review" and
+sharpens checklist step 4 (refactor the deploy process like code).
+Cross-references the existing `97/63` (own and refactor the build)
+for the cadence.

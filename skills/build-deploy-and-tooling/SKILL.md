@@ -95,6 +95,11 @@ These thoughts mean STOP — restart the checklist:
 | "I'll write a Python script for this one-line text munge." | A `grep \| awk \| sort -u` pipeline does it now and works on every project. Reach for the toolchest before reaching for a new file. (97/88) |
 | "I've done this manual sequence twice — third time will be just as fast." | The third time is the moment to script it. The IDE-only or laptop-only workflow does not survive the next contributor or CI. (97/78) |
 | "`fix bug` is a fine commit message — git blame will explain it." | The next reader needs the *why*. One commit per logical change, with a message that names the intent, is the contract. (97/68) |
+| "I'll hardcode the staging API key in the config file — easy to swap later." | Could you open-source this repo right now without leaking a credential? Push every per-deploy value out into env vars or a secrets manager. (`12F/III`) |
+| "I'll patch the running prod box — faster than cutting a new release." | That collapses run back into build and destroys "what runs is what was tested." Roll forward to a new release; do not edit the running one. (`12F/V`) |
+| "I'll write user uploads to a local directory and the next request reads them." | The next request may land on a different host, the next deploy will lose the directory, and a restart wipes it. State belongs in a backing service. (`12F/VI`) |
+| "I'll have the process write logs to a rotated file on the host." | Log files on the host vanish on restart and require per-host access to read. Write to stdout/stderr and let the platform aggregate. (`12F/XI`) |
+| "I'll tweak the Jenkins job in the UI — one-time fix." | The deploy pipeline is production code. UI tweaks bypass review and produce config drift. Pipeline lives in version control with PRs. (`CD/PipelineAsCode`) |
 
 ## What "done" looks like
 
@@ -127,5 +132,10 @@ If any box is unchecked, the change is not done — it is mid-authored. Either f
 | 97/78 | Step Back and Automate, Automate, Automate | Cay Horstmann |
 | 97/79 | Take Advantage of Code Analysis Tools | Sarah Mount |
 | 97/88 | The Unix Tools Are Your Friends | Diomidis Spinellis |
+| `12F/III` | Config in the Environment | Adam Wiggins / Heroku |
+| `12F/V` | Strict Build, Release, Run Separation | Adam Wiggins / Heroku |
+| `12F/VI` | Stateless, Share-Nothing, Disposable Processes (paired with factor VIII) | Adam Wiggins / Heroku |
+| `12F/XI` | Logs as Event Streams | Adam Wiggins / Heroku |
+| `CD/PipelineAsCode` | Pipeline as Code | Jez Humble & David Farley |
 
 See `principles.md` for the long-form distillations, citations, and source links.

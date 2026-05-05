@@ -36,8 +36,12 @@ If you're not sure whether a change introduces a *new domain concept* (vs. a loc
 ## Precedence
 
 - `superpowers/brainstorming` precedes this skill when the *requirements themselves* are unclear — don't model what you haven't agreed on.
-- `97/api-and-interface-design` overlaps for types exposed across module/service boundaries; that skill governs the *interface*, this one governs the *concept itself* (its name, its identity, its persistence).
+- `97/api-and-interface-design` overlaps for types exposed across module/service boundaries; that skill governs the *interface*, this one governs the *concept itself* (its name, its identity, its persistence). `King/ParseDontValidate` is canonical there; this skill cross-references it on the boundary-vs-internal split.
 - `97/writing-clean-code` governs the methods *on* a domain type once the type exists; this skill governs whether the type should exist and what it should be called.
+
+### Language guard
+
+The typed-domain principles below (`Wlaschin/InvalidStatesUnrepresentable`, `Wlaschin/SmartConstructors`, `Wlaschin/TypesForEffects`, `Fowler/PrimitiveObsession`) fire hardest in languages with sum types and pattern matching (TypeScript, Rust, F#, Haskell, Scala, Kotlin, modern C#). They degrade gracefully in dynamic languages (Python, JavaScript, Ruby) where the agent reaches for frozen dataclasses, `pydantic`, `attrs`, `TypedDict`, or NewType where they help. **Do not be type-system-evangelical** — in a small Python script, a `dict` is the right answer.
 
 ## The domain-modeling decisions
 
@@ -66,6 +70,9 @@ These thoughts mean STOP — restart the decisions:
 | "I'll add another `BookingDataObject` next to the existing `Booking` — they're slightly different." | Two competing definitions of the same domain concept guarantee they will drift. Unify first, then add. (97/11) |
 | "This rule is just a one-line `if` — no need for a domain method." | If the same `if` recurs across the codebase representing the same business rule, it's a method on a domain type. Encapsulate it. (97/11) |
 | "It's an internal type, naming doesn't matter." | Internal today is exposed tomorrow, and the name you pick now will appear in stack traces, logs, and PR diffs for years. Name it for the domain. (97/11, 97/12) |
+| "I'll use a `string` for the email — we validate it on input." | Smart constructor instead. The type itself carries the proof; downstream code receives `EmailAddress`, not `string`, and never re-validates. (`Wlaschin/SmartConstructors`) |
+| "I'll add a `bannedReason` nullable field that's only set when `status == banned`." | Boolean flags and "valid only in some states" nullables permit invalid combinations the language won't catch. Use a discriminated union; let the compiler refuse the impossible state. (`Wlaschin/InvalidStatesUnrepresentable`) |
+| "Both `userId` and `accountId` are `string` — argument order is enough." | Mars Climate Orbiter. Brand the types (`UserId`, `AccountId`) so swapped arguments fail at compile time. (`Wlaschin/TypesForEffects`, `Fowler/PrimitiveObsession`) |
 
 ## What "done" looks like
 
@@ -89,5 +96,9 @@ If any box is unchecked, you are not done modeling — you are mid-modeling. Eit
 | 97/12 | Code Is Design | Ryan Brush |
 | 97/23 | Domain-Specific Languages | Michael Hunger |
 | 97/48 | Large, Interconnected Data Belongs to a Database | Diomidis Spinellis |
+| `Wlaschin/InvalidStatesUnrepresentable` | Make Invalid States Unrepresentable | Scott Wlaschin |
+| `Wlaschin/SmartConstructors` | Smart Constructors | Scott Wlaschin |
+| `Wlaschin/TypesForEffects` | Types for Effects | Scott Wlaschin |
+| `Fowler/PrimitiveObsession` | Primitive Obsession → Replace Primitive with Object | Martin Fowler |
 
 See `principles.md` for the long-form distillations, citations, and source links.
