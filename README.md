@@ -1,13 +1,22 @@
-# 97
+<h1 align="center">97</h1>
 
-[![CI](https://github.com/oribarilan/97/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/oribarilan/97/actions/workflows/test.yml)
+<p align="center"><strong>Your agent, on the shoulders of giants.</strong></p>
 
-> A multi-harness coding-agent plugin that distills selected principles
-> discussed in *97 Things Every Programmer Should Know: Collective Wisdom
-> from the Experts* into trigger-based skills your agent invokes
-> automatically when relevant.
+<p align="center">
+  <a href="https://github.com/oribarilan/97/actions/workflows/test.yml"><img src="https://github.com/oribarilan/97/actions/workflows/test.yml/badge.svg?branch=main" alt="CI"></a>
+</p>
 
-**Status:** early beta. Works on Claude Code, GitHub Copilot CLI, and OpenCode.
+<p align="center"><em>Early beta. Works on Claude Code, GitHub Copilot CLI, and OpenCode.</em></p>
+
+<p align="center">
+  <a href="#install">Install</a> ·
+  <a href="#whats-inside">What's inside</a> ·
+  <a href="#faq">FAQ</a> ·
+  <a href="#credits">Credits</a> ·
+  <a href="#development">Development</a>
+</p>
+
+---
 
 ## What this is
 
@@ -110,6 +119,28 @@ into the source book as much as a behavior plugin.
 The `security-and-trust-boundaries` and `observability` skills are
 predominantly original commentary on sources outside *97 Things*; see
 `CONTENT-LICENSE.md`.
+
+## FAQ
+
+### How does 97 compare to popular plugins like `superpowers` or `BMAD`?
+
+They sit at different layers, so you can run them side by side:
+
+| Layer | Project | What it changes |
+|---|---|---|
+| **Methodology** | [`BMAD-METHOD`](https://github.com/bmad-code-org/BMAD-METHOD) | Which *role* the agent plays and which *phase* of the SDLC it's in (PM, Architect, Dev, SM…) |
+| **Process** | [`superpowers`](https://github.com/obra/superpowers) | *How* the agent works — when to plan, how to debug, when work is verified |
+| **Craft** | **`97`** | *What* makes the code good once the agent is writing — naming, API shape, error handling, testing, security |
+
+Take writing a test:
+
+- `BMAD` picks *who* on the agent team writes it (the Dev persona).
+- `superpowers/test-driven-development` decides *whether* a test gets written.
+- `97/testing-discipline` decides *what makes that test any good*.
+
+97's bootstrap is explicit about the superpowers boundary: process skills
+fire first. `superpowers/verification-before-completion` asks *did it work*;
+`97/pre-commit-self-review` asks *is it well-considered*.
 
 ## Credits
 

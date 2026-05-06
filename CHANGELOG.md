@@ -13,6 +13,7 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ### Documentation
 
+- `README.md` gets a centered tagline header and a new `FAQ` section.
 - `README.md` now explains that every principle is attributed and shows
   users how to ask the agent for the author, source link, and reasoning
   behind any principle it applies. Reframes 97 as a guided reading list
