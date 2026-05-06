@@ -16,6 +16,12 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [Unreleased]
 
+## [0.5.1] — 2026-05-06
+
+Strengthens the `using-97` bootstrap so 97 skills trigger reliably on
+action-target prompts. Earlier prose was too hedged and agents skipped
+skill invocation when the user's request had a concrete target.
+
 ### Changed
 
 - Strengthened `using-97` bootstrap with imperative-force language so 97
