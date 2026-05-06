@@ -16,6 +16,14 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [Unreleased]
 
+### Changed
+
+- Tightened the umbrella framing phrase from "the classics of
+  programming practice" to "the hard-won lessons of world-renowned
+  programmers" across the README, AGENTS.md, CONTRIBUTE.md, the
+  bootstrap, and all plugin manifests. More concrete, less academic.
+  No skill content changes.
+
 ## [0.5.0] — 2026-05-06
 
 Reframes 97 as skills distilled from the classics of programming practice,

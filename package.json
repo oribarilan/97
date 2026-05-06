@@ -3,7 +3,7 @@
   "version": "0.5.0",
   "type": "module",
   "main": ".opencode/plugins/97.js",
-  "description": "Skills distilled from the classics of programming practice, in the spirit of '97 Things Every Programmer Should Know'. Plugin for Claude Code, GitHub Copilot CLI, and OpenCode.",
+  "description": "Skills distilled from the hard-won lessons of world-renowned programmers, in the spirit of '97 Things Every Programmer Should Know'. Plugin for Claude Code, GitHub Copilot CLI, and OpenCode.",
   "license": "MIT",
   "repository": {
     "type": "git",

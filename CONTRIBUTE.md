@@ -13,7 +13,7 @@ the rules in this document.
 ## 1. What this repo is
 
 `97` is a multi-harness coding-agent plugin that ships behavior-shaping
-skills distilled from the classics of programming practice, in the
+skills distilled from the hard-won lessons of world-renowned programmers, in the
 spirit of *97 Things Every Programmer Should Know* (O'Reilly, ed.
 Kevlin Henney). The same `skills/` directory is loaded by three
 supported harnesses today:

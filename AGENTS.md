@@ -9,7 +9,7 @@ This file is the short list.
 
 ## What this repo is
 `97` is a multi-harness plugin that ships behavior-shaping skills
-distilled from the classics of programming practice, in the spirit of
+distilled from the hard-won lessons of world-renowned programmers, in the spirit of
 *97 Things Every Programmer Should Know* (O'Reilly, ed. Kevlin Henney).
 The same `skills/` directory is loaded by three coding-agent harnesses:
 **Claude Code**, **GitHub Copilot CLI**, and **OpenCode**.
@@ -154,7 +154,7 @@ Good — one bullet, one change, reader's perspective:
 
 ```markdown
 - Reframed user-visible copy: 97 is described as skills distilled
-  from the classics of programming practice, in the spirit of *97
+  from the hard-won lessons of world-renowned programmers, in the spirit of *97
   Things Every Programmer Should Know*, rather than as a *97 Things*
   companion. No skill content changes.
 ```
