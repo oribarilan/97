@@ -78,7 +78,7 @@ For reproducible behavior across sessions, pin to a specific tag (`#vX.Y.Z`):
 ```jsonc
 {
   "plugin": [
-    "97@git+https://github.com/oribarilan/97.git#v0.2.0"
+    "97@git+https://github.com/oribarilan/97.git#v0.5.0"
   ]
 }
 ```
