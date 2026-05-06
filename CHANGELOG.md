@@ -38,9 +38,9 @@ content changes.
 
 - `README.md` gains a centered tagline header and a `FAQ` section
   comparing 97 to `superpowers` and `BMAD`.
-- `README.md` adds an `Attribution & sources` list naming each source
-  the project cites, and explains how to ask the agent for the author
-  and reasoning behind any principle.
+- `README.md` adds a `Giants` section naming each source the project
+  cites, and explains how to ask the agent for the author and
+  reasoning behind any principle.
 - `AGENTS.md` adds an `Adding or removing a source` workflow so the
   source list stays in sync with `principles.md`.
 

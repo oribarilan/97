@@ -181,7 +181,7 @@ If the need arises:
 4. Update the trigger map in `skills/using-97/SKILL.md` AND the `What's
    inside` table in `README.md`.
 5. If the new skill cites a source not already listed in the
-   `### Attribution & sources` bullets in `README.md`, add it there
+   `### Giants` bullets in `README.md`, add it there
    (author/work + one-line topic). See "Adding or removing a source"
    below.
 6. Add a `### Added` entry under `[Unreleased]` in `CHANGELOG.md`.
@@ -196,14 +196,14 @@ If the need arises:
    skill A says "B precedes me on X", skill B's text must agree on the
    boundary. Audit with `rg 'superpowers/|97/' skills/*/SKILL.md`.
 3. If a principle is added from a source not already listed in the
-   `### Attribution & sources` bullets in `README.md`, update that list.
+   `### Giants` bullets in `README.md`, update that list.
    If a source is removed (no remaining principles cite it), remove it.
    See "Adding or removing a source" below.
 4. Add a `### Changed` entry under `[Unreleased]` in `CHANGELOG.md`.
 
 ## Adding or removing a source
 
-The `### Attribution & sources` bullets in `README.md` are the canonical
+The `### Giants` bullets in `README.md` are the canonical
 public-facing list of every source the project cites. The list must
 match what's actually in `principles.md` files. When sources change:
 

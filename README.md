@@ -105,7 +105,7 @@ Works on Linux, macOS, and Windows. Node 18+.
 12 skills total (the bootstrap plus 11 themed skills). Every principle
 is cited and attributed in the skill's `principles.md`.
 
-### Attribution & sources
+### Giants
 
 Every principle the agent applies is attributed to its original author.
 Each skill ships a `principles.md` next to its `SKILL.md` with, per
