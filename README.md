@@ -20,17 +20,17 @@
 
 ## What this is
 
-The book *97 Things Every Programmer Should Know* (O'Reilly, edited by Kevlin
-Henney) collects short essays from 73 expert contributors. Each essay
-distills one piece of wisdom about writing software.
+Skills your coding agent invokes when they apply: when it's about to
+refactor, write a test, design an API, or commit. They distill established
+programming practice like Fowler on refactoring smells, 12-factor on
+configuration and deploys, Ousterhout and Liskov on API shape and design,
+and others.
 
-This plugin curates a subset of those principles around its own trigger
-taxonomy and ships them as skills the agent invokes when relevant: when
-it's about to refactor, when it's writing tests, when designing an API,
-when about to commit. Same shape as
-[`superpowers`](https://github.com/obra/superpowers), narrower in scope,
-and book-inspired rather than book-derived. It does not reproduce the book
-or its editorial selection.
+The project is named for *97 Things Every Programmer Should Know*
+(O'Reilly, ed. Kevlin Henney) and built in its spirit: one hard-won
+principle, distilled small, applied where it matters. Every principle
+ships with attribution to the original author. Principles are chosen
+to be language-agnostic and outlast specific frameworks or stacks.
 
 ## Install
 
@@ -98,23 +98,40 @@ Works on Linux, macOS, and Windows. Node 18+.
 | `pre-commit-self-review` | About to commit, finish a task, open a PR, summarize work, or when asked for a review or hand-off |
 | `working-with-users-and-team` | Gathering or interpreting requirements, estimating effort, or communicating with stakeholders about what to build |
 
-12 skills total (the bootstrap plus 11 themed skills). The themed skills
-distill book principles, with several enriched from additional sources
-(Fowler, Wlaschin, Nygard, 12-factor, GOOS, Meszaros, Ousterhout, Liskov,
-King).
+12 skills total (the bootstrap plus 11 themed skills). Each skill draws
+from the source authors most relevant to its trigger. Every principle is
+cited and attributed in the skill's `principles.md`.
 
 ### Attribution & sources
 
-Every principle the agent applies is attributed to the original essay
-author. Each skill ships a `principles.md` next to its `SKILL.md` with,
-per principle: the contributor's name, a link to the CC-BY-3.0 source
-essay, our distillation in our own words, and how the agent applies it.
+Every principle the agent applies is attributed to its original author.
+Each skill ships a `principles.md` next to its `SKILL.md` with, per
+principle: the author, a link to the source (CC-BY-3.0 essay, book
+chapter, RFC, or specification as appropriate), our distillation in
+our own words, and how the agent applies it.
+
+The sources currently cited:
+
+- *97 Things Every Programmer Should Know* — Kevlin Henney (ed.) and contributors. Namesake; principles across most skills.
+- Martin Fowler — *Refactoring*. Code smells (Long Method, Primitive Obsession, and others).
+- Scott Wlaschin — *Domain Modeling Made Functional*. Make invalid states unrepresentable.
+- Michael Nygard — *Release It!* Stability patterns (circuit breaker, timeout, bulkhead, and others).
+- Adam Wiggins — *The Twelve-Factor App*. Config in the environment, build/release/run separation, and other deploy hygiene.
+- Jez Humble & David Farley — *Continuous Delivery*. Pipeline as code.
+- Steve Freeman & Nat Pryce — *Growing Object-Oriented Software, Guided by Tests*. Listen to test pain.
+- Gerard Meszaros — *xUnit Test Patterns*. Test smells (mystery guest, fragile test, and others).
+- John Ousterhout — *A Philosophy of Software Design*. Deep modules; define errors out of existence.
+- Barbara Liskov — the Liskov Substitution Principle.
+- Alexis King — [*Parse, Don't Validate*](https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/).
+- Google SRE — *Site Reliability Engineering*. The four golden signals.
+- OpenTelemetry / W3C — Trace Context, structured-log conventions.
+- Charity Majors, Liz Fong-Jones, George Miranda — *Observability Engineering*. Cardinality discipline.
 
 You can ask the agent at any time: *"Who wrote the principle you just
 applied, and why does it say what it says?"* The agent will open the
-relevant `principles.md` and tell you who wrote it, link the source
-essay, and explain the reasoning. Treat 97 as a guided reading list
-into the source book as much as a behavior plugin.
+relevant `principles.md` and tell you who wrote it, link the source,
+and explain the reasoning. Treat 97 as a guided reading list into the
+underlying literature as much as a behavior plugin.
 
 The `security-and-trust-boundaries` and `observability` skills are
 predominantly original commentary on sources outside *97 Things*; see
@@ -156,9 +173,9 @@ fire first. `superpowers/verification-before-completion` asks *did it work*;
 ## Licensing
 
 - Plugin code: MIT — see [`LICENSE`](./LICENSE).
-- Skill content: original commentary on selected principles discussed in the
-  book, attributed to the CC-BY-3.0 source essays. Unofficial companion, not
-  affiliated with O'Reilly, Kevlin Henney, or any contributor. See
+- Skill content: original commentary on principles drawn from the source
+  authors named above, with per-principle attribution. Unofficial work,
+  not affiliated with O'Reilly, Kevlin Henney, or any contributor. See
   [`CONTENT-LICENSE.md`](./CONTENT-LICENSE.md) for the full policy and
   takedown commitment.
 

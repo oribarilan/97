@@ -11,13 +11,26 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [Unreleased]
 
+### Changed
+
+- Repositioned 97's user-visible identity from "a multi-harness
+  companion to *97 Things*" to "skills distilled from the classics
+  of programming practice, in the spirit of *97 Things Every
+  Programmer Should Know*." *97 Things* moves from being framed as
+  the primary content source to being framed as the namesake
+  exemplar — the project inherits its form from the book while its
+  content draws from a wider set of established practitioner works.
+  Touches `README.md`, `AGENTS.md`, `CONTRIBUTE.md`, `package.json`,
+  `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`,
+  and the opening sentence of `skills/using-97/SKILL.md`. No skill
+  bodies, principles, or trigger-map entries change.
+
 ### Documentation
 
 - `README.md` gets a centered tagline header and a new `FAQ` section.
-- `README.md` now explains that every principle is attributed and shows
-  users how to ask the agent for the author, source link, and reasoning
-  behind any principle it applies. Reframes 97 as a guided reading list
-  into the source book in addition to a behavior plugin.
+- `README.md` explains how every principle is attributed to its
+  original author and shows users how to ask the agent for the
+  author, source link, and reasoning behind any principle it applies.
 
 ## [0.4.0] — 2026-05-06
 

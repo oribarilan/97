@@ -13,8 +13,9 @@ the rules in this document.
 ## 1. What this repo is
 
 `97` is a multi-harness coding-agent plugin that ships behavior-shaping
-skills distilled from *97 Things Every Programmer Should Know* (O'Reilly,
-ed. Kevlin Henney). The same `skills/` directory is loaded by three
+skills distilled from the classics of programming practice, in the
+spirit of *97 Things Every Programmer Should Know* (O'Reilly, ed.
+Kevlin Henney). The same `skills/` directory is loaded by three
 supported harnesses today:
 
 - **Claude Code** — via the [Claude Code plugin format](https://docs.claude.com/en/docs/claude-code/plugins) (`.claude-plugin/`)

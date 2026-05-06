@@ -8,9 +8,9 @@ For the full contributor + release docs, see [`CONTRIBUTE.md`](./CONTRIBUTE.md).
 This file is the short list.
 
 ## What this repo is
-
-`97` is a multi-harness plugin that ships behavior-shaping skills distilled
-from *97 Things Every Programmer Should Know* (O'Reilly, ed. Kevlin Henney).
+`97` is a multi-harness plugin that ships behavior-shaping skills
+distilled from the classics of programming practice, in the spirit of
+*97 Things Every Programmer Should Know* (O'Reilly, ed. Kevlin Henney).
 The same `skills/` directory is loaded by three coding-agent harnesses:
 **Claude Code**, **GitHub Copilot CLI**, and **OpenCode**.
 
@@ -153,8 +153,12 @@ If the need arises:
    max line count, required section headers, required principle numbers.
 4. Update the trigger map in `skills/using-97/SKILL.md` AND the `What's
    inside` table in `README.md`.
-5. Add a `### Added` entry under `[Unreleased]` in `CHANGELOG.md`.
-6. Run `npm test` until lint and smoke both pass.
+5. If the new skill cites a source not already listed in the
+   `### Attribution & sources` bullets in `README.md`, add it there
+   (author/work + one-line topic). See "Adding or removing a source"
+   below.
+6. Add a `### Added` entry under `[Unreleased]` in `CHANGELOG.md`.
+7. Run `npm test` until lint and smoke both pass.
 
 ## Editing existing skills
 
@@ -164,7 +168,41 @@ If the need arises:
 2. Cross-references between skills must stay bidirectionally consistent — if
    skill A says "B precedes me on X", skill B's text must agree on the
    boundary. Audit with `rg 'superpowers/|97/' skills/*/SKILL.md`.
-3. Add a `### Changed` entry under `[Unreleased]` in `CHANGELOG.md`.
+3. If a principle is added from a source not already listed in the
+   `### Attribution & sources` bullets in `README.md`, update that list.
+   If a source is removed (no remaining principles cite it), remove it.
+   See "Adding or removing a source" below.
+4. Add a `### Changed` entry under `[Unreleased]` in `CHANGELOG.md`.
+
+## Adding or removing a source
+
+The `### Attribution & sources` bullets in `README.md` are the canonical
+public-facing list of every source the project cites. The list must
+match what's actually in `principles.md` files. When sources change:
+
+1. **Adding a source.** Append a bullet in the form
+   `Author — *Work*. One-line topic.` Use the same register as the
+   existing entries: name the author, italicize the work title, give a
+   one-line topic that describes what principles the source contributes.
+   Specific principle names in parentheses are illustrative, not
+   exhaustive — name one or two when they're recognizable, otherwise
+   keep the topic generic. Hyperlink only when the source is a freely
+   available essay or specification (books are not linked).
+2. **Removing a source.** Remove the bullet only when no `principles.md`
+   still cites the source. Verify with
+   `rg '<source-key>/' skills/*/principles.md` before removing.
+3. **Renaming a source.** If a source's citation key changes
+   (per `CITATION-SCHEME.md`), the README bullet's wording stays the
+   same; the key change is internal.
+4. **Order.** Bullets follow the rough order: namesake (*97 Things*) first,
+   then sources by the trigger they primarily serve (refactoring →
+   modeling → resilience → API → testing → ops/observability). Insert new
+   sources where the topic fits, not at the end.
+
+This list is user-facing copy. Apply `humanizer` discipline: no
+promotional language, no rule-of-three padding, no AI-vocabulary
+words. The bullets exist to credit authors and orient curious readers,
+not to market the project.
 
 ## Multi-harness adapter pattern
 

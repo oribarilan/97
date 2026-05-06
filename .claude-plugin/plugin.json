@@ -1,6 +1,6 @@
 {
   "name": "97",
-  "description": "Behavior-shaping skills distilled from '97 Things Every Programmer Should Know'. Trigger-based skills your coding agent invokes automatically when refactoring, writing tests, designing APIs, committing, and more.",
+  "description": "Skills distilled from the classics of programming practice, in the spirit of '97 Things Every Programmer Should Know'. Your coding agent invokes them when about to refactor, write a test, design an API, or commit.",
   "version": "0.4.0",
   "author": {
     "name": "Ori Barilan"
