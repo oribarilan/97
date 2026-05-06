@@ -28,6 +28,8 @@
   "scripts": {
     "lint": "node scripts/lint-skills.mjs",
     "smoke": "node scripts/smoke-load.mjs",
+    "test:trigger-force": "node scripts/test-trigger-force.mjs",
+    "test:trigger-e2e": "node scripts/test-trigger-e2e.mjs",
     "format": "prettier --write \"**/*.{js,mjs,cjs,json,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{js,mjs,cjs,json,yml,yaml}\"",
     "test": "npm run lint && npm run format:check && npm run smoke"

@@ -18,6 +18,13 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ### Changed
 
+- Strengthened `using-97` bootstrap with imperative-force language so 97
+  skills trigger reliably on action-target prompts ("refactor file X",
+  "clean up function Y"). Adds a CRITICAL banner above the trigger map,
+  uppercase MUST directives, an explicit "before any response or action"
+  rule, and red flags catching pre-action rationalization. Earlier prose
+  was too hedged, so agents skipped invocation when the user's request
+  had a concrete target.
 - Tightened the umbrella framing phrase from "the classics of
   programming practice" to "the hard-won lessons of world-renowned
   programmers" across the README, AGENTS.md, CONTRIBUTE.md, the

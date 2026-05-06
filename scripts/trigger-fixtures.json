@@ -1,0 +1,31 @@
+{
+  "_comment": "Trigger fixtures for test-trigger-e2e.mjs. Each case feeds `phrase` to `opencode run` and asserts the agent's first tool_use is `skill` with input.name === expectedSkill. Phrases are intentionally clear and unambiguous — if Haiku doesn't trigger on these, neither will it on real-world phrasing.",
+  "model": "github-copilot/claude-haiku-4.5",
+  "cases": [
+    {
+      "phrase": "I'm about to refactor the authentication module to clean up the structure. What should I keep in mind before starting?",
+      "expectedSkill": "before-you-refactor"
+    },
+    {
+      "phrase": "I'm writing a new function that parses user-supplied dates. Help me write clean code for it.",
+      "expectedSkill": "writing-clean-code"
+    },
+    {
+      "phrase": "I need to write tests for a payment processor. What should the test data and assertions look like?",
+      "expectedSkill": "testing-discipline"
+    },
+    {
+      "phrase": "I'm designing a public API for a new SDK. Help me think through the function signatures and module boundaries.",
+      "expectedSkill": "api-and-interface-design"
+    },
+    {
+      "phrase": "I just finished implementing a feature and I'm about to commit. Walk me through a self-review.",
+      "expectedSkill": "pre-commit-self-review"
+    },
+    {
+      "_comment": "Action-target prompt — the failure mode users actually report. Currently expected to fail against the published bootstrap; should pass after the imperative-force fix ships.",
+      "phrase": "Please refactor the function in scripts/smoke-load.mjs to be cleaner.",
+      "expectedSkill": "before-you-refactor"
+    }
+  ]
+}

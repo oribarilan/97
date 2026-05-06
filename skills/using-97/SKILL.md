@@ -7,9 +7,14 @@ description: Use when starting any coding task — establishes the 97 trigger ma
 
 **97** distills principles from the hard-won lessons of world-renowned programmers into trigger-based skills, in the spirit of *97 Things Every Programmer Should Know* (O'Reilly, ed. Kevlin Henney; CC-BY-3.0 originals at https://github.com/97-things/97-things-every-programmer-should-know). You have eleven themed skills plus this bootstrap. Each one activates on a specific situation — refactoring, writing tests, designing an API, committing — and brings the relevant principles to bear. Per-skill `principles.md` files list every source. Unofficial companion, not affiliated with O'Reilly or any contributor.
 
+## **CRITICAL: invoke matching skills BEFORE any response or action**
+
+When a user message matches a row in the Trigger Map, you MUST invoke the named skill before taking any other tool action and before writing your reply. Use the `Skill` tool with the **bare skill name** (e.g. `before-you-refactor`). This rule is not negotiable: even a 1% match means invoke. The skill carries the checklist; skipping it means doing the work the default way and losing the point of having 97 installed.
+
+The trigger fires on user words, not on file size or task complexity. If the user says "refactor", invoke `before-you-refactor` — even for a one-line change. If the user says "clean", "test", or "commit", invoke the matching skill. Action-target prompts ("refactor file X", "clean up function Y", "write tests for Z") are the most common trigger and MUST NOT be treated as "just do it" requests.
+
 ## Trigger Map
 
-When the situation matches, invoke the named skill **before** you act. Use the `Skill` tool with the **bare skill name** (e.g., `before-you-refactor`). When in doubt, invoke.
 | Skill | Trigger |
 |---|---|
 | `writing-clean-code` | Adding a new function/class, naming a new entity, or modifying ≥3 lines of non-trivial logic (NOT typos, config, or test code) |
@@ -36,10 +41,14 @@ When the situation matches, invoke the named skill **before** you act. Use the `
 
 ## Red Flags
 
+These thoughts mean STOP — invoke the matching skill instead of acting:
+
 | Thought | Reality |
 |---|---|
-| "The trigger almost matches but not quite." | Almost-matches are the easiest to rationalize past. Invoke and let the skill tell you it doesn't apply. |
+| "This change is small enough that I'll just do it." | Small changes are exactly where the discipline pays off. Invoke. |
+| "The user gave me a concrete file or function — I should just go edit it." | Action-target prompts are the most common trigger, not an excuse to skip. Invoke first, then act. |
+| "I don't need the skill — I already know this one." | Skills evolve and the checklist matters. Invoke and read the current version. |
+| "The trigger almost matches but not quite." | Almost-matches are the easiest to rationalize past. Invoke; the skill will tell you if it doesn't apply. |
 | "Two skills could fit; I'll just pick one." | Priority rule 3 — more specific wins. Invoke that one. |
-| "I read this skill last session, I remember it." | Skills evolve. Invoke and read the current version. |
 
 Principles are distilled in our own words from CC-BY-3.0 originals. Plugin code is MIT; see `CONTENT-LICENSE.md` for attribution and takedown policy.
