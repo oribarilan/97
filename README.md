@@ -91,9 +91,9 @@ For reproducible behavior across sessions, pin to a specific tag (`#vX.Y.Z`):
 |---|---|
 | `using-97` | Always — bootstrap that primes the agent on the trigger map |
 | `before-you-refactor` | About to refactor, restructure, rename across files, or "clean up" existing code |
-| `writing-clean-code` | Adding a new function/class, naming a new entity, or modifying ≥3 lines of non-trivial logic |
+| `writing-clean-code` | Adding a new function/class, naming a new entity, or modifying ≥3 lines of non-trivial logic (includes Single Responsibility Principle (SRP), DRY, KISS, YAGNI) |
 | `domain-modeling` | Introducing a new top-level type/table/domain concept, renaming a domain concept, or deciding where state lives |
-| `api-and-interface-design` | Designing a public API, function signature, module boundary, exported type, or any contract other code depends on |
+| `api-and-interface-design` | Designing a public API, function signature, module boundary, exported type, or any contract other code depends on (includes LSP, SRP at the boundary) |
 | `testing-discipline` | Writing tests, designing test data, naming a test, choosing what to assert, or writing test helpers/mocks/fixtures |
 | `error-and-correctness-traps` | Writing error handling, comparing/calculating with floats, writing concurrent code, calling a remote process, adding a singleton, choosing a data structure for a hot path, or changing log statements |
 | `security-and-trust-boundaries` | Parsing user input, writing SQL or shell commands, handling secrets/tokens, hashing passwords, adding/changing an auth check, deserializing untrusted data, or constructing file paths/URLs from input |
@@ -161,6 +161,12 @@ Take writing a test:
 97's bootstrap is explicit about the superpowers boundary: process skills
 fire first. `superpowers/verification-before-completion` asks *did it work*;
 `97/pre-commit-self-review` asks *is it well-considered*.
+
+### Where do SOLID, DRY, KISS, YAGNI live in 97?
+
+Partially, and on purpose. SRP is named twice — in `writing-clean-code` for one-reason-to-change at unit scope, and in `api-and-interface-design` for the same check at module boundaries; `before-you-refactor` carries the SRP trigger to consider a split. LSP is in `api-and-interface-design`. DRY is in `writing-clean-code`. KISS and YAGNI surface as Red Flags in `writing-clean-code` against speculative knobs and unused hooks.
+
+OCP, ISP, and DIP are not promoted by name. The substance closest to ISP and DIP lives in `api-and-interface-design` as narrow interfaces, abstractions at boundaries, and Ousterhout's deep modules. OCP is intentionally left aside — speculative extension points conflict with YAGNI. The Giants list above is built from authors and works, not from the SOLID acronym.
 
 ## Credits
 

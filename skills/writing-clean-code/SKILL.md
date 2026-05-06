@@ -50,7 +50,7 @@ Each decision pairs with a **check** — a property a reviewer can verify by rea
 3. **Find examples in domain terms before writing the function.** *(Braithwaite, 97/94.)* A function with an `int` parameter has billions of input cases; a function with a `LibertyCount = {1,2,3,4}` parameter has four. Pick the types that make the function checkable by example, then write it.
    *Check:* every parameter that could be a domain type is one (or there's a named reason it's not — measured perf, language limitation, deferred to a tracked issue).
 
-4. **One reason to change per unit.** *(Martin, 97/76.)* The Single Responsibility Principle: a function, class, or module should have one reason to change. An `Employee` class with `calculatePay`, `reportHours`, and `save` has three reasons to change and three sets of dependents who suffer for each. Split along axes of change, not axes of "things that share a noun."
+4. **One reason to change per unit.** *(Martin, 97/76.)* The Single Responsibility Principle: a function, class, or module should have one reason to change. An `Employee` class with `calculatePay`, `reportHours`, and `save` has three reasons to change and three sets of dependents who suffer for each. Split along axes of change, not axes of "things that share a noun." See `before-you-refactor` for when to *trigger* a split on existing code.
    *Check:* the responsibility of each function/class/module fits in one sentence with no "and also."
 
 5. **Treat layout as a tool for the reader, not for the parser.** *(Freeman, 97/13.)* Standardize accidental complexity (formatter handles the basics) so domain content stands out. Use line breaks to express intention. Compact, scannable code beats sparse ceremonial code on every metric the reader cares about.
@@ -81,6 +81,8 @@ Each decision pairs with a **check** — a property a reviewer can verify by rea
 | "I'll use `int`/`string` for now — we can wrap it later." | The native type opens billions of input cases that no test will ever cover. A domain type collapses the function to something checkable. (97/94) |
 | "The variable name is short — context makes it obvious." | Context evaporates the moment the reader is somewhere else. Names carry their meaning with them. (97/62) |
 | "Every function on this class belongs together — they all touch `Order`." | Sharing a noun isn't a single responsibility. Ask what changes for what reason; if the answers differ, split. (97/76) |
+| "I'll add this configuration knob in case someone wants to override it." | Speculative knobs are how simple code becomes complex — the substance of KISS. Default to the simplest thing that works; add the knob when a real caller arrives. (97/75) |
+| "I'll add this hook now in case we need it later." | YAGNI: speculation predicts the future poorly, and the unused hook adds maintenance cost forever. Add it when the second caller asks. (97/39) |
 
 ## What "done" looks like
 

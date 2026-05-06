@@ -233,7 +233,8 @@ starting over. Once a piece of code becomes a resource sink, discard it
 quickly. The technique for fixing bad code: switch into ruthless
 refactor / shift / delete mode. Simple code uses the minimum number of
 variables, functions, declarations, and syntactic ceremony — extra anything
-is unwanted noise that hides the flow. The extreme version, when reduction
+is unwanted noise that hides the flow (the substance commonly labeled KISS).
+The extreme version, when reduction
 hits a wall: delete the code entirely and retype it from memory. The act of
 drawing from memory cuts through clutter that's invisible while you're
 inside the file.

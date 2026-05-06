@@ -16,6 +16,11 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [Unreleased]
 
+## [0.6.0] — 2026-05-06
+
+Surfaces SRP, KISS, and YAGNI at the spots where their substance
+already lives. No new skills, no OCP/ISP/DIP promotion.
+
 ### Added
 
 - Cross-harness e2e behavioral test (`npm run test:trigger-e2e`) that
@@ -24,6 +29,19 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
   97 skill. Per-harness scripts (`:opencode`, `:claude`, `:copilot`) and
   graceful skip when a harness isn't authenticated. Manually triggered;
   not part of `npm test`.
+
+### Changed
+
+- Surfaced SRP, KISS, and YAGNI where their substance already lives.
+  `writing-clean-code` Red Flags name KISS and YAGNI;
+  `api-and-interface-design` adds SRP at the module boundary;
+  `before-you-refactor` lists SRP as a refactoring trigger.
+
+### Documentation
+
+- `README.md` adds an FAQ entry mapping SOLID/DRY/KISS/YAGNI to the
+  skills that carry them, and acronym anchors on the relevant
+  `What's inside` rows for discoverability.
 
 ## [0.5.1] — 2026-05-06
 
@@ -411,7 +429,10 @@ your coding agent invokes automatically.
 - Per-skill `principles.md` — long-form distillations with author
   attribution and links to the canonical CC-BY-3.0 source mirror.
 
-[Unreleased]: https://github.com/oribarilan/97/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/oribarilan/97/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/oribarilan/97/releases/tag/v0.6.0
+[0.5.1]: https://github.com/oribarilan/97/releases/tag/v0.5.1
+[0.5.0]: https://github.com/oribarilan/97/releases/tag/v0.5.0
 [0.4.0]: https://github.com/oribarilan/97/releases/tag/v0.4.0
 [0.3.0]: https://github.com/oribarilan/97/releases/tag/v0.3.0
 [0.2.0]: https://github.com/oribarilan/97/releases/tag/v0.2.0

@@ -7,7 +7,7 @@ description: Use when designing a public API, an exported function signature, a 
 
 ## Overview
 
-The headline rule, from Scott Meyers (97/55), governs everything else in this skill: **make interfaces easy to use correctly and hard to use incorrectly.** Every other decision below is a way of cashing that rule out — encapsulating behavior so callers can't reach past the contract, using the type system so wrong calls fail at compile time, designing a vocabulary so callers express intent rather than poke at flags. This skill draws on nine contributors to *97 Things Every Programmer Should Know* (CC-BY-3.0; see `principles.md` for citations and links).
+The headline rule, from Scott Meyers (97/55), governs everything else in this skill: **make interfaces easy to use correctly and hard to use incorrectly.** Every other decision below is a way of cashing that rule out — encapsulating behavior so callers can't reach past the contract, using the type system so wrong calls fail at compile time, designing a vocabulary so callers express intent rather than poke at flags. This skill draws on ten contributors to *97 Things Every Programmer Should Know* (CC-BY-3.0; see `principles.md` for citations and links).
 
 This is a **rigid** skill. Run the decisions in order. If you can't satisfy one, stop and tell your human partner what's blocking you.
 
@@ -52,7 +52,7 @@ Run every decision in order. Decision 1 is the headline; the rest are how you sa
 
 ### Encapsulate
 
-3. **Encapsulate behavior, not just state.** *(Landre, 97/32.)* A type that exposes only getters and setters has pushed every business rule out into its callers, where the rule will be re-implemented inconsistently. If `Order.addItem` needs a credit check, the credit limit and the check belong on `Customer`, and `Order` asks `Customer`. Anti-pattern: an `OrderManager` / `OrderService` that holds all the logic while `Order`, `Customer`, and `Item` are records. When state and the behavior that depends on it live together, callers can't get the sequence wrong.
+3. **Encapsulate behavior, not just state.** *(Landre, 97/32.)* A type that exposes only getters and setters has pushed every business rule out into its callers, where the rule will be re-implemented inconsistently. If `Order.addItem` needs a credit check, the credit limit and the check belong on `Customer`, and `Order` asks `Customer`. Anti-pattern: an `OrderManager` / `OrderService` that holds all the logic while `Order`, `Customer`, and `Item` are records. When state and the behavior that depends on it live together, callers can't get the sequence wrong. And encapsulate *one* coherent behavior — a class with fourteen methods of which any caller uses two has the dual problem: every caller depends on a surface they don't all need. The exported surface should have one reason for callers to depend on it. *(Martin, 97/76 — SRP at the boundary.)*
 4. **Don't extract a shared API until the contexts are actually shared.** *(Dahan, 97/7.)* Two call sites with the same four lines of code are not necessarily the same concept — they may be the same shape today and diverge tomorrow under different business pressures. A premature shared library ties the two callers together: every change now requires synchronizing both. Localize first; extract only when a real shared concept emerges and you can name it in the domain.
 
 ### Use the type system
@@ -85,6 +85,7 @@ These thoughts mean STOP — restart the decisions:
 | "Callers can `if` on the type tag — it's only three cases." | Three cases become thirty, scattered across every caller. Move the choice inside the type with polymorphism. (97/59) |
 | "If they pass bad input, they'll see a clear error message." | Errors are a sign of broken communication, not a feature. Eliminate the error condition or accept the common formats. (97/66) |
 | "It's an internal API — the rules don't apply." | Internal today is exposed tomorrow, and the wrong-use bugs accumulate either way. The rules apply. (97/55) |
+| "This class is the right home for it — it's already imported here." | Wedging a second concern onto a class that's already imported gives every caller a surface they don't all need. The exported surface should have one reason for callers to depend on it; split it. (97/76) |
 | "I'll add another thin method that just forwards to an internal." | Shallow modules pay no abstraction tax. Make the module deep — fewer, more-powerful methods that hide implementation, not more thin pass-throughs. (`Ousterhout/DeepModules`) |
 | "I'll throw `NotFound` if the file doesn't exist on `delete`." | Define the error out of existence: idempotent delete, clamping substring, `Option<T>` lookup. Fewer error paths the caller has to remember. (`Ousterhout/DefineErrorsOutOfExistence`) |
 | "I'll subclass and override the method to throw — callers shouldn't use it." | Subtype must be substitutable. If the override breaks caller assumptions, the hierarchy is wrong. Prefer composition. (`Liskov/LSP`) |
@@ -119,6 +120,7 @@ If any box is unchecked, you are not done designing — you are mid-design. Eith
 | 97/59 | Missing Opportunities for Polymorphism | Kirk Pepperdine |
 | 97/65 | Prefer Domain-Specific Types to Primitive Types | Einar Landre |
 | 97/66 | Prevent Errors | Giles Colborne |
+| 97/76 | The Single Responsibility Principle (at the boundary) | Robert C. Martin |
 | 97/84 | Thinking in States | Niclas Nilsson |
 | `Ousterhout/DeepModules` | Deep Modules | John Ousterhout |
 | `Ousterhout/DefineErrorsOutOfExistence` | Define Errors Out of Existence | John Ousterhout |
