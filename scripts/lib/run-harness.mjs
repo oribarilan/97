@@ -21,18 +21,46 @@
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { spawn } from 'child_process';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const TIMEOUT_MS = 120_000;
 
 /**
+ * Optional per-harness env overrides loaded from
+ * `scripts/test-env.local.json` (gitignored). Shape:
+ *
+ *   { "claude": { "ANTHROPIC_BASE_URL": "...", "ANTHROPIC_API_KEY": "..." },
+ *     "copilot": { "FOO": "bar" } }
+ *
+ * Use cases: routing a harness through a local proxy, supplying dummy
+ * credentials for offline testing, pinning a specific endpoint. The file
+ * is read once at module load; missing or malformed → silently treated as
+ * empty (no overrides). Vars set here override the ambient environment
+ * for the spawned child only.
+ */
+function loadEnvOverrides() {
+  const p = path.resolve(__dirname, '..', 'test-env.local.json');
+  try {
+    if (!fs.existsSync(p)) return {};
+    const parsed = JSON.parse(fs.readFileSync(p, 'utf8'));
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+const ENV_OVERRIDES = loadEnvOverrides();
+
+/**
  * Generic spawn helper. Returns { stdout, stderr, exitCode, timedOut }.
  */
-function runChild({ cmd, args, cwd, timeoutMs = TIMEOUT_MS }) {
+function runChild({ cmd, args, cwd, envOverrides = {}, timeoutMs = TIMEOUT_MS }) {
   return new Promise((resolve) => {
     const child = spawn(cmd, args, {
       cwd,
-      env: { ...process.env },
+      env: { ...process.env, ...envOverrides },
       stdio: ['ignore', 'pipe', 'pipe'],
     });
 
@@ -130,7 +158,12 @@ async function runOpenCode({ phrase, repoRoot }) {
       '--dangerously-skip-permissions',
       phrase,
     ];
-    const res = await runChild({ cmd: 'opencode', args, cwd: repoRoot });
+    const res = await runChild({
+      cmd: 'opencode',
+      args,
+      cwd: repoRoot,
+      envOverrides: ENV_OVERRIDES.opencode,
+    });
 
     if (res.timedOut)
       return {
@@ -189,7 +222,12 @@ async function runClaudeCode({ phrase, repoRoot }) {
       '-p',
       phrase,
     ];
-    const res = await runChild({ cmd: 'claude', args, cwd: ws.dir });
+    const res = await runChild({
+      cmd: 'claude',
+      args,
+      cwd: ws.dir,
+      envOverrides: ENV_OVERRIDES.claude,
+    });
 
     if (res.timedOut)
       return {
@@ -213,6 +251,24 @@ async function runClaudeCode({ phrase, repoRoot }) {
         firstSkillName: null,
         allTools: [],
         error: 'claude not authenticated — run `claude /login` once interactively',
+        skipped: true,
+        raw: res.stdout,
+      };
+    }
+
+    // Upstream/proxy errors (custom ANTHROPIC_BASE_URL, beta-header
+    // mismatch, model not available, etc.) surface as a `result` event
+    // with `is_error: true`. Treat as skipped with the real reason so
+    // users running through a custom endpoint see a helpful message
+    // instead of a cryptic exit-code failure.
+    const apiError = events.find((e) => e.type === 'result' && e.is_error === true);
+    if (apiError) {
+      const reason = String(apiError.result || 'unknown API error').slice(0, 200);
+      return {
+        firstTool: null,
+        firstSkillName: null,
+        allTools: [],
+        error: `claude API error — ${reason}`,
         skipped: true,
         raw: res.stdout,
       };
@@ -272,7 +328,12 @@ async function runCopilotCli({ phrase, repoRoot }) {
       '-p',
       phrase,
     ];
-    const res = await runChild({ cmd: 'copilot', args, cwd: ws.dir });
+    const res = await runChild({
+      cmd: 'copilot',
+      args,
+      cwd: ws.dir,
+      envOverrides: ENV_OVERRIDES.copilot,
+    });
 
     if (res.timedOut)
       return {
