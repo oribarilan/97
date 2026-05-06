@@ -1,52 +1,45 @@
 #!/usr/bin/env node
 /**
- * test-trigger-e2e.mjs — live behavioral test of the using-97 bootstrap.
+ * test-trigger-e2e.mjs — live behavioral test of the using-97 bootstrap
+ * across all supported harnesses (OpenCode, Claude Code, Copilot CLI).
  *
- * Run manually:   npm run test:trigger-e2e
+ * Run manually:
+ *   npm run test:trigger-e2e            # all harnesses
+ *   npm run test:trigger-e2e:opencode   # one harness
+ *   npm run test:trigger-e2e:claude
+ *   npm run test:trigger-e2e:copilot
+ *
+ * Or directly:
+ *   node scripts/test-trigger-e2e.mjs --harness=opencode,copilot
  *
  * What it does
  * ------------
- * For each case in scripts/trigger-fixtures.json, spawns `opencode run` with
- * the trigger phrase and the configured model (Haiku by default). Parses the
- * streamed JSON events, finds the agent's first `tool_use`, and asserts:
+ * For each (harness × case) pair, spawns the harness CLI with the trigger
+ * phrase and asserts the agent's first tool call is `skill(<expectedSkill>)`.
+ * The bootstrap is loaded from the local working tree (Claude/Copilot via
+ * `--plugin-dir`) or from the user's installed plugin (OpenCode), and the
+ * model is pinned to Haiku.
  *
- *   1. The first tool call is `skill` (not `read`, `edit`, `bash`, etc.).
- *   2. The skill invoked is exactly `expectedSkill`.
+ * If a harness is not authenticated (e.g. Claude Code without `/login`),
+ * the cases for that harness are SKIPPED with a warning, not failed.
  *
- * If the bootstrap is doing its job, Haiku reliably invokes the matching 97
- * skill before taking any other action. If the bootstrap is too soft, Haiku
- * skips the skill and starts editing/reading instead — which is precisely
- * the regression this test catches.
- *
- * Why Haiku
- * ---------
- * Cheapest model. If Haiku triggers correctly, stronger models almost
- * certainly will. If Haiku skips, that's a bootstrap problem worth fixing,
- * not a model-capacity problem.
- *
- * Why first-tool-call strictness
- * ------------------------------
- * The behavioral failure mode is "agent acts before invoking skill". A
- * permissive check (e.g. "skill is invoked anywhere in the session") would
- * mask exactly that failure: an agent that edits a file, then invokes the
- * skill afterward as an afterthought, has already done the wrong thing.
- *
- * Isolation
- * ---------
- * Each case runs in a fresh tmp directory via `--dir`. Even if the agent
- * skips the skill and tries to edit something, there is nothing in that
- * directory to edit, so the real repo is safe.
+ * Pass criteria
+ * -------------
+ * The first tool the agent invokes must be `skill` (case-insensitive),
+ * with the matching expected skill name. Anything else is a failure —
+ * including invoking a different skill, hitting timeout, or going
+ * straight to read/edit/bash before the skill.
  *
  * Cost
- * -----
- * ~5 cases × Haiku ≈ a few cents per run. Manually triggered, not in CI.
+ * ----
+ * ~6 cases × ~3 harnesses × ~20s ≈ 6 minutes. Manually triggered, not in CI.
  */
 
 import fs from 'fs';
-import os from 'os';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { spawn } from 'child_process';
+
+import { HARNESSES, isPass } from './lib/run-harness.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
@@ -58,189 +51,127 @@ if (!fs.existsSync(fixturesPath)) {
 }
 
 const fixtures = JSON.parse(fs.readFileSync(fixturesPath, 'utf8'));
-const { model, cases } = fixtures;
-
-if (!model || !Array.isArray(cases) || cases.length === 0) {
-  console.error('test-trigger-e2e FAIL: fixtures missing `model` or `cases`');
+const { cases } = fixtures;
+if (!Array.isArray(cases) || cases.length === 0) {
+  console.error('test-trigger-e2e FAIL: fixtures missing `cases`');
   process.exit(1);
 }
 
-// Per-case timeout. Haiku's interaction is usually <10s, but each `opencode
-// run` has ~5–10s of process/server startup overhead, and slow networks add
-// more. 120s is conservative — a real regression (agent hanging or
-// over-thinking) will still trip it.
-const CASE_TIMEOUT_MS = 120_000;
-
-/**
- * Run one trigger phrase through `opencode run` and capture the first
- * tool_use event. Returns { firstTool, firstSkillName, allTools, raw, error }.
- */
-function runCase({ phrase, expectedSkill }, idx) {
-  return new Promise((resolve) => {
-    // Each case gets its own scratch directory so the agent can't damage
-    // anything if it skips the skill and tries to act.
-    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), `97-trigger-e2e-${idx}-`));
-
-    const args = [
-      'run',
-      '--model',
-      model,
-      '--format',
-      'json',
-      '--dir',
-      tmpDir,
-      '--dangerously-skip-permissions',
-      phrase,
-    ];
-
-    const child = spawn('opencode', args, {
-      cwd: root,
-      env: { ...process.env },
-      // Critical: explicitly close stdin. Default spawn() leaves stdin as an
-      // open pipe; `opencode run` then appears to wait on it indefinitely
-      // (manifests as a hang to timeout). With 'ignore', stdin is /dev/null
-      // and the child sees immediate EOF.
-      stdio: ['ignore', 'pipe', 'pipe'],
-    });
-
-    let stdout = '';
-    let stderr = '';
-    let resolved = false;
-
-    const finish = (result) => {
-      if (resolved) return;
-      resolved = true;
-      try {
-        fs.rmSync(tmpDir, { recursive: true, force: true });
-      } catch {
-        /* ignore cleanup errors */
-      }
-      resolve(result);
-    };
-
-    const timer = setTimeout(() => {
-      try {
-        child.kill('SIGKILL');
-      } catch {
-        /* already dead */
-      }
-      finish({
-        phrase,
-        expectedSkill,
-        firstTool: null,
-        firstSkillName: null,
-        allTools: [],
-        error: `timeout after ${CASE_TIMEOUT_MS}ms`,
-        raw: stdout,
-      });
-    }, CASE_TIMEOUT_MS);
-
-    child.stdout.on('data', (chunk) => {
-      stdout += chunk.toString();
-    });
-    child.stderr.on('data', (chunk) => {
-      stderr += chunk.toString();
-    });
-
-    child.on('error', (err) => {
-      clearTimeout(timer);
-      finish({
-        phrase,
-        expectedSkill,
-        firstTool: null,
-        firstSkillName: null,
-        allTools: [],
-        error: `spawn error: ${err.message}`,
-        raw: stdout,
-      });
-    });
-
-    child.on('close', (code) => {
-      clearTimeout(timer);
-
-      // Parse newline-delimited JSON events. opencode-run emits one event
-      // per line; tool calls show up as { type: "tool_use", part: { tool, ... } }.
-      const events = stdout
-        .split('\n')
-        .map((line) => line.trim())
-        .filter((line) => line.startsWith('{'))
-        .map((line) => {
-          try {
-            return JSON.parse(line);
-          } catch {
-            return null;
-          }
-        })
-        .filter(Boolean);
-
-      const toolEvents = events.filter((e) => e.type === 'tool_use' && e.part?.tool);
-      const allTools = toolEvents.map((e) => ({
-        tool: e.part.tool,
-        skillName: e.part.tool === 'skill' ? (e.part.state?.input?.name ?? null) : null,
-      }));
-      const firstTool = allTools[0]?.tool ?? null;
-      const firstSkillName = allTools[0]?.skillName ?? null;
-
-      finish({
-        phrase,
-        expectedSkill,
-        firstTool,
-        firstSkillName,
-        allTools,
-        error: code !== 0 ? `opencode exited ${code}: ${stderr.slice(0, 200)}` : null,
-        raw: stdout,
-      });
-    });
-  });
-}
-
-console.log(`test-trigger-e2e — running ${cases.length} cases against ${model}\n`);
-
-let pass = 0;
-let fail = 0;
-const failures = [];
-
-for (let i = 0; i < cases.length; i++) {
-  const c = cases[i];
-  const started = Date.now();
-  process.stdout.write(`  [${i + 1}/${cases.length}] "${c.phrase.slice(0, 60)}..." `);
-  const result = await runCase(c, i);
-  const elapsed = ((Date.now() - started) / 1000).toFixed(1);
-
-  // A pass requires: first tool call was `skill`, AND it invoked the
-  // expected skill name. Anything else is a fail — including agent error,
-  // timeout, or invoking a different skill.
-  const ok =
-    !result.error && result.firstTool === 'skill' && result.firstSkillName === c.expectedSkill;
-
-  if (ok) {
-    pass++;
-    console.log(`✓ (${elapsed}s)`);
-  } else {
-    fail++;
-    const detail = result.error
-      ? result.error
-      : `first=${result.firstTool ?? 'none'}${result.firstSkillName ? `(${result.firstSkillName})` : ''}`;
-    console.log(`✗ (${elapsed}s, ${detail})`);
-    failures.push(result);
+// --------------------------------------------------------------------------
+// Argument parsing: --harness=a,b or env HARNESS=a,b. Default = all.
+// --------------------------------------------------------------------------
+function parseHarnessArg() {
+  const argv = process.argv.slice(2);
+  const flag = argv.find((a) => a.startsWith('--harness='));
+  const raw = flag ? flag.split('=')[1] : process.env.HARNESS;
+  if (!raw) return Object.keys(HARNESSES);
+  const requested = raw
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const unknown = requested.filter((h) => !HARNESSES[h]);
+  if (unknown.length) {
+    console.error(`test-trigger-e2e FAIL: unknown harness(es): ${unknown.join(', ')}`);
+    console.error(`Valid: ${Object.keys(HARNESSES).join(', ')}`);
+    process.exit(1);
   }
+  return requested;
 }
 
-console.log('');
+const selected = parseHarnessArg();
 
-if (fail > 0) {
-  console.error(`test-trigger-e2e FAIL — ${fail} of ${cases.length} cases regressed:\n`);
-  for (const f of failures) {
-    console.error(`  ✗ expected skill: ${f.expectedSkill}`);
-    console.error(`      phrase:        "${f.phrase}"`);
-    if (f.error) {
-      console.error(`      error:         ${f.error}`);
+console.log(
+  `test-trigger-e2e — ${cases.length} cases × ${selected.length} harness(es): ${selected.join(', ')}\n`
+);
+
+// --------------------------------------------------------------------------
+// Run.
+// --------------------------------------------------------------------------
+const summary = { pass: 0, fail: 0, skip: 0 };
+const failures = [];
+const skips = []; // [{ harness, reason }]
+
+for (const harnessKey of selected) {
+  const { label, run } = HARNESSES[harnessKey];
+  console.log(`── ${label} (${harnessKey}) ──`);
+
+  let harnessSkippedReason = null;
+
+  for (let i = 0; i < cases.length; i++) {
+    const c = cases[i];
+
+    // If a previous case in this harness reported "skipped" (e.g. auth
+    // missing), don't bother running the rest — they will all fail the
+    // same way. Mark them as skipped and move on.
+    if (harnessSkippedReason) {
+      summary.skip++;
+      console.log(`  [${i + 1}/${cases.length}] ⊘ skipped (${harnessSkippedReason})`);
+      continue;
+    }
+
+    const started = Date.now();
+    process.stdout.write(`  [${i + 1}/${cases.length}] "${c.phrase.slice(0, 56)}..." `);
+    const result = await run({ phrase: c.phrase, repoRoot: root, idx: i });
+    const elapsed = ((Date.now() - started) / 1000).toFixed(1);
+
+    if (result.skipped) {
+      // First skip in this harness: latch the reason and mark this case
+      // skipped. All subsequent cases for the same harness will skip too.
+      harnessSkippedReason = result.error;
+      skips.push({ harness: harnessKey, reason: result.error });
+      summary.skip++;
+      console.log(`⊘ (${elapsed}s, ${result.error})`);
+      continue;
+    }
+
+    if (isPass(result, c.expectedSkill)) {
+      summary.pass++;
+      console.log(`✓ (${elapsed}s)`);
     } else {
-      console.error(`      first tool:    ${f.firstTool ?? '(none)'}`);
-      console.error(`      first skill:   ${f.firstSkillName ?? '(n/a)'}`);
-      const toolSummary = f.allTools
+      summary.fail++;
+      const detail = result.error
+        ? result.error
+        : `first=${result.firstTool ?? 'none'}${result.firstSkillName ? `(${result.firstSkillName})` : ''}`;
+      console.log(`✗ (${elapsed}s, ${detail})`);
+      failures.push({ harness: harnessKey, case: c, result });
+    }
+  }
+  console.log('');
+}
+
+// --------------------------------------------------------------------------
+// Report.
+// --------------------------------------------------------------------------
+const total = summary.pass + summary.fail + summary.skip;
+console.log(
+  `Summary: ${summary.pass}/${total} passed, ${summary.fail} failed, ${summary.skip} skipped\n`
+);
+
+if (skips.length > 0) {
+  // Deduplicate by harness — only show one warning per skipped harness.
+  const seen = new Set();
+  console.log('Skipped harnesses:');
+  for (const s of skips) {
+    if (seen.has(s.harness)) continue;
+    seen.add(s.harness);
+    console.log(`  ⊘ ${s.harness}: ${s.reason}`);
+  }
+  console.log('');
+}
+
+if (failures.length > 0) {
+  console.error('Failures:');
+  for (const f of failures) {
+    console.error(`  ✗ [${f.harness}] expected skill: ${f.case.expectedSkill}`);
+    console.error(`      phrase:        "${f.case.phrase}"`);
+    if (f.result.error) {
+      console.error(`      error:         ${f.result.error}`);
+    } else {
+      console.error(`      first tool:    ${f.result.firstTool ?? '(none)'}`);
+      console.error(`      first skill:   ${f.result.firstSkillName ?? '(n/a)'}`);
+      const toolSummary = f.result.allTools
         .slice(0, 5)
-        .map((t) => (t.tool === 'skill' ? `skill(${t.skillName})` : t.tool))
+        .map((t) => (t.tool === 'skill' || t.tool === 'Skill' ? `skill(${t.skillName})` : t.tool))
         .join(' → ');
       console.error(`      tool sequence: ${toolSummary || '(no tool calls)'}`);
     }
@@ -250,5 +181,5 @@ if (fail > 0) {
 }
 
 console.log(
-  `test-trigger-e2e OK — ${pass}/${cases.length} cases triggered the correct skill first.`
+  `test-trigger-e2e OK — every selected harness invoked the correct skill first on every case.`
 );

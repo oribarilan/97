@@ -16,6 +16,15 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [Unreleased]
 
+### Added
+
+- Cross-harness e2e behavioral test (`npm run test:trigger-e2e`) that
+  runs trigger phrases through OpenCode, Claude Code, and Copilot CLI
+  against Haiku and asserts the agent's first tool call is the matching
+  97 skill. Per-harness scripts (`:opencode`, `:claude`, `:copilot`) and
+  graceful skip when a harness isn't authenticated. Manually triggered;
+  not part of `npm test`.
+
 ## [0.5.1] — 2026-05-06
 
 Strengthens the `using-97` bootstrap so 97 skills trigger reliably on
