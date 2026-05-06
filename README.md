@@ -68,8 +68,10 @@ Add to your OpenCode config file.
 
 Restart OpenCode. The plugin pulls the latest commit on each restart.
 
-**Advanced: pinned install.** For reproducible behavior across sessions,
-pin to a specific tag (`#vX.Y.Z`):
+<details>
+<summary><strong>Advanced: pinned install</strong></summary>
+
+For reproducible behavior across sessions, pin to a specific tag (`#vX.Y.Z`):
 
 ```jsonc
 {
@@ -78,6 +80,8 @@ pin to a specific tag (`#vX.Y.Z`):
   ]
 }
 ```
+
+</details>
 
 Works on Linux, macOS, and Windows. Node 18+.
 
