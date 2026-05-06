@@ -26,6 +26,20 @@ function die(msg) {
   process.exit(1);
 }
 
+function loadJSON(filePath, description) {
+  try {
+    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  } catch (e) {
+    die(`${description} does not parse: ${e.message}`);
+  }
+}
+
+function requireFileExists(filePath, description) {
+  if (!fs.existsSync(filePath)) {
+    die(`${description} missing`);
+  }
+}
+
 // ---------------------------------------------------------------------------
 // 1. OpenCode plugin loads and registers skills/
 // ---------------------------------------------------------------------------
@@ -94,26 +108,13 @@ const pkgPath = path.join(root, 'package.json');
 const pluginManifestPath = path.join(root, '.claude-plugin/plugin.json');
 const marketplacePath = path.join(root, '.claude-plugin/marketplace.json');
 
-for (const p of [pkgPath, pluginManifestPath, marketplacePath]) {
-  if (!fs.existsSync(p)) die(`missing manifest: ${path.relative(root, p)}`);
-}
+requireFileExists(pkgPath, 'package.json');
+requireFileExists(pluginManifestPath, '.claude-plugin/plugin.json');
+requireFileExists(marketplacePath, '.claude-plugin/marketplace.json');
 
-let pkg, pluginManifest, marketplace;
-try {
-  pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
-} catch (e) {
-  die(`package.json does not parse: ${e.message}`);
-}
-try {
-  pluginManifest = JSON.parse(fs.readFileSync(pluginManifestPath, 'utf8'));
-} catch (e) {
-  die(`.claude-plugin/plugin.json does not parse: ${e.message}`);
-}
-try {
-  marketplace = JSON.parse(fs.readFileSync(marketplacePath, 'utf8'));
-} catch (e) {
-  die(`.claude-plugin/marketplace.json does not parse: ${e.message}`);
-}
+const pkg = loadJSON(pkgPath, 'package.json');
+const pluginManifest = loadJSON(pluginManifestPath, '.claude-plugin/plugin.json');
+const marketplace = loadJSON(marketplacePath, '.claude-plugin/marketplace.json');
 
 if (marketplace.name !== '97-marketplace') {
   die(`marketplace.json name must be "97-marketplace", got "${marketplace.name}"`);
@@ -146,7 +147,7 @@ if (distinctVersions.size !== 1) {
 // 3. AGENTS.md is the single source of truth for contributor docs
 // ---------------------------------------------------------------------------
 const agentsPath = path.join(root, 'AGENTS.md');
-if (!fs.existsSync(agentsPath)) die('AGENTS.md missing');
+requireFileExists(agentsPath, 'AGENTS.md');
 const agentsBytes = fs.readFileSync(agentsPath);
 const claudePath = path.join(root, 'CLAUDE.md');
 if (fs.existsSync(claudePath)) {
@@ -161,20 +162,14 @@ if (fs.existsSync(claudePath)) {
 // 4. hooks/hooks.json parses and is well-formed
 // ---------------------------------------------------------------------------
 const hooksJsonPath = path.join(root, 'hooks/hooks.json');
-if (!fs.existsSync(hooksJsonPath)) die('hooks/hooks.json missing');
-let hooksJson;
-try {
-  hooksJson = JSON.parse(fs.readFileSync(hooksJsonPath, 'utf8'));
-} catch (e) {
-  die(`hooks/hooks.json does not parse: ${e.message}`);
-}
+requireFileExists(hooksJsonPath, 'hooks/hooks.json');
+const hooksJson = loadJSON(hooksJsonPath, 'hooks/hooks.json');
 const sessionStartArr = hooksJson?.hooks?.SessionStart;
 if (!Array.isArray(sessionStartArr) || sessionStartArr.length === 0) {
   die('hooks/hooks.json missing hooks.SessionStart entry');
 }
 for (const f of ['session-start.mjs']) {
-  const p = path.join(root, 'hooks', f);
-  if (!fs.existsSync(p)) die(`hooks/${f} missing`);
+  requireFileExists(path.join(root, 'hooks', f), `hooks/${f}`);
 }
 for (const stale of ['session-start', 'run-hook.cmd']) {
   const p = path.join(root, 'hooks', stale);
@@ -201,13 +196,11 @@ function runHook(env) {
     env: { ...process.env, ...env },
   });
   if (res.status !== 0) die(`session-start.mjs exited ${res.status}: ${res.stderr || res.stdout}`);
-  let parsed;
   try {
-    parsed = JSON.parse(res.stdout);
+    return JSON.parse(res.stdout);
   } catch (e) {
     die(`session-start.mjs stdout is not valid JSON: ${e.message}\n${res.stdout}`);
   }
-  return parsed;
 }
 
 // Default (Claude Code) shape: nested hookSpecificOutput.additionalContext.
