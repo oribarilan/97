@@ -16,16 +16,28 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [Unreleased]
 
+## [0.5.0] — 2026-05-06
+
+Reframes 97 as skills distilled from the classics of programming practice,
+in the spirit of *97 Things*, rather than a *97 Things* companion. Adds a
+per-source attribution list and a FAQ section to the README. No skill
+content changes.
+
 ### Changed
 
 - Reframed user-visible copy: 97 is described as skills distilled from
   the classics of programming practice, in the spirit of *97 Things
   Every Programmer Should Know*, rather than as a *97 Things*
   companion. No skill content changes.
+- Tightened `AGENTS.md` "Changelog discipline" with a length cap, a
+  no-internal-references rule, and a bad/good example pair. The
+  `CHANGELOG.md` "For contributors" note repeats the imperative rules
+  in-place.
 
 ### Documentation
 
-- `README.md` gains a centered tagline header and a `FAQ` section.
+- `README.md` gains a centered tagline header and a `FAQ` section
+  comparing 97 to `superpowers` and `BMAD`.
 - `README.md` adds an `Attribution & sources` list naming each source
   the project cites, and explains how to ask the agent for the author
   and reasoning behind any principle.

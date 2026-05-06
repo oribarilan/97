@@ -1,6 +1,6 @@
 {
   "name": "97",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "type": "module",
   "main": ".opencode/plugins/97.js",
   "description": "Skills distilled from the classics of programming practice, in the spirit of '97 Things Every Programmer Should Know'. Plugin for Claude Code, GitHub Copilot CLI, and OpenCode.",
