@@ -241,7 +241,7 @@ example — match its shape.
   names, `.todo/` paths, and PR-process artifacts belong in commit
   bodies and task files, not the user-facing changelog.
 - Name skills, files, and config keys in backticks.
-- Voice rules from §10 apply: no AI vocabulary, no copula avoidance,
+- Voice rules from section 10 apply: no AI vocabulary, no copula avoidance,
   no rule-of-three padding, em dashes in moderation.
 
 ### When you don't need a changelog entry

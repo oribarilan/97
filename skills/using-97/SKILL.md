@@ -39,7 +39,7 @@ When the situation matches, invoke the named skill **before** you act. Use the `
 | Thought | Reality |
 |---|---|
 | "The trigger almost matches but not quite." | Almost-matches are the easiest to rationalize past. Invoke and let the skill tell you it doesn't apply. |
-| "Two skills could fit; I'll just pick one." | Priority §3 — more specific wins. Invoke that one. |
+| "Two skills could fit; I'll just pick one." | Priority rule 3 — more specific wins. Invoke that one. |
 | "I read this skill last session, I remember it." | Skills evolve. Invoke and read the current version. |
 
 Principles are distilled in our own words from CC-BY-3.0 originals. Plugin code is MIT; see `CONTENT-LICENSE.md` for attribution and takedown policy.

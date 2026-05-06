@@ -27,10 +27,10 @@ configuration and deploys, Ousterhout and Liskov on API shape and design,
 and others.
 
 The project is named for *97 Things Every Programmer Should Know*
-(O'Reilly, ed. Kevlin Henney) and built in its spirit: one hard-won
-principle, distilled small, applied where it matters. Every principle
-ships with attribution to the original author. Principles are chosen
-to be language-agnostic and outlast specific frameworks or stacks.
+(O'Reilly, ed. Kevlin Henney) and built in its spirit: one principle
+at a time, applied at the moment of decision. Every principle ships
+with attribution to the original author. Principles are chosen to be
+language-agnostic and outlast specific frameworks or stacks.
 
 ## Install
 
@@ -98,9 +98,8 @@ Works on Linux, macOS, and Windows. Node 18+.
 | `pre-commit-self-review` | About to commit, finish a task, open a PR, summarize work, or when asked for a review or hand-off |
 | `working-with-users-and-team` | Gathering or interpreting requirements, estimating effort, or communicating with stakeholders about what to build |
 
-12 skills total (the bootstrap plus 11 themed skills). Each skill draws
-from the source authors most relevant to its trigger. Every principle is
-cited and attributed in the skill's `principles.md`.
+12 skills total (the bootstrap plus 11 themed skills). Every principle
+is cited and attributed in the skill's `principles.md`.
 
 ### Attribution & sources
 
@@ -134,7 +133,7 @@ and explain the reasoning. Treat 97 as a guided reading list into the
 underlying literature as much as a behavior plugin.
 
 The `security-and-trust-boundaries` and `observability` skills are
-predominantly original commentary on sources outside *97 Things*; see
+mostly original commentary on sources outside *97 Things*; see
 `CONTENT-LICENSE.md`.
 
 ## FAQ

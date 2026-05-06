@@ -6,31 +6,31 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 > **For contributors:** add your change to the `[Unreleased]` section as part
-> of the same PR that introduces it. The release process moves Unreleased
-> entries into a new versioned section. See `CONTRIBUTE.md` for details.
+> of the same PR that introduces it. **Bullets are tight: one change per
+> bullet, past tense, reader's perspective, ≤6–7 lines. No task IDs,
+> deliberation history, or file-touched lists — those belong in the commit
+> body.** See `CONTRIBUTE.md` section 4 for the full rules and `AGENTS.md`
+> "Changelog discipline" for the agent-facing imperative version with
+> bad/good examples. The release process moves Unreleased entries into a
+> new versioned section.
 
 ## [Unreleased]
 
 ### Changed
 
-- Repositioned 97's user-visible identity from "a multi-harness
-  companion to *97 Things*" to "skills distilled from the classics
-  of programming practice, in the spirit of *97 Things Every
-  Programmer Should Know*." *97 Things* moves from being framed as
-  the primary content source to being framed as the namesake
-  exemplar — the project inherits its form from the book while its
-  content draws from a wider set of established practitioner works.
-  Touches `README.md`, `AGENTS.md`, `CONTRIBUTE.md`, `package.json`,
-  `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`,
-  and the opening sentence of `skills/using-97/SKILL.md`. No skill
-  bodies, principles, or trigger-map entries change.
+- Reframed user-visible copy: 97 is described as skills distilled from
+  the classics of programming practice, in the spirit of *97 Things
+  Every Programmer Should Know*, rather than as a *97 Things*
+  companion. No skill content changes.
 
 ### Documentation
 
-- `README.md` gets a centered tagline header and a new `FAQ` section.
-- `README.md` explains how every principle is attributed to its
-  original author and shows users how to ask the agent for the
-  author, source link, and reasoning behind any principle it applies.
+- `README.md` gains a centered tagline header and a `FAQ` section.
+- `README.md` adds an `Attribution & sources` list naming each source
+  the project cites, and explains how to ask the agent for the author
+  and reasoning behind any principle.
+- `AGENTS.md` adds an `Adding or removing a source` workflow so the
+  source list stays in sync with `principles.md`.
 
 ## [0.4.0] — 2026-05-06
 
@@ -151,7 +151,7 @@ essays.
 - `README.md` OpenCode install section trimmed: dropped the per-platform
   config-path table and the floating-vs-pinned trade-off paragraph.
   Both were noise for a section that just needs to show the snippet.
-- `CONTRIBUTE.md` §4 (changelog style) and §6 (release commit message)
+- `CONTRIBUTE.md` section 4 (changelog style) and section 6 (release commit message)
   now spell out the plain-prose voice we used for v0.3: open each
   version with a 1–2 sentence framing line, describe the change rather
   than the deliberation, keep internal references (task IDs, council

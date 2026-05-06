@@ -127,15 +127,42 @@ to the relevant subsection of `[Unreleased]`:
 - `### Security` — vulnerability fixes
 - `### Documentation` — README/CONTRIBUTE/AGENTS edits worth flagging
 
-Bullets are written in past tense, focused on the reader's perspective, and
-end with a period. If a bullet relates to a specific skill, name it in
-backticks. Example:
+**Bullets are tight.** Past tense, reader's perspective, period at
+the end. One change per bullet. Skills and files in backticks.
+
+**Describe the change, not the deliberation.** No task IDs, story
+slugs, council names, `.todo/` paths, or file-touched lists in the
+bullet. Those belong in the commit body. The changelog is what users
+read.
+
+**If a bullet runs past 6–7 lines, you are explaining yourself.** Cut.
+
+Bad — wall of prose, file list, AI-ish phrasing ("namesake exemplar"):
 
 ```markdown
-### Added
-- `error-and-correctness-traps` now covers `0.1 + 0.2 != 0.3` as a worked
-  example for the Numerics sub-section.
+- Repositioned 97's user-visible identity from "a multi-harness
+  companion to *97 Things*" to "skills distilled from the classics
+  of programming practice…" *97 Things* moves from being framed as
+  the primary content source to being framed as the namesake
+  exemplar — the project inherits its form from the book while its
+  content draws from a wider set of established practitioner works.
+  Touches `README.md`, `AGENTS.md`, `CONTRIBUTE.md`, `package.json`,
+  `.claude-plugin/plugin.json`, …
 ```
+
+Good — one bullet, one change, reader's perspective:
+
+```markdown
+- Reframed user-visible copy: 97 is described as skills distilled
+  from the classics of programming practice, in the spirit of *97
+  Things Every Programmer Should Know*, rather than as a *97 Things*
+  companion. No skill content changes.
+```
+
+Voice rules from `superpowers/humanizer` apply: no AI vocabulary
+("namesake exemplar," "pivotal," "underscore," "crucial"), no copula
+avoidance ("serves as," "stands as"), no rule-of-three padding, em
+dashes in moderation.
 
 If your change is a pure internal refactor with no user-visible effect, you
 do not need to add a changelog entry. When in doubt, add one.

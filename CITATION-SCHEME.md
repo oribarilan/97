@@ -191,7 +191,7 @@ principle into `SKILL.md`. No hygiene fields.
   `https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_74/README.md`
 - **Copyrighted-book sources** (`Fowler/*`, `RI/*`, `Wlaschin/*`,
   `Ousterhout/*`, `GOOS/*`, `xUnit/*`, `SRE/*`, `OE/*`, `CD/*`):
-  `<Book title>, <edition>, <publisher> <year>, ch./§ <ref>`. Example:
+  `<Book title>, <edition>, <publisher> <year>, ch./sec. <ref>`. Example:
   `Refactoring, 2nd ed., Addison-Wesley 2018, ch. 3`.
 - **Online-essay or web sources** (`King/*`, `12F/*`, `Hyrum/*`,
   `OTel/*`): URL to the canonical version.
