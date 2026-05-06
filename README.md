@@ -34,6 +34,8 @@ language-agnostic and outlast specific frameworks or stacks.
 
 ## Install
 
+*Works on Linux, macOS, and Windows. Node 18+.*
+
 Three supported harnesses. Pick the one you use.
 
 ### Claude Code
@@ -82,8 +84,6 @@ For reproducible behavior across sessions, pin to a specific tag (`#vX.Y.Z`):
 ```
 
 </details>
-
-Works on Linux, macOS, and Windows. Node 18+.
 
 ## What's inside
 
