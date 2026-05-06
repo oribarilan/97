@@ -26,32 +26,50 @@ import { spawn } from 'child_process';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const TIMEOUT_MS = 120_000;
+const TIMEOUT_MS = 240_000;
 
 /**
- * Optional per-harness env overrides loaded from
- * `scripts/test-env.local.json` (gitignored). Shape:
+ * Optional per-harness overrides loaded from
+ * `scripts/test-env.local.json` (gitignored). Two supported shapes:
  *
- *   { "claude": { "ANTHROPIC_BASE_URL": "...", "ANTHROPIC_API_KEY": "..." },
- *     "copilot": { "FOO": "bar" } }
+ *   Flat (env vars only):
+ *     { "claude": { "ANTHROPIC_BASE_URL": "...", "ANTHROPIC_API_KEY": "..." } }
  *
- * Use cases: routing a harness through a local proxy, supplying dummy
- * credentials for offline testing, pinning a specific endpoint. The file
- * is read once at module load; missing or malformed → silently treated as
- * empty (no overrides). Vars set here override the ambient environment
- * for the spawned child only.
+ *   Structured (env vars + model override):
+ *     { "claude": { "env": { "ANTHROPIC_BASE_URL": "..." },
+ *                   "model": "claude-haiku-4.5" } }
+ *
+ * Use cases: routing a harness through a local proxy whose model IDs
+ * differ from the CLI's defaults, supplying dummy credentials for offline
+ * testing, pinning a specific endpoint. The file is read once at module
+ * load; missing or malformed → silently treated as empty (no overrides).
+ *
+ * Detection rule for flat vs structured: if the per-harness object has
+ * an `env` key whose value is an object, treat as structured. Otherwise
+ * treat the whole object as env vars (flat).
  */
-function loadEnvOverrides() {
+function loadOverrides() {
   const p = path.resolve(__dirname, '..', 'test-env.local.json');
   try {
     if (!fs.existsSync(p)) return {};
     const parsed = JSON.parse(fs.readFileSync(p, 'utf8'));
-    return parsed && typeof parsed === 'object' ? parsed : {};
+    if (!parsed || typeof parsed !== 'object') return {};
+    const normalized = {};
+    for (const [harness, value] of Object.entries(parsed)) {
+      if (!value || typeof value !== 'object') continue;
+      const isStructured = value.env && typeof value.env === 'object';
+      normalized[harness] = isStructured
+        ? { env: value.env, model: value.model ?? null }
+        : { env: value, model: null };
+    }
+    return normalized;
   } catch {
     return {};
   }
 }
-const ENV_OVERRIDES = loadEnvOverrides();
+const OVERRIDES = loadOverrides();
+
+const overridesFor = (harness) => OVERRIDES[harness] || { env: {}, model: null };
 
 /**
  * Generic spawn helper. Returns { stdout, stderr, exitCode, timedOut }.
@@ -146,11 +164,12 @@ function makeWorkspace(label) {
 // working tree's bootstrap. Acceptable for now; documented in the runner.
 async function runOpenCode({ phrase, repoRoot }) {
   const ws = makeWorkspace('opencode');
+  const o = overridesFor('opencode');
   try {
     const args = [
       'run',
       '--model',
-      'github-copilot/claude-haiku-4.5',
+      o.model || 'github-copilot/claude-haiku-4.5',
       '--format',
       'json',
       '--dir',
@@ -162,7 +181,7 @@ async function runOpenCode({ phrase, repoRoot }) {
       cmd: 'opencode',
       args,
       cwd: repoRoot,
-      envOverrides: ENV_OVERRIDES.opencode,
+      envOverrides: o.env,
     });
 
     if (res.timedOut)
@@ -209,12 +228,13 @@ async function runOpenCode({ phrase, repoRoot }) {
 // the runner can warn instead of failing.
 async function runClaudeCode({ phrase, repoRoot }) {
   const ws = makeWorkspace('claude');
+  const o = overridesFor('claude');
   try {
     const args = [
       '--plugin-dir',
       repoRoot,
       '--model',
-      'haiku',
+      o.model || 'haiku',
       '--output-format',
       'stream-json',
       '--verbose',
@@ -226,7 +246,7 @@ async function runClaudeCode({ phrase, repoRoot }) {
       cmd: 'claude',
       args,
       cwd: ws.dir,
-      envOverrides: ENV_OVERRIDES.claude,
+      envOverrides: o.env,
     });
 
     if (res.timedOut)
@@ -277,6 +297,12 @@ async function runClaudeCode({ phrase, repoRoot }) {
     // Top-level tool calls appear inside assistant.message.content as
     // `tool_use` blocks. The `name` is the tool name; for the Skill tool
     // the skill's name is in `input.skill`.
+    //
+    // Claude Code prefixes plugin-provided skills with `<plugin>:` (e.g.
+    // `97:before-you-refactor`). Strip the prefix so the match against
+    // the bare expected skill name works across all three harnesses.
+    const stripPluginPrefix = (s) => (typeof s === 'string' ? s.replace(/^[^:]+:/, '') : s);
+
     const tools = [];
     for (const e of events) {
       if (e.type !== 'assistant' || !e.message?.content) continue;
@@ -284,7 +310,8 @@ async function runClaudeCode({ phrase, repoRoot }) {
         if (block.type === 'tool_use') {
           tools.push({
             tool: block.name,
-            skillName: block.name === 'Skill' ? (block.input?.skill ?? null) : null,
+            skillName:
+              block.name === 'Skill' ? stripPluginPrefix(block.input?.skill ?? null) : null,
           });
         }
       }
@@ -316,12 +343,13 @@ async function runClaudeCode({ phrase, repoRoot }) {
 // tool calls — those whose parentId is NOT a previously seen toolCallId.
 async function runCopilotCli({ phrase, repoRoot }) {
   const ws = makeWorkspace('copilot');
+  const o = overridesFor('copilot');
   try {
     const args = [
       '--plugin-dir',
       repoRoot,
       '--model',
-      'claude-haiku-4.5',
+      o.model || 'claude-haiku-4.5',
       '--output-format',
       'json',
       '--allow-all-tools',
@@ -332,7 +360,7 @@ async function runCopilotCli({ phrase, repoRoot }) {
       cmd: 'copilot',
       args,
       cwd: ws.dir,
-      envOverrides: ENV_OVERRIDES.copilot,
+      envOverrides: o.env,
     });
 
     if (res.timedOut)
