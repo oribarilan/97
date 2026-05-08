@@ -135,7 +135,17 @@ slugs, council names, `.todo/` paths, or file-touched lists in the
 bullet. Those belong in the commit body. The changelog is what users
 read.
 
-**If a bullet runs past 6–7 lines, you are explaining yourself.** Cut.
+**Length: target 3–5 source lines. 6–7 is the ceiling, not the
+target.** If your draft sits at the ceiling, you are restating the
+commit body. Past 7, you are explaining yourself. Cut. The most
+common failure: writing a 13-line bullet, "tightening" to 7, and
+calling it tight. 7 is not tight; 4 is tight.
+
+**Before writing, read the latest 2–3 entries in `CHANGELOG.md` and
+match their density.** If your draft is twice as long as the most
+recent peer entry of the same shape (e.g. a multi-skill behavior
+change), cut it before committing. Recent entries are the working
+definition of "tight" for this project.
 
 Bad — wall of prose, file list, AI-ish phrasing ("namesake exemplar"):
 

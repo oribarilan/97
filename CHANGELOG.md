@@ -16,6 +16,15 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [Unreleased]
 
+### Changed
+
+- Security and pre-commit skills now flag landmines (hardcoded
+  credentials, string-built SQL, unsafe deserialization) found in
+  surrounding code, not only when written. `pre-commit-self-review`
+  hand-offs carry an `Adjacent issues:` line.
+- `using-97` Priority rule 4 folds the landmine scan into the
+  read-before-edit reminder.
+
 ## [0.6.0] — 2026-05-06
 
 Surfaces SRP, KISS, and YAGNI at the spots where their substance
