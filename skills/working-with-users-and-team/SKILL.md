@@ -7,7 +7,7 @@ description: Use when gathering or interpreting requirements, estimating effort,
 
 ## Overview
 
-The hardest bugs in software live in the gap between what the user said, what the user meant, what you heard, and what you built. This skill closes those gaps with concrete behaviors: restate requests in *different* words and test reactions, separate estimates from targets from commitments, and start from yes when a request lands. It draws on five contributors to *97 Things Every Programmer Should Know* (CC-BY-3.0; see `principles.md`). Pairing, rotation, and other strictly human-to-human collaboration material lives in `principles.md` for attribution only — agents don't pair, don't rotate mid-task, and don't watch users.
+The hardest bugs live in the gap between what the user said and what they meant. This skill closes the gap with concrete behaviors: restate requests in *different* words and test reactions, separate estimates from targets from commitments, and start from yes when a request lands. Draws on five contributors to *97 Things Every Programmer Should Know* (CC-BY-3.0; see `principles.md`). Pairing, rotation, and other strictly human-to-human collaboration material lives in `principles.md` for attribution only — agents don't pair, don't rotate mid-task, and don't watch users.
 
 ## When to invoke
 
@@ -27,18 +27,12 @@ Invoke when you're about to:
 - Routine dependency bump or config tweak
 - Reviewing someone else's PR — `pre-commit-self-review` is self-only; a dedicated code-review skill is on the v0.4+ backlog
 
-## Precedence
-
-- `superpowers/brainstorming` runs FIRST when the request is ambiguous or product-facing — it explores intent. THIS skill applies AFTER, layering requirement and estimation discipline onto the explored space.
-- `superpowers/test-driven-development` governs how committed work gets built; this skill governs how the commitment was formed.
-- `97/api-and-interface-design` and `97/domain-modeling` follow once requirements are agreed.
-
 ## Checklist
 
 Run the relevant items. If a request crosses areas (a UX call with an estimate attached), run each.
 
 1. **Restate the request in different words, then ask one clarifying question that distinguishes two competing interpretations.** Do not parrot the user's words back — they did not mean what they told you. Example: user says "I want a customer dashboard." Restate: "So an at-a-glance view a salesperson opens once a day to spot accounts that need attention?" Then ask: "Is this for the salesperson, or for the customer themselves to log into?" *(Jackson, 97/97.)*
-2. **Probe context with vocabulary swaps.** When the user says "client" or "user" or "customer," substitute the other terms in your reply and watch the reaction. Mismatch in the casual term is the cheapest way to surface a definitional gap. *(Jackson, 97/97.)*
+2. **Probe context with vocabulary swaps.** When the user says "client" or "user" or "customer," substitute the other terms in your reply and watch the reaction. A mismatch in the casual term shows where you and the user disagree on what a word means. *(Jackson, 97/97.)*
 3. **Discuss the same topic in two separate conversations with two different stakeholders.** Compare what they each said. Resolve contradictions before writing the spec, not after writing the code. *(Jackson, 97/97.)*
 4. **Use a visual aid for layout, color, or workflow ordering.** Whiteboard, mockup, or prototype. Verbal descriptions are how the "I said black, I meant white" demo happens. *(Jackson, 97/97.)*
 5. **You are not the user.** *(Colborne, 97/3.)* Users do not share your mental models or care how the software is built. Before adding a UI affordance, list two alternative paths a non-power-user might take and confirm both work. Place help at the point of action (inline hint, tooltip on the control), not in a sidebar a stuck user will not see.
@@ -76,4 +70,4 @@ Run the relevant items. If a request crosses areas (a UX call with an estimate a
 | 97/77 | Start from Yes | Alex Miller |
 | 97/97 | Your Customers Do Not Mean What They Say | Nate Jackson |
 
-See `principles.md` for the long-form distillations, citations, and source links — including 97/64, 97/85, 97/86, 97/87, 97/96 (pairing, rotation, compensating defects, leaving the next reader better off, caring about the code), kept for attribution but no longer loaded on trigger.
+See `principles.md` for the long-form distillations, citations, and source links.

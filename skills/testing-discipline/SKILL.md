@@ -7,9 +7,9 @@ description: Use when writing new tests, designing test data, naming a test, cho
 
 ## Overview
 
-A test that compiles and goes green is not the same as a *good* test. **A good test pins the contract (not the implementation), states a concrete example a reader can check by eye, names the scenario in the language of the domain, and is safe for the test data to leak in front of a customer.** This skill enforces a short, ordered set of decisions to make every time you write a new test, design a fixture, or name a test method. It draws on eight contributors to *97 Things Every Programmer Should Know* (CC-BY-3.0; see `principles.md` for citations and links).
+A test that compiles and goes green is not the same as a *good* test. **A good test pins the contract, uses concrete examples, names the scenario in domain language, and uses test data safe to show a customer.** This skill is a short, ordered set of decisions to make every time you write a new test, design a fixture, or name a test method. Draws on eight contributors to *97 Things Every Programmer Should Know* (CC-BY-3.0; see `principles.md` for citations and links).
 
-This is a **rigid** skill. Run the checklist in order. If you can't satisfy a step, stop and tell your human partner what's blocking you.
+This is a **rigid** skill. Run the checklist in order. If you can't satisfy a step, stop and tell the user what's blocking you.
 
 ## When to invoke
 
@@ -33,17 +33,11 @@ Invoke when you're about to:
 
 If you're not sure whether a change counts as "writing a test," **invoke anyway** — the checklist is short and skipping it produces tests that pass forever while protecting nothing.
 
-## Precedence
-
-- `superpowers/test-driven-development` decides *whether and when* to write a test (the process: red, green, refactor; test first; one failing test at a time). This skill decides *what makes the test itself good* (the quality: what to assert, how to name it, what data to use). When mocking gets harder than the production code, fall back to `GOOS/ListenToTestPain` — the design is wrong, not the test.
-- `before-you-refactor` precedes this skill when the trigger is "I want to restructure existing test code" rather than "I'm writing a new test."
-- `domain-modeling` governs the names of the *types under test*; this skill governs the names of the tests.
-
 ## Test quality checklist
 
 Run every step in order when writing a new test. Do not commit until step 7 is satisfied.
 
-1. **Treat the test as the engineering rigor of the change, not optional polish.** Software's only practical pre-deployment validation is execution under realistic conditions. If a manager or your own internal voice says "no time to test," recognize that as the same as a bridge engineer skipping structural analysis. Push back; the test is part of the change. *(Ford, 97/83.)*
+1. **Treat the test as the engineering rigor of the change, not optional polish.** Software's only practical pre-deployment validation is execution under realistic conditions. If a manager or your own internal voice says "no time to test," push back; the test is part of the change. *(Ford, 97/83.)*
 2. **Assert the required behavior, not an incidental of the current implementation.** Ask: what does the contract actually promise? For a 3-way comparator the contract is "negative if less, positive if greater, zero if equal" — not "exactly -1 or +1." Asserting ±1 nails an incidental and will go red the day someone returns -2. Tests that mirror code structure end up asserting that the code does what the code does. *(Henney, 97/80.)*
 3. **Be precise *and* accurate. Use concrete examples.** "Result is sorted and same length" passes for `[3,3,3,3,3,3]` against an input of `[3,1,4,1,5,9]`. The full postcondition is sorted *and a permutation of the input* — but expressing that as a generic checker is often more code than the function under test. Prefer a concrete example pair: input `[3,1,4,1,5,9]`, expected `[1,1,3,4,5,9]`. "Adding to an empty collection" is not "now non-empty" — it's "now contains exactly one item, and that item is X." *(Henney, 97/81.)*
 4. **Write the test for the next person who has to read it.** A good test is documentation. Make three parts visible in this order: the context/preconditions, the call into the system, the expected result. Hide trivia behind named helpers (Extract Method) so the reader sees the scenario, not the scaffolding. Give the test a name describing the scenario *and* the entry point — `Stack_pop_on_empty_throws` reads better than `test17`. Then test the test: introduce a deliberate bug into the code under test on a private branch and verify the failure message tells you what went wrong. *(Meszaros, 97/95.)*
@@ -84,7 +78,7 @@ A single well-written test is done when **all** of the following are true:
 - [ ] If the test is slow (soak, perf, cross-platform), it is scheduled in an off-hours profile, not blocking pre-commit.
 - [ ] If acceptance tests from QA or the customer exist for this behavior, this test does not duplicate or contradict them.
 
-If any box is unchecked, the test is not done — it is mid-written. Either finish, or delete it and start over.
+If any box is unchecked, the test is not done. Either finish, or delete it and start over.
 
 ## Principles in this skill
 

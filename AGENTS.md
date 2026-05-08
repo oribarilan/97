@@ -8,11 +8,11 @@ For the full contributor + release docs, see [`CONTRIBUTE.md`](./CONTRIBUTE.md).
 This file is the short list.
 
 ## What this repo is
-`97` is a multi-harness plugin that ships behavior-shaping skills
-distilled from the hard-won lessons of world-renowned programmers, in the spirit of
-*97 Things Every Programmer Should Know* (O'Reilly, ed. Kevlin Henney).
-The same `skills/` directory is loaded by three coding-agent harnesses:
-**Claude Code**, **GitHub Copilot CLI**, and **OpenCode**.
+`97` is a multi-harness plugin that ships skills distilled from established
+programming practice, in the spirit of *97 Things Every Programmer Should
+Know* (O'Reilly, ed. Kevlin Henney). The same `skills/` directory is loaded
+by three coding-agent harnesses: **Claude Code**, **GitHub Copilot CLI**,
+and **OpenCode**.
 
 Layout: skills under `skills/`, OpenCode loader under `.opencode/plugins/`,
 Claude Code / Copilot CLI manifests under `.claude-plugin/`, session-start
@@ -39,6 +39,15 @@ bootstrap hooks under `hooks/`, tooling under `scripts/`.
    landscape, "serves as", trailing -ing clauses, etc.). The
    `humanizer` skill is the source of truth for voice. The imperative voice
    in checklists and Red Flags tables is intentional — keep it terse.
+   Two cleanup-pass rules apply:
+   - **Subtract before substitute.** When tightening prose, prefer cutting
+     the offending phrase to replacing it. Substituting a vivid coined word
+     with a generic one is a regression even if the result is shorter.
+   - **Agent-first prose in skill files.** Skills are loaded into agent
+     context at trigger time. Cut subsection lead-ins, atmospheric Overview
+     openers, vivid metaphors that don't change agent behavior, and
+     Precedence sections that only restate `using-97`'s trigger map.
+     Reframe vague rules into actions an agent can take.
 6. **Cross-platform is non-negotiable.** This plugin must work on Linux,
    macOS, and Windows. See "Cross-platform discipline" below.
 7. **No OpenCode-isms outside `.opencode/`.** The `skills/` directory and
@@ -164,8 +173,8 @@ Good — one bullet, one change, reader's perspective:
 
 ```markdown
 - Reframed user-visible copy: 97 is described as skills distilled
-  from the hard-won lessons of world-renowned programmers, in the spirit of *97
-  Things Every Programmer Should Know*, rather than as a *97 Things*
+  from established programming practice, in the spirit of *97 Things
+  Every Programmer Should Know*, rather than as a *97 Things*
   companion. No skill content changes.
 ```
 

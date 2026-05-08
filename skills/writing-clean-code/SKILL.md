@@ -7,7 +7,7 @@ description: Use when adding a new function/class, naming a new entity, or modif
 
 ## Overview
 
-Most "clean code" advice is taste dressed up as principle. The contributors here converge on something narrower and more useful: **code is read far more often than it is written, so optimize the artifact for the next reader.** That reader is usually you, six months on, debugging at 2 a.m. This skill is a small set of decisions to apply when you write a new function, name a new entity, or touch a non-trivial block of logic. Each decision pairs with a check a reviewer (human or agent) could apply by reading the diff. It draws on contributors to *97 Things Every Programmer Should Know* (CC-BY-3.0; see `principles.md` for the full set including the demoted ones).
+**Code is read far more often than it is written, so optimize the artifact for the next reader.** This skill is a small set of decisions to apply when you write a new function, name a new entity, or touch a non-trivial block of logic. Each decision pairs with a check a reviewer (human or agent) could apply by reading the diff. Draws on contributors to *97 Things Every Programmer Should Know* (CC-BY-3.0; see `principles.md` for the full set including the demoted ones).
 
 ## When to invoke
 
@@ -30,18 +30,11 @@ If you're unsure whether the change is non-trivial, ask: *would a reviewer pause
 - Mechanical edits — running a formatter, sorting imports, renaming a single local variable in one function
 - Generated code
 
-## Precedence
-
-- `97/before-you-refactor` precedes this skill when the change restructures existing working code rather than writes new code.
-- `97/testing-discipline` precedes this skill for any change inside a test file, fixture, mock, or test helper.
-- `97/api-and-interface-design` precedes this skill when the entity you're naming or the function you're adding crosses a module/package/service boundary. That skill governs the public surface; this one governs the implementation behind it.
-- `97/domain-modeling` precedes this skill when introducing a new top-level type/concept.
-
 ## The clean-code decisions
 
 Each decision pairs with a **check** — a property a reviewer can verify by reading the diff.
 
-1. **Reach simplicity by removing, not adding.** *(Homer, 97/75.)* The reflex when code misbehaves is to add another variable, branch, or comment. Try the opposite — delete a line and see what breaks. Bad code that is close to working is worth saving; bad code that is far from working should be discarded and retyped from memory, because the act of retyping cuts through the clutter.
+1. **Reach simplicity by removing, not adding.** *(Homer, 97/75.)* The reflex when code misbehaves is to add another variable, branch, or comment. Try the opposite — delete a line and see what breaks. Bad code that is close to working is worth saving; bad code that is far from working should be discarded and retyped from memory.
    *Check:* you tried deleting at least one line you initially wrote on this hunk, and the code is better for what survived.
 
 2. **Reason about each block in short sections.** *(Kimchi, 97/15.)* Write code in chunks — a single line up to under ten — that you could defend to a sceptical peer. The endpoints of each section should be describable as state properties (a generalized pre/postcondition or invariant). When you intend to reason about the code, the structure improves on its own: smaller scopes, fewer mutable globals, narrower interfaces, getters that don't leak internal state.
@@ -81,7 +74,7 @@ Each decision pairs with a **check** — a property a reviewer can verify by rea
 | "I'll use `int`/`string` for now — we can wrap it later." | The native type opens billions of input cases that no test will ever cover. A domain type collapses the function to something checkable. (97/94) |
 | "The variable name is short — context makes it obvious." | Context evaporates the moment the reader is somewhere else. Names carry their meaning with them. (97/62) |
 | "Every function on this class belongs together — they all touch `Order`." | Sharing a noun isn't a single responsibility. Ask what changes for what reason; if the answers differ, split. (97/76) |
-| "I'll add this configuration knob in case someone wants to override it." | Speculative knobs are how simple code becomes complex — the substance of KISS. Default to the simplest thing that works; add the knob when a real caller arrives. (97/75) |
+| "I'll add this configuration knob in case someone wants to override it." | Speculative knobs are how simple code becomes complex. Default to the simplest thing that works; add the knob when a real caller arrives. (97/75) |
 | "I'll add this hook now in case we need it later." | YAGNI: speculation predicts the future poorly, and the unused hook adds maintenance cost forever. Add it when the second caller asks. (97/39) |
 
 ## What "done" looks like
@@ -106,4 +99,4 @@ Each decision pairs with a **check** — a property a reviewer can verify by rea
 | 97/91 | WET Dilutes Performance Bottlenecks | Kirk Pepperdine (folded into 97/30 here) |
 | 97/94 | Write Small Functions Using Examples | Keith Braithwaite |
 
-See `principles.md` for the long-form distillations and source links — including 97/5 (Beauty Is in Simplicity), 97/39 (Improve Code by Removing It), 97/62 (Only the Code Tells the Truth — distilled into decision 6), and 97/93 (Write Code As If You Had to Support It for the Rest of Your Life), kept for attribution but no longer cited as separate decisions in `SKILL.md`.
+See `principles.md` for the long-form distillations and source links.

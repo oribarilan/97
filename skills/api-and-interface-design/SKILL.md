@@ -7,9 +7,9 @@ description: Use when designing a public API, an exported function signature, a 
 
 ## Overview
 
-The headline rule, from Scott Meyers (97/55), governs everything else in this skill: **make interfaces easy to use correctly and hard to use incorrectly.** Every other decision below is a way of cashing that rule out — encapsulating behavior so callers can't reach past the contract, using the type system so wrong calls fail at compile time, designing a vocabulary so callers express intent rather than poke at flags. This skill draws on ten contributors to *97 Things Every Programmer Should Know* (CC-BY-3.0; see `principles.md` for citations and links).
+The headline rule, from Scott Meyers (97/55), governs everything else: **make interfaces easy to use correctly and hard to use incorrectly.** Every other decision below is a tactic for that rule — encapsulate behavior so callers can't reach past the contract, lean on the type system so wrong calls fail at compile time. Draws on ten contributors to *97 Things Every Programmer Should Know* (CC-BY-3.0; see `principles.md` for citations and links).
 
-This is a **rigid** skill. Run the decisions in order. If you can't satisfy one, stop and tell your human partner what's blocking you.
+This is a **rigid** skill. Run the decisions in order. If you can't satisfy one, stop and tell the user what's blocking you.
 
 ## When to invoke
 
@@ -33,12 +33,6 @@ If you're not sure whether a change is "public," ask: *will any code outside thi
 - Reformatting, reordering imports, or other no-semantic-change edits
 - Renaming a single local variable inside one function
 - Adding an internal helper called only from one place that already exists
-
-## Precedence
-
-- `97/domain-modeling` precedes this skill when the *concept itself* is new — that skill governs the type's name, identity, and where its state lives. This skill governs the contract through which other code talks to it.
-- `97/writing-clean-code` governs the implementation *inside* a method once the public surface is decided; this skill governs the public surface.
-- `superpowers/test-driven-development` is the mechanism for decision 5 — write the test that exercises the API as a caller before the API exists.
 
 ## API design decisions
 
@@ -106,7 +100,7 @@ You are done when **all** of the following are true:
 - [ ] Branching on type tags has been replaced by polymorphism, or you can name the reason a conditional is genuinely simpler here.
 - [ ] You did not extract a shared abstraction whose two call sites are not yet provably the same concept.
 
-If any box is unchecked, you are not done designing — you are mid-design. Either finish, or revert and re-plan.
+If any box is unchecked, you are not done. Either finish, or revert and re-plan.
 
 ## Principles in this skill
 

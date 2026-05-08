@@ -9,7 +9,7 @@ description: Use when introducing a new top-level type, table, or domain concept
 
 The names and shapes you give the concepts in your code *are* the design. **When you introduce a new domain concept, name it for what it means in the user's world, give it a real type, and decide where its state lives — before you write the methods that act on it.** This skill enforces a short set of decisions to make at the moment a new domain concept enters the codebase. It draws on five contributors to *97 Things Every Programmer Should Know* (CC-BY-3.0; see `principles.md` for citations and links).
 
-This is a **rigid** skill. Run the decisions in order. If you can't satisfy one, stop and tell your human partner what's blocking you. Cross-reference: when the concept is exposed across a module/package/service boundary, also invoke `api-and-interface-design` (overlap on type design and value-vs-identity).
+This is a **rigid** skill. Run the decisions in order. If you can't satisfy one, stop and tell the user what's blocking you. When the concept is exposed across a module/package/service boundary, also invoke `api-and-interface-design` (overlap on type design and value-vs-identity).
 
 ## When to invoke
 
@@ -32,12 +32,6 @@ If you're not sure whether a change introduces a *new domain concept* (vs. a loc
 - Adjusting an existing type's representation without changing its meaning (switching `int` user IDs to `long`)
 - Adding a method to an existing domain type (use `writing-clean-code` instead)
 - Defining a DTO that mirrors an existing domain type one-to-one for transport (use `api-and-interface-design`)
-
-## Precedence
-
-- `superpowers/brainstorming` precedes this skill when the *requirements themselves* are unclear — don't model what you haven't agreed on.
-- `97/api-and-interface-design` overlaps for types exposed across module/service boundaries; that skill governs the *interface*, this one governs the *concept itself* (its name, its identity, its persistence). `King/ParseDontValidate` is canonical there; this skill cross-references it on the boundary-vs-internal split.
-- `97/writing-clean-code` governs the methods *on* a domain type once the type exists; this skill governs whether the type should exist and what it should be called.
 
 ### Language guard
 
@@ -85,7 +79,7 @@ You are done when **all** of the following are true:
 - [ ] You decided where the state lives based on size/persistence/interconnectedness — not by reflex.
 - [ ] There is exactly one canonical definition of this concept in the codebase.
 
-If any box is unchecked, you are not done modeling — you are mid-modeling. Either finish, or revert and re-plan.
+If any box is unchecked, you are not done. Either finish, or revert and re-plan.
 
 ## Principles in this skill
 

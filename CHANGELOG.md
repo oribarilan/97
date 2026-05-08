@@ -18,11 +18,16 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ### Changed
 
-- Security and pre-commit skills now flag landmines (hardcoded
+- Tightened skill prose for plainer, more human voice. Replaced
+  in-house metaphors (`trap-scan`, `mid-X`, `landmines`, `the trap
+  closes`, `fires hardest`) with plain English; cut subsection
+  lead-ins and Precedence sections that restated `using-97`'s
+  trigger map. No skill names or behavior changed.
+- Security and pre-commit skills now flag unsafe code (hardcoded
   credentials, string-built SQL, unsafe deserialization) found in
   surrounding code, not only when written. `pre-commit-self-review`
-  hand-offs carry an `Adjacent issues:` line.
-- `using-97` Priority rule 4 folds the landmine scan into the
+  summaries carry an `Adjacent issues:` line.
+- `using-97` Priority rule 4 folds the adjacent-code scan into the
   read-before-edit reminder.
 
 ## [0.6.0] — 2026-05-06

@@ -22,15 +22,15 @@
 
 Skills your coding agent invokes when they apply: when it's about to
 refactor, write a test, design an API, or commit. They distill established
-programming practice like Fowler on refactoring smells, 12-factor on
+programming practice — Fowler on refactoring smells, 12-factor on
 configuration and deploys, Ousterhout and Liskov on API shape and design,
-and others.
+Nygard on resilience patterns, and others.
 
 The project is named for *97 Things Every Programmer Should Know*
 (O'Reilly, ed. Kevlin Henney) and built in its spirit: one principle
 at a time, applied at the moment of decision. Every principle ships
 with attribution to the original author. Principles are chosen to be
-language-agnostic and outlast specific frameworks or stacks.
+language-agnostic and durable.
 
 ## Install
 
@@ -87,9 +87,9 @@ For reproducible behavior across sessions, pin to a specific tag (`#vX.Y.Z`):
 
 ## What's inside
 
-| Skill | When it fires |
+| Skill | When it applies |
 |---|---|
-| `using-97` | Always — bootstrap that primes the agent on the trigger map |
+| `using-97` | Always — entry skill that loads the trigger map |
 | `before-you-refactor` | About to refactor, restructure, rename across files, or "clean up" existing code |
 | `writing-clean-code` | Adding a new function/class, naming a new entity, or modifying ≥3 lines of non-trivial logic (includes Single Responsibility Principle (SRP), DRY, KISS, YAGNI) |
 | `domain-modeling` | Introducing a new top-level type/table/domain concept, renaming a domain concept, or deciding where state lives |

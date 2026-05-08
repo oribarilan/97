@@ -9,9 +9,9 @@ description: Use when authoring or changing build scripts, CI workflows, deploy 
 
 The build script, the CI pipeline, the deploy job, and the tools you reach for are *part of the codebase* — they decide whether the next person can clone the repo, run the build, and ship a change in an hour or in a week. **Own the build as code. Build one artifact and promote it. Deploy from day one. Choose tools that fit the project, not the resume. Automate everything you do twice.** This skill enforces the decisions to make whenever you touch infrastructure or evaluate a tool. It draws on eleven contributors to *97 Things Every Programmer Should Know* (CC-BY-3.0; see `principles.md` for citations and links).
 
-This is a **rigid** skill. Run the checklist in order. If you can't satisfy a step, stop and tell your human partner what's blocking you.
+This is a **rigid** skill. Run the checklist in order. If you can't satisfy a step, stop and tell the user what's blocking you.
 
-Fires hardest when a release artifact is being shaped — production deploy, shared CI pipeline, tool adoption that other contributors will inherit. Fires lightly in MVPs, prototypes, internal dev tools, and one-off scripts where the architecture is not yet settled — prefer the simplest thing that works.
+These checks matter most when shaping a release artifact — production deploy, shared CI pipeline, tool adoption that other contributors will inherit. In MVPs, prototypes, internal dev tools, and one-off scripts where the architecture is not yet settled, prefer the simplest thing that works.
 
 ## When to invoke
 
@@ -38,14 +38,7 @@ Invoke when you're about to:
 - An internal dev tool or one-off script whose build needs are "run this command"
 - Throwaway code expected to be replaced before reaching users
 
-If you're not sure whether a change counts as "authoring infrastructure," **invoke anyway** — the checklist is short and skipping it produces build scripts that calcify into legend.
-
-## Precedence
-
-- `pre-commit-self-review` covers 97/42 ("Keep the Build Clean") — when warnings, build noise, or suppressed errors are the issue, defer to that skill. This skill assumes the build is clean and asks how it should be *designed*.
-- `superpowers/verification-before-completion` answers "did the build actually work" once a change is in flight. This skill governs the *authoring* of the build/CI/deploy pipeline, not its execution.
-- `superpowers/test-driven-development` governs how the tests *inside* the build are written. This skill governs how the build runs the tests, gates on them, and reports on them.
-- This skill governs the *design and authoring* of build, CI, deploy, and tooling configuration. It does not govern operating an existing pipeline or tailing its logs.
+If you're not sure whether a change counts as "authoring infrastructure," **invoke anyway** — the checklist is short and skipping it produces build scripts nobody understands.
 
 ## Build/deploy/tooling checklist
 
@@ -57,7 +50,7 @@ Run every step in order. The sub-area headings group related principles; the num
 
 ### Builds
 
-2. **The dev team owns the build as code, and refactors it.** Build scripts are not a release-engineering "cult artifact" or a configuration file beneath your attention — they decide what the executable artifact actually is, define the component boundaries, and gate every change on the way to production. Treat them with the same discipline you apply to source: name the targets clearly, factor out duplication, delete dead branches, document non-obvious steps. A build that takes a new contributor a day to get green is a bug. *(Berczuk, 97/63.)*
+2. **The dev team owns the build as code, and refactors it.** Build scripts are not someone else's problem or a configuration file beneath your attention — they decide what the executable artifact actually is, define the component boundaries, and gate every change on the way to production. Treat them with the same discipline you apply to source: name the targets clearly, factor out duplication, delete dead branches, document non-obvious steps. A build that takes a new contributor a day to get green is a bug. *(Berczuk, 97/63.)*
 3. **Build one immutable artifact and promote *that* through every environment.** The deployable artifact (container image, JAR, binary, bundle) is built once from a tagged commit. The same bytes flow through dev, staging, and prod. Environment-specific values — endpoints, credentials, feature flags — live in the environment (container env vars, config service, mounted file), never baked into the image. If the build rewrites code per environment, you cannot prove that what shipped to prod is what staging tested. *(Freeman, 97/61.)*
 
 ### Deploy
@@ -115,7 +108,7 @@ A change to build/CI/deploy/tooling is done when **all** of the following are tr
 - [ ] If you added an installer, library, or CLI surface, a new user can reach a working "Hello, world" in under five minutes.
 - [ ] The bug tracker has a discoverable query for "open issues in this area" and the issue template asks for repro / expected / actual.
 
-If any box is unchecked, the change is not done — it is mid-authored. Either finish, or revert and re-plan.
+If any box is unchecked, the change is not done. Either finish, or revert and re-plan.
 
 ## Principles in this skill
 
