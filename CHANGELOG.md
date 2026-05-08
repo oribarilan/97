@@ -30,6 +30,14 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 - `using-97` Priority rule 4 folds the adjacent-code scan into the
   read-before-edit reminder.
 
+### Documentation
+
+- `README.md` and `AGENTS.md` rewritten in plainer voice: cut
+  promotional phrasing, dropped a few academic constructions, fixed
+  the "seven rules" heading to match the eight numbered rules, and
+  replaced `bootstrap` with `entry skill` where the term was not
+  load-bearing.
+
 ## [0.6.0] — 2026-05-06
 
 Surfaces SRP, KISS, and YAGNI at the spots where their substance

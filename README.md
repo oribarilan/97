@@ -20,17 +20,16 @@
 
 ## What this is
 
-Skills your coding agent invokes when they apply: when it's about to
-refactor, write a test, design an API, or commit. They distill established
-programming practice — Fowler on refactoring smells, 12-factor on
-configuration and deploys, Ousterhout and Liskov on API shape and design,
-Nygard on resilience patterns, and others.
+Skills your coding agent uses at the moment of decision: when it's about
+to refactor, write a test, design an API, or commit. They draw on
+Fowler on refactoring, 12-factor on configuration and deploys,
+Ousterhout and Liskov on API design, Nygard on resilience patterns,
+and others.
 
-The project is named for *97 Things Every Programmer Should Know*
-(O'Reilly, ed. Kevlin Henney) and built in its spirit: one principle
-at a time, applied at the moment of decision. Every principle ships
-with attribution to the original author. Principles are chosen to be
-language-agnostic and durable.
+The project is named after *97 Things Every Programmer Should Know*
+(O'Reilly, ed. Kevlin Henney) and follows the same idea: one principle
+at a time, applied when it matters. Every principle is attributed to
+its original author. Principles are language-agnostic and durable.
 
 ## Install
 
@@ -102,7 +101,7 @@ For reproducible behavior across sessions, pin to a specific tag (`#vX.Y.Z`):
 | `pre-commit-self-review` | About to commit, finish a task, open a PR, summarize work, or when asked for a review or hand-off |
 | `working-with-users-and-team` | Gathering or interpreting requirements, estimating effort, or communicating with stakeholders about what to build |
 
-12 skills total (the bootstrap plus 11 themed skills). Every principle
+12 skills total: one entry skill plus 11 themed skills. Every principle
 is cited and attributed in the skill's `principles.md`.
 
 ### Giants
@@ -110,8 +109,8 @@ is cited and attributed in the skill's `principles.md`.
 Every principle the agent applies is attributed to its original author.
 Each skill ships a `principles.md` next to its `SKILL.md` with, per
 principle: the author, a link to the source (CC-BY-3.0 essay, book
-chapter, RFC, or specification as appropriate), our distillation in
-our own words, and how the agent applies it.
+chapter, RFC, or specification as appropriate), our paraphrase, and
+how the agent applies it.
 
 The sources currently cited:
 
@@ -133,12 +132,12 @@ The sources currently cited:
 You can ask the agent at any time: *"Who wrote the principle you just
 applied, and why does it say what it says?"* The agent will open the
 relevant `principles.md` and tell you who wrote it, link the source,
-and explain the reasoning. Treat 97 as a guided reading list into the
-underlying literature as much as a behavior plugin.
+and explain the reasoning. 97 doubles as a reading list — the
+principles point back to the books and essays they came from.
 
 The `security-and-trust-boundaries` and `observability` skills are
-mostly original commentary on sources outside *97 Things*; see
-`CONTENT-LICENSE.md`.
+mostly written for this project, drawing on sources outside *97 Things*;
+see `CONTENT-LICENSE.md`.
 
 ## FAQ
 
@@ -158,8 +157,8 @@ Take writing a test:
 - `superpowers/test-driven-development` decides *whether* a test gets written.
 - `97/testing-discipline` decides *what makes that test any good*.
 
-97's bootstrap is explicit about the superpowers boundary: process skills
-fire first. `superpowers/verification-before-completion` asks *did it work*;
+97's entry skill draws an explicit line at the superpowers boundary: process
+skills run first. `superpowers/verification-before-completion` asks *did it work*;
 `97/pre-commit-self-review` asks *is it well-considered*.
 
 ### Where do SOLID, DRY, KISS, YAGNI live in 97?

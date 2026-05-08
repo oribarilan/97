@@ -1,8 +1,8 @@
 # AGENTS.md
 
-Conventions for AI coding agents (Claude Code, Copilot CLI, OpenCode subagents,
-etc.) working in this repo. The same rules apply to humans, but they are
-written here in the imperative because agents need explicit instruction.
+Rules for AI coding agents (Claude Code, Copilot CLI, OpenCode subagents,
+etc.) and the humans working with them on this repo. Written as direct
+instructions because agents follow them better that way.
 
 For the full contributor + release docs, see [`CONTRIBUTE.md`](./CONTRIBUTE.md).
 This file is the short list.
@@ -16,9 +16,9 @@ and **OpenCode**.
 
 Layout: skills under `skills/`, OpenCode loader under `.opencode/plugins/`,
 Claude Code / Copilot CLI manifests under `.claude-plugin/`, session-start
-bootstrap hooks under `hooks/`, tooling under `scripts/`.
+hooks under `hooks/`, tooling under `scripts/`.
 
-## The seven rules
+## Rules
 
 1. **Test before you say done.** Run `just check` (lint + format-check + smoke). All three must pass. (`npm test` is the same thing — CI uses it; `just` is the local convenience.)
 2. **Update the changelog.** Any user-facing change goes in the `[Unreleased]`
@@ -31,7 +31,7 @@ bootstrap hooks under `hooks/`, tooling under `scripts/`.
    separate, deliberate commit. All three version fields stay in sync; lint
    enforces equality.
 4. **Don't touch shared files in parallel work.** When dispatching multiple
-   subagents, forbid each from editing `README.md`, `package.json`,
+   subagents, tell each not to edit `README.md`, `package.json`,
    `skills/using-97/SKILL.md`, `.opencode/plugins/97.js`, `AGENTS.md`,
    or anything under `.claude-plugin/` or `hooks/`. Those updates land
    in the integration step.
@@ -71,7 +71,7 @@ A red Windows job blocks merge just like a red Ubuntu job. Anything you
 write that touches the filesystem, the environment, or a shell command must
 work on all three.
 
-### The four traps
+### Four common pitfalls
 
 1. **Hardcoded paths.** Never assume `~/.config/...` or `~/.cache/...` —
    those don't exist on Windows. Always use `os.homedir()`, `path.join()`,
@@ -208,11 +208,11 @@ If the need arises:
 
 ## Editing existing skills
 
-1. Preserve voice and structure. The proven section structure is Overview →
+1. Preserve voice and structure. The standard section structure is Overview →
    When to invoke → Non-triggers → Precedence → Numbered checklist/decisions
    → Red Flags → What "done" looks like → Principles table.
-2. Cross-references between skills must stay bidirectionally consistent — if
-   skill A says "B precedes me on X", skill B's text must agree on the
+2. Cross-references between skills must stay consistent in both directions —
+   if skill A says "B precedes me on X", skill B's text must agree on the
    boundary. Audit with `rg 'superpowers/|97/' skills/*/SKILL.md`.
 3. If a principle is added from a source not already listed in the
    `### Giants` bullets in `README.md`, update that list.
@@ -276,10 +276,10 @@ adapter if their tool names differ.
 
 ## AGENTS.md is the single source of truth
 
-This file is the contributor-conventions document for AI agents working
-on the 97 codebase. It is **not** shipped to plugin users — end users
-get skill content through the plugin loader (`skills/`,
-`.claude-plugin/`, `hooks/`, `.opencode/`).
+This file lists the conventions for working on the 97 repo. It's for
+contributors and AI agents, not plugin users — end users get skill
+content through the plugin loader (`skills/`, `.claude-plugin/`,
+`hooks/`, `.opencode/`).
 
 Most modern coding agents (OpenCode, Copilot CLI, Cursor, Codex) read
 `AGENTS.md` automatically. **Claude Code** does not — it reads
