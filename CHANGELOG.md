@@ -18,13 +18,12 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ### Changed
 
-- Tightened the security and pre-commit skills so agents catch
-  landmines (hardcoded credentials, string-built SQL, unsafe
-  deserialization, and similar traps) while reading code, not only
-  while writing it. `pre-commit-self-review` now asks for a short
-  scan around every diff hunk and a one-line `Adjacent issues:` note
-  in the hand-off. `using-97` Priority rule 4 folds the same scan
-  into the read-before-edit reminder.
+- Security and pre-commit skills now flag landmines (hardcoded
+  credentials, string-built SQL, unsafe deserialization) found in
+  surrounding code, not only when written. `pre-commit-self-review`
+  hand-offs carry an `Adjacent issues:` line.
+- `using-97` Priority rule 4 folds the landmine scan into the
+  read-before-edit reminder.
 
 ## [0.6.0] — 2026-05-06
 
