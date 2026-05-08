@@ -18,18 +18,13 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ### Changed
 
-- Reframed security and pre-commit skills around code-shape signatures
-  so traps are recognized whether the agent wrote the code or found it
-  while reading. `security-and-trust-boundaries` describes secrets,
-  weak hashing, and predictable RNGs as properties of code (not author
-  actions), and removes the "reading code without modifying it"
-  exemption. `pre-commit-self-review` step 1 now requires a ±20-line
-  scan around every diff hunk for six landmine shapes (hardcoded
-  credentials, string-built SQL/shell, unsafe deserialization,
-  swallowed exceptions, TOCTOU, mutable defaults) and a named
-  `Adjacent issues:` line in the hand-off. `using-97` Priority rule 4
-  amends the read-before-edit reminder to include landmine scanning.
-  Findings get surfaced, not silently rewritten.
+- Tightened the security and pre-commit skills so agents catch
+  landmines (hardcoded credentials, string-built SQL, unsafe
+  deserialization, and similar traps) while reading code, not only
+  while writing it. `pre-commit-self-review` now asks for a short
+  scan around every diff hunk and a one-line `Adjacent issues:` note
+  in the hand-off. `using-97` Priority rule 4 folds the same scan
+  into the read-before-edit reminder.
 
 ## [0.6.0] — 2026-05-06
 
