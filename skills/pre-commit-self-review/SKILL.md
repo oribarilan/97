@@ -49,7 +49,17 @@ Hold that frame while running the checklist below.
 
 Run every step before you commit, hand off, or claim completion.
 
-1. **Re-read the diff as a stranger.** Open the diff fresh and read it top to bottom without context. If a section needs you to remember what you were thinking yesterday to make sense of it, the next reader will not have that memory. Rename, comment, or restructure until the diff explains itself. *(Rising, 97/58.)*
+1. **Re-read the diff as a stranger, and scan ±20 lines around every hunk for landmines.** Open the diff fresh and read it top to bottom without context. If a section needs you to remember what you were thinking yesterday to make sense of it, the next reader will not have that memory — rename, comment, or restructure until the diff explains itself. Then, in the same pass, read the **20 lines above and below each hunk** in every touched file and look for these six trap shapes in the surrounding code, whether or not your change introduced them:
+   - **Hardcoded credentials.** String literals that look like API keys, OAuth client secrets, database passwords, JWT signing secrets, bearer tokens, private keys (`-----BEGIN`), or connection strings with embedded passwords — assigned to a variable, passed as an argument, or written into a config file.
+   - **String-built SQL, LDAP, or shell commands.** F-strings, `+` concatenation, or `.format()` building a query/command string with interpolated values; `subprocess.run(..., shell=True)` with non-constant input.
+   - **Unsafe deserialization on untrusted input.** `pickle.loads`, `yaml.load` without `SafeLoader`, `marshal.loads`, Java `ObjectInputStream`, PHP `unserialize`, .NET `BinaryFormatter` against data that crosses a trust boundary.
+   - **Swallowed exceptions.** Broad `except:` / `except Exception:` / `catch (Throwable)` blocks with `pass`, an empty body, or a comment-only body — the call site silently absorbs failures the caller cannot see.
+   - **TOCTOU patterns.** Check-then-use against the same path or resource (`if os.path.exists(p): open(p)`, `if user.has_permission(x): do(x)`) where the state can change between check and use.
+   - **Mutable default arguments.** `def f(x=[])`, `def f(x={})`, `def f(x=set())` — the default is shared across calls and accumulates state.
+
+   **Test fixtures, mocks, and example values inside `tests/`, `test_*.py`, `*.spec.*`, `fixtures/`, or files with names containing `mock`, `fake`, or `stub` are not landmines** — they are intentional test data. Skip them.
+
+   When you find one of these in the surrounding code (not in your diff), **surface it in the hand-off — do not silently rewrite the file outside the scope you were asked to change.** Add an `Adjacent issues` line to your summary naming the file, line, and trap shape (e.g. `Adjacent issues: src/billing/charge.py:142 — string-built SQL with f-string interpolation`). If you find none, say so explicitly: `Adjacent issues: none found in ±20 lines of touched hunks.` The named artifact is the verification — agents that skipped the scan have nothing to write on this line. *(Rising, 97/58.)*
 2. **Suspect your own code first.** Before you blame the framework, the library, or the flaky test, assume the bug is yours. It almost always is. Walk the code path with the failing input in mind; confirm assumptions about types, ordering, null cases, and shared state. Reach for "compiler bug" only after you have ruled out yours. *(Kelly, 97/9.)*
 3. **Know what your next commit is.** State, in one sentence, what this commit does. If the sentence contains "and also" or "various", the commit is two commits. Split it. If you cannot name a clear, bounded change, you are committing speculation — throw the speculative parts away and re-scope. *(Bergh Johnsson, 97/47.)*
 4. **Check for deliberate technical debt.** Did you take a shortcut to ship? Name it. File a follow-up note (issue, todo, line in the hand-off) so the debt is visible. Untracked debt accrues silent interest. *(Rose, 97/1.)*
@@ -66,6 +76,7 @@ These thoughts mean STOP — do not commit yet:
 | Thought | Reality |
 |---|---|
 | "It works on my machine — shipping it." | "Works" is the verification gate, not the review gate. Re-read the diff as a stranger before claiming done. (97/58) |
+| "I'll skip the ±20 line scan — my diff doesn't touch security code." | The point of the scan is to find traps you didn't author. Hardcoded credentials, string-built SQL, and unsafe deserialization in code adjacent to your edit will ship under your name if you don't surface them. The `Adjacent issues:` line is mandatory; "none found" is a valid value, "I didn't look" is not. (97/58) |
 | "Must be a bug in the library." | Mature libraries used by many people are usually fine. Suspect your code first; reach for "library bug" only after ruling yours out. (97/9) |
 | "I'll squash this giant commit and figure out the message later." | If you can't state the commit in one sentence now, the commit is speculation. Split it or throw the speculative parts away. (97/47) |
 | "I took a shortcut, I'll come back and fix it." | The promise is sincere and rarely kept. Track the debt explicitly — issue, todo, hand-off note — or pay it now. (97/1) |
@@ -80,6 +91,8 @@ These thoughts mean STOP — do not commit yet:
 You are done when **all** of the following are true:
 
 - [ ] You ruled out your own code as the source of any unresolved oddness before blaming external systems.
+- [ ] The diff was re-read top-to-bottom as a stranger, and the ±20 lines around every hunk were scanned for the six landmine shapes (hardcoded credentials, string-built SQL/shell, unsafe deserialization, swallowed exceptions, TOCTOU, mutable default).
+- [ ] The hand-off contains an `Adjacent issues:` line — either naming surfaced traps (file, line, shape) or stating `none found` after an actual scan.
 - [ ] The commit (or hand-off) can be described in one sentence with no "and also."
 - [ ] Any shortcut taken is named in a tracked follow-up.
 - [ ] Build is clean — no new warnings, lint errors, or deprecation notices introduced.
