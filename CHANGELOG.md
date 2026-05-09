@@ -16,27 +16,28 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [Unreleased]
 
+## [0.7.0] — 2026-05-08
+
+A voice cleanup pass. Skills, README, AGENTS.md, and CONTRIBUTE.md
+read in plainer English. No skill names or behavior changed.
+
 ### Changed
 
-- Tightened skill prose for plainer, more human voice. Replaced
-  in-house metaphors (`trap-scan`, `mid-X`, `landmines`, `the trap
-  closes`, `fires hardest`) with plain English; cut subsection
-  lead-ins and Precedence sections that restated `using-97`'s
-  trigger map. No skill names or behavior changed.
-- Security and pre-commit skills now flag unsafe code (hardcoded
-  credentials, string-built SQL, unsafe deserialization) found in
-  surrounding code, not only when written. `pre-commit-self-review`
-  summaries carry an `Adjacent issues:` line.
-- `using-97` Priority rule 4 folds the adjacent-code scan into the
-  read-before-edit reminder.
+- Replaced in-house metaphors (`trap-scan`, `mid-X`, `landmines`,
+  `fires hardest`) with plain English across all skills. Cut
+  subsection lead-ins and Precedence sections that only restated
+  `using-97`'s trigger map.
+- Security and pre-commit skills flag unsafe code (credentials,
+  string-built SQL, unsafe deserialization) in surrounding lines, not
+  just when newly written. `pre-commit-self-review` summaries carry
+  an `Adjacent issues:` line.
+- `using-97` rule 4 merges the adjacent-code scan with read-before-edit.
 
 ### Documentation
 
-- `README.md` and `AGENTS.md` rewritten in plainer voice: cut
-  promotional phrasing, dropped a few academic constructions, fixed
-  the "seven rules" heading to match the eight numbered rules, and
-  replaced `bootstrap` with `entry skill` where the term was not
-  load-bearing.
+- `README.md`, `AGENTS.md`, and `CONTRIBUTE.md` rewritten in plainer
+  voice. Cut promotional phrasing and academic constructions; fixed
+  the `seven rules` heading to match the eight rules.
 
 ## [0.6.0] — 2026-05-06
 
@@ -451,7 +452,8 @@ your coding agent invokes automatically.
 - Per-skill `principles.md` — long-form distillations with author
   attribution and links to the canonical CC-BY-3.0 source mirror.
 
-[Unreleased]: https://github.com/oribarilan/97/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/oribarilan/97/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/oribarilan/97/releases/tag/v0.7.0
 [0.6.0]: https://github.com/oribarilan/97/releases/tag/v0.6.0
 [0.5.1]: https://github.com/oribarilan/97/releases/tag/v0.5.1
 [0.5.0]: https://github.com/oribarilan/97/releases/tag/v0.5.0
