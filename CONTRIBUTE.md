@@ -22,9 +22,9 @@ directory is loaded by three supported harnesses today:
 - **OpenCode** — via the OpenCode plugin API (`.opencode/plugins/`)
 
 This is the multi-harness adapter pattern from
-[`superpowers`](https://github.com/obra/superpowers): a single
-harness-neutral `skills/` directory at the source of truth, with thin
-per-harness adapter manifests at the repo root.
+[`superpowers`](https://github.com/obra/superpowers): one shared
+`skills/` directory as the source of truth, with a thin adapter
+manifest per harness at the repo root.
 
 ### Harness scope policy (through v1.0)
 
@@ -32,18 +32,18 @@ per-harness adapter manifests at the repo root.
 Adding a new harness (Cursor, Codex, Gemini, or any other) requires
 *both*:
 
-1. **Demonstrated user demand** — concrete inbound interest from users
-   of that harness, not a maintainer's speculative interest.
+1. **Real user demand** — concrete inbound interest from users of that
+   harness, not a maintainer's hunch.
 2. **Behavioral evidence** that the existing skills change agent output
-   on the harnesses already supported. Until the project has measured
-   evidence that the content is doing real work, adapter breadth is
-   the wrong investment.
+   on the harnesses already supported. Until we have evidence that the
+   content actually changes how agents behave, adding more harnesses is
+   premature.
 
 Adapter PRs that add a new harness without meeting both bars will be
 deferred until v1.0 at earliest. This is scope discipline, not a
 rejection of contribution: external adapters can be maintained as
-separate forks/repos by interested parties without inflating the core
-repo's CI matrix or maintenance load.
+separate forks/repos by interested parties without bloating the core
+repo's CI matrix.
 
 The v0.3 release dropped an unused Cursor branch from
 `hooks/session-start.mjs` for the same reason. If a major harness
@@ -106,9 +106,9 @@ load it manually at session start (e.g., paste it, `@AGENTS.md`, or
 "read AGENTS.md before making changes"). The repo previously kept
 `CLAUDE.md` byte-identical to `AGENTS.md`; that was dropped in v0.3
 (`decide-agents-claude-md-strategy`, revised) — these are
-contributor-facing docs and the maintenance tax exceeded the value of
-automatic Claude Code priming. Smoke now actively rejects a
-re-introduced `CLAUDE.md` to prevent drift.
+contributor-facing docs, and keeping two copies in sync cost more than
+the convenience was worth. Smoke now actively rejects a re-introduced
+`CLAUDE.md` to prevent drift.
 
 ---
 
