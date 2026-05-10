@@ -8,7 +8,7 @@
     {
       "name": "97",
       "description": "Skills distilled from the hard-won lessons of world-renowned programmers, in the spirit of '97 Things Every Programmer Should Know'. Your coding agent invokes them when about to refactor, write a test, design an API, or commit.",
-      "version": "0.7.0",
+      "version": "0.8.0",
       "source": "./",
       "author": {
         "name": "Ori Barilan"

@@ -16,6 +16,11 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [Unreleased]
 
+## [0.8.0] — 2026-05-10
+
+Agent-first pass. Skills fire on reviewing code (not just writing),
+trim human-team advice, and four skills get shorter names.
+
 ### Changed
 
 - Trimmed human-team advice and boilerplate from all skills. Cut
