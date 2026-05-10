@@ -76,12 +76,12 @@ the policy can be revisited.
 ├── skills/
 │   ├── using-97/          # Bootstrap (always loaded)
 │   ├── before-you-refactor/
-│   ├── writing-clean-code/
+│   ├── clean-code/
 │   ├── domain-modeling/
-│   ├── api-and-interface-design/
+│   ├── api-design/
 │   ├── testing-discipline/
-│   ├── pre-commit-self-review/
-│   ├── error-and-correctness-traps/
+│   ├── self-review/
+│   ├── correctness-traps/
 │   ├── build-deploy-and-tooling/
 │   └── working-with-users-and-team/
 ├── AGENTS.md              # contributor conventions for AI agents
@@ -232,7 +232,7 @@ example — match its shape.
 - **Past tense, reader's perspective.** What changed for them, not
   what process produced it.
 - **Bullets describe the change, not the deliberation.**
-  "`writing-clean-code` cut from 12 decisions to 8" — yes. "After
+  "`clean-code` cut from 12 decisions to 8" — yes. "After
   council review and synthesis, consensus emerged that..." — no.
 - **One bullet per logical change. Don't pad.** If a bullet runs past
   six or seven lines, you're explaining yourself; cut it.

@@ -28,11 +28,11 @@ const skillsDir = path.join(root, 'skills');
 //
 // Budget philosophy (`decide-lint-budget-policy`, v0.3):
 // Caps are tight by design. The gold-standard skill,
-// `error-and-correctness-traps`, fits ~7 trap domains with concrete
+// `correctness-traps`, fits ~7 trap domains with concrete
 // examples in ~130 lines. Existing content skills sit comfortably
 // below 250. The cap is a forcing function for editorial density,
 // not a budget to spend. New skills should match
-// `error-and-correctness-traps` density first; if the work genuinely
+// `correctness-traps` density first; if the work genuinely
 // can't fit, bump that one skill's cap with a documented reason —
 // don't blanket-loosen.
 const SKILL_RULES = {
@@ -52,7 +52,7 @@ const SKILL_RULES = {
       'Fowler/DataClumps',
     ],
   },
-  'writing-clean-code': {
+  'clean-code': {
     maxLines: 250,
     sections: ['Overview', 'When to invoke', 'Red Flags'],
     principles: ['97/13', '97/15', '97/17', '97/30', '97/75', '97/76', '97/91', '97/94'],
@@ -76,7 +76,7 @@ const SKILL_RULES = {
       'xUnit/ConditionalTestLogic',
     ],
   },
-  'api-and-interface-design': {
+  'api-design': {
     maxLines: 250,
     sections: ['Overview', 'When to invoke', 'Red Flags'],
     principles: [
@@ -95,12 +95,12 @@ const SKILL_RULES = {
       'King/ParseDontValidate',
     ],
   },
-  'pre-commit-self-review': {
+  'self-review': {
     maxLines: 250,
     sections: ['Overview', 'When to invoke', 'Red Flags'],
     principles: ['97/1', '97/9', '97/14', '97/16', '97/42', '97/47', '97/58', '97/69', '97/90'],
   },
-  'error-and-correctness-traps': {
+  'correctness-traps': {
     maxLines: 250,
     sections: ['Overview', 'When to invoke', 'Red Flags'],
     principles: [
@@ -166,7 +166,7 @@ const SKILL_RULES = {
     maxLines: 250,
     sections: ['Overview', 'When to invoke', 'Red Flags'],
     // Per CITATION-SCHEME.md ID-uniqueness rule, 97/26 and 97/29 are owned
-    // canonically by error-and-correctness-traps. This skill cross-references
+    // canonically by correctness-traps. This skill cross-references
     // them in SKILL.md but does not own them.
     principles: [],
   },

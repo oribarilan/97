@@ -1,13 +1,13 @@
 ---
 name: security-and-trust-boundaries
-description: Use when parsing user input, writing/executing SQL or shell commands, handling secrets/tokens/credentials, hashing passwords, adding/changing an auth check, deserializing untrusted data, or constructing file paths/URLs from input
+description: Use when writing or reviewing code that parses user input, builds SQL/shell commands, handles secrets/credentials, hashes passwords, changes auth checks, deserializes untrusted data, or constructs paths/URLs from input
 ---
 
 # Security and Trust Boundaries
 
 ## Overview
 
-Common security mistakes grouped by trust boundary: input concatenated into a query, a token logged "for debugging", an unguarded endpoint, `pickle.loads` on untrusted bytes. **When code crosses a trust boundary, stop and run the matching checks before you commit.** Most of this skill is original commentary; see `principles.md` and `CONTENT-LICENSE.md` for citations and the licensing posture.
+Common security mistakes grouped by trust boundary: input concatenated into a query, a token logged "for debugging", an unguarded endpoint, `pickle.loads` on untrusted bytes. **When code crosses a trust boundary, stop and run the matching checks before you commit.**
 
 This is a **rigid** skill. Jump to the sub-section that matches what you're writing and run that sub-section's checks.
 
@@ -26,6 +26,7 @@ Invoke when you're about to:
 - Add, remove, or change an authentication or authorization check, or expose a new endpoint
 - Deserialize data (`pickle`, `yaml.load`, Java/PHP unserialize, XML with entities, JSON merge)
 - Construct a file path or URL from user-controlled input
+- Review or audit code that crosses trust boundaries
 
 ### Non-triggers — do NOT invoke for
 
@@ -41,7 +42,7 @@ If the change touches one of these domains even slightly, **invoke anyway** — 
 
 ## Precedence
 
-- `97/error-and-correctness-traps` overlaps on input validation as error handling. **Rule:** trust-boundary crossings (untrusted input, secrets, auth, deserialization, code-execution surfaces) → this skill; non-security correctness (errors, floats, concurrency, IPC, perf, singletons) → that skill. When both clearly apply (e.g., parsing a config file from a possibly-malicious source), run this one first.
+- `97/correctness-traps` overlaps on input validation as error handling. **Rule:** trust-boundary crossings (untrusted input, secrets, auth, deserialization, code-execution surfaces) → this skill; non-security correctness (errors, floats, concurrency, IPC, perf, singletons) → that skill. When both clearly apply (e.g., parsing a config file from a possibly-malicious source), run this one first.
 
 ## Checks by domain
 

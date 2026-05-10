@@ -67,7 +67,7 @@ const checks = [
   {
     name: 'trigger keyword bridge present',
     test: () => ['refactor', 'clean', 'test', 'commit'].every((kw) => lower.includes(kw)),
-    hint: 'List the literal user-words that map to skills (refactor → before-you-refactor, clean code → writing-clean-code, test → testing-discipline, commit → pre-commit-self-review).',
+    hint: 'List the literal user-words that map to skills (refactor → before-you-refactor, clean code → clean-code, test → testing-discipline, commit → self-review).',
   },
   {
     name: 'red flags catch pre-action rationalization',

@@ -93,10 +93,10 @@ excluded from uniqueness counts by the lint regex (which is anchored
 to bare-ID `## <id> —` headings).
 
 **v0.3 carryover resolved in `0b`.** The v0.3 cross-listing of
-`97/26` and `97/29` in both `error-and-correctness-traps` and
+`97/26` and `97/29` in both `correctness-traps` and
 `security-and-trust-boundaries` violates this rule. The Canonical-home
 table below settles the resolution: canonical home is
-`error-and-correctness-traps`; `security-and-trust-boundaries` keeps
+`correctness-traps`; `security-and-trust-boundaries` keeps
 a Red Flags surfacing with bare-ID cross-references and drops the IDs
 from its `SKILL_RULES.principles`. The migration in
 `0b-citation-scheme-migration.md` performs the trim.
@@ -110,16 +110,16 @@ home; cross-referencing skills surface the rule in `SKILL.md` only.
 
 | Principle ID | Canonical home | Cross-references | Note |
 |---|---|---|---|
-| `97/26` (Don't Ignore That Error!) | `error-and-correctness-traps` | `security-and-trust-boundaries` | Resolves v0.3 cross-listing in `0b`. |
-| `97/29` (Don't Rely on "Magic Happens Here") | `error-and-correctness-traps` | `security-and-trust-boundaries` | Resolves v0.3 cross-listing in `0b`. |
-| `Fowler/PrimitiveObsession` | `domain-modeling` | `before-you-refactor`, `api-and-interface-design`, `writing-clean-code` | Closest trigger: introducing a domain concept. |
-| `King/ParseDontValidate` | `api-and-interface-design` | `domain-modeling`, `security-and-trust-boundaries` | Boundary parsing is contract design. |
-| `Wlaschin/InvalidStatesUnrepresentable` | `domain-modeling` | `api-and-interface-design` | Internal-invariant counterpart to `King/ParseDontValidate`. |
-| `12F/XI` (logs as event streams) | `build-deploy-and-tooling` | `error-and-correctness-traps`, `observability` | Owns log *transport*; trap skill owns *what not to log*; observability owns *content shape*. |
-| `OTel/StructuredLogs` | `observability` | `build-deploy-and-tooling`, `error-and-correctness-traps` | Log *content shape*. |
-| `RI/CircuitBreaker` | `error-and-correctness-traps` | `observability` (open-circuit events should be observable) | Distinct from existing `97/9` retry/backoff territory. |
+| `97/26` (Don't Ignore That Error!) | `correctness-traps` | `security-and-trust-boundaries` | Resolves v0.3 cross-listing in `0b`. |
+| `97/29` (Don't Rely on "Magic Happens Here") | `correctness-traps` | `security-and-trust-boundaries` | Resolves v0.3 cross-listing in `0b`. |
+| `Fowler/PrimitiveObsession` | `domain-modeling` | `before-you-refactor`, `api-design`, `clean-code` | Closest trigger: introducing a domain concept. |
+| `King/ParseDontValidate` | `api-design` | `domain-modeling`, `security-and-trust-boundaries` | Boundary parsing is contract design. |
+| `Wlaschin/InvalidStatesUnrepresentable` | `domain-modeling` | `api-design` | Internal-invariant counterpart to `King/ParseDontValidate`. |
+| `12F/XI` (logs as event streams) | `build-deploy-and-tooling` | `correctness-traps`, `observability` | Owns log *transport*; trap skill owns *what not to log*; observability owns *content shape*. |
+| `OTel/StructuredLogs` | `observability` | `build-deploy-and-tooling`, `correctness-traps` | Log *content shape*. |
+| `RI/CircuitBreaker` | `correctness-traps` | `observability` (open-circuit events should be observable) | Distinct from existing `97/9` retry/backoff territory. |
 | `97/8` (Boy Scout Rule) | `before-you-refactor` | none | Already canonical here; verify no enrichment duplicates. |
-| `97/30` (Don't Repeat Yourself) | `writing-clean-code` | none | Already canonical here; verify no enrichment duplicates. |
+| `97/30` (Don't Repeat Yourself) | `clean-code` | none | Already canonical here; verify no enrichment duplicates. |
 
 New cross-cutting principles surfaced mid-enrichment add a row here in
 the same PR as the enrichment that surfaced them. The closing

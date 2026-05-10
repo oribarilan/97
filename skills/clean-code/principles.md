@@ -1,4 +1,4 @@
-# writing-clean-code — principles
+# clean-code — principles
 
 Long-form per-principle distillations. The summary in `SKILL.md` is what the
 agent loads on trigger; this file is the on-demand reference for when a
@@ -358,5 +358,5 @@ writing the function, and let those examples drive the type choices.
 **Agent application.** Source for decision 4 ("find the examples in domain
 terms before writing the function") and the Red Flag about using native
 `int`/`string` for now. Bridges to `domain-modeling` (97/65 in that skill) and
-`api-and-interface-design` — domain-specific types are the shared answer to
+`api-design` — domain-specific types are the shared answer to
 multiple distinct questions.

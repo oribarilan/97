@@ -342,7 +342,7 @@ logs-as-event-streams, and pipeline-as-code. Roman numerals on
 numbering.
 
 `12F/XI` (logs as event streams) is the canonical home for the
-log-transport rule. `error-and-correctness-traps` cross-references
+log-transport rule. `correctness-traps` cross-references
 it for the "what not to log" axis (secrets, PII); the
 `observability` skill cross-references it for log content shape.
 
@@ -436,7 +436,7 @@ logs, does not implement log shipping. Log files on the running host
 are an operational dead-end (they vanish on container restart, fill
 disks, and require per-host shell access to read). Canonical home
 for log *transport*; `observability` owns log *content shape*
-(`OTel/StructuredLogs`); `error-and-correctness-traps` owns log
+(`OTel/StructuredLogs`); `correctness-traps` owns log
 *content limits* (no secrets, no PII, no raw stack traces in prod).
 
 **Agent application.** Surfaces in `SKILL.md` Red Flags as "process

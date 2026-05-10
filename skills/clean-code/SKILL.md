@@ -1,13 +1,13 @@
 ---
-name: writing-clean-code
-description: Use when adding a new function/class, naming a new entity, or modifying ≥3 lines of non-trivial logic
+name: clean-code
+description: Use when writing or reviewing functions, classes, naming, or non-trivial logic (≥3 lines)
 ---
 
 # Writing Clean Code
 
 ## Overview
 
-**Code is read far more often than it is written, so optimize the artifact for the next reader.** This skill is a small set of decisions to apply when you write a new function, name a new entity, or touch a non-trivial block of logic. Each decision pairs with a check a reviewer (human or agent) could apply by reading the diff. Draws on contributors to *97 Things Every Programmer Should Know* (CC-BY-3.0; see `principles.md` for the full set including the demoted ones).
+**Code is read far more often than it is written, so optimize the artifact for the next reader.** This skill is a small set of decisions to apply when you write a new function, name a new entity, or touch a non-trivial block of logic. Each decision pairs with a check a reviewer (human or agent) could apply by reading the diff.
 
 ## When to invoke
 
@@ -18,6 +18,7 @@ Invoke when you're about to:
 - Modify ≥3 lines of non-trivial logic — branching, loops, conditional dispatch, or anything that reads as "behavior" rather than "wiring"
 - Add or replace a comment block of more than one line
 - Copy-paste a block of logic from elsewhere in the codebase
+- Review code for readability, naming, duplication, or structural quality
 
 If you're unsure whether the change is non-trivial, ask: *would a reviewer pause on this hunk to think about it?* If yes, invoke.
 

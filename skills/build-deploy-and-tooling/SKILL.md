@@ -1,13 +1,13 @@
 ---
 name: build-deploy-and-tooling
-description: Use when authoring or changing build scripts, CI workflows, deploy pipelines, repo setup files, or evaluating a new tool/dependency for adoption into the project
+description: Use when writing, reviewing, or changing build scripts, CI workflows, deploy pipelines, repo setup, or evaluating a new tool/dependency
 ---
 
 # Build, Deploy and Tooling
 
 ## Overview
 
-The build script, the CI pipeline, the deploy job, and the tools you reach for are *part of the codebase* — they decide whether the next person can clone the repo, run the build, and ship a change in an hour or in a week. **Own the build as code. Build one artifact and promote it. Deploy from day one. Choose tools that fit the project, not the resume. Automate everything you do twice.** This skill enforces the decisions to make whenever you touch infrastructure or evaluate a tool. It draws on eleven contributors to *97 Things Every Programmer Should Know* (CC-BY-3.0; see `principles.md` for citations and links).
+Build scripts, CI pipelines, deploy jobs, and tooling choices are part of the codebase. **Own the build as code. Build one artifact and promote it. Deploy from day one. Choose tools that fit the project, not the resume. Automate everything you do twice.** This skill enforces the decisions to make whenever you touch infrastructure or evaluate a tool.
 
 This is a **rigid** skill. Run the checklist in order. If you can't satisfy a step, stop and tell the user what's blocking you.
 
@@ -25,6 +25,7 @@ Invoke when you're about to:
 - Add a new repeated manual step to anyone's workflow (a candidate for automation)
 - Configure a bug tracker, issue template, or defect-triage workflow
 - Write or change an installer, a "getting started" page, or a `README` quick-start
+- Review CI config, deploy pipelines, build scripts, or tooling choices
 
 ### Non-triggers — do NOT invoke for
 
@@ -60,14 +61,14 @@ Run every step in order. The sub-area headings group related principles; the num
 ### Tooling choice
 
 5. **Respect the project's existing tool conventions before recommending a new one.** If the repo already uses a linter, a test runner, a build system, a deployment target — that is the convention until the team agrees otherwise. Adding a parallel tool because you prefer it doubles maintenance and fragments contributor knowledge. When you do propose a new tool, evaluate the real costs: architectural fit with the existing stack, upgrade lifecycle and how it interacts with the other tools' upgrade cycles, configuration burden, license compatibility, lock-in risk, and whether "free" hides a paid support tier you will eventually need. Start with the smallest set that works; isolate each external tool behind an internal interface so it can be swapped later with bounded pain. *(Asproni, 97/10.)*
-6. **Treat the installer / "getting started" path as the user's first impression of the product.** The user has no patience for friction at install time. Detect what you can detect (platform, architecture); ask only what you cannot. Tell the user where files are written so they can clean up later. For a library or CLI, ship a five-line "Hello, world" that produces exactly the output advertised — not a wizard, not an XML scaffold. The thank-you emails, bug reports, and word-of-mouth come from users who got their first success in five minutes. *(Baker, 97/40.)*
+6. **Treat the installer / "getting started" path as the user's first impression of the product.** The user has no patience for friction at install time. Detect what you can detect (platform, architecture); ask only what you cannot. Tell the user where files are written so they can clean up later. For a library or CLI, ship a five-line "Hello, world" that produces exactly the output advertised — not a wizard, not an XML scaffold. *(Baker, 97/40.)*
 7. **Set up the bug tracker so reports are conversations, not accusations.** A good defect report has three parts: how to reproduce (and how often), what should have happened, what actually happened. Configure issue templates that ask for those three. Make the standard query for "open bugs in my area" a one-click link every contributor knows. Status changes carry a short reason; closed-without-explanation invites re-open wars. Do not overload subject lines or fields for personal triage signals — add a real field, document it. A bug is not a unit of work, any more than a line of code is a unit of effort. *(Doar, 97/38.)*
 
 ### Automation
 
 8. **Automate the coding standard; do not rely on humans to follow it.** Formatting, import order, banned APIs, complexity thresholds, test-coverage floors — encode them as commit-blocking checks and break the build when violated. A standard nobody enforces is abandoned one rule at a time under deadline pressure. The rules you cannot automate are guidelines, and you should expect them to drift. *(van Laenen, 97/4.)*
 9. **Run static analysis as a first-class quality gate, not an optional script.** Tests find behavioral bugs the tests imagined; static analyzers find the bug class your tests forgot — null dereferences, unused returns, possible races, unreachable branches. Pick the strongest analyzer your language supports, configure it to your project's signal/noise tolerance, and gate the build on it. When no off-the-shelf checker covers your project's specific anti-pattern, write a small one — most languages expose the AST in their standard library. *(Mount, 97/79.)*
-10. **Reach for the Unix toolchest before reaching for a custom script or a heavyweight platform.** `grep`, `sed`, `awk`, `sort`, `uniq`, `xargs`, `jq`, `find`, a shell loop — these compose into a one-liner for tasks that would otherwise become a maintained tool. They work on every textual format, scale to enormous inputs without rewrites, and pipeline naturally across cores. The investment in shell fluency pays out across every language and every project. *(Spinellis, 97/88.)*
+10. **Reach for the Unix toolchest before reaching for a custom script or a heavyweight platform.** `grep`, `sed`, `awk`, `sort`, `uniq`, `xargs`, `jq`, `find`, a shell loop — these compose into a one-liner for tasks that would otherwise become a maintained tool. They work on every textual format, scale to enormous inputs without rewrites, and pipeline naturally across cores. *(Spinellis, 97/88.)*
 11. **Step back when you notice yourself doing the same manual sequence twice — automate it.** The deploy you click through, the report you copy-paste, the file you reformat by hand — wrap each in a script the first time you repeat it. Misconceptions to refuse: "automation is just for testing" (no — also for build, package, deploy, doc generation, reporting); "the IDE does it" (the IDE does it for you, not for the next contributor or for CI); "I don't have time" (the script pays for itself by the third run, and earlier in the project there is more slack to write it). *(Horstmann, 97/78.)*
 
 ## Red Flags

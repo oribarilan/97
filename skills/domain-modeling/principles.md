@@ -184,7 +184,7 @@ fires at the boundary); this principle fires when designing
 **Agent application.** Surfaces in `SKILL.md` Red Flags as "boolean
 flags carrying state" and as a checklist step in the type-design
 flow. Cross-references `King/ParseDontValidate` (canonical home in
-`api-and-interface-design`) for the boundary-parsing counterpart.
+`api-design`) for the boundary-parsing counterpart.
 
 ---
 
@@ -255,7 +255,7 @@ operations that depend on it and gives the compiler or a reader a
 name for what the value means. Canonical home for this principle is
 `domain-modeling` because the strongest trigger is "introducing a
 new domain concept"; cross-references in `before-you-refactor`,
-`api-and-interface-design`, and `writing-clean-code` surface the
+`api-design`, and `clean-code` surface the
 diff-level signal under their respective triggers. Pairs with
 `Wlaschin/TypesForEffects` for the typed-language counterpart.
 

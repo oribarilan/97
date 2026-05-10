@@ -1,4 +1,4 @@
-# api-and-interface-design — principles
+# api-design — principles
 
 Long-form per-principle distillations. The summary in `SKILL.md` is what the
 agent loads on trigger; this file is the on-demand reference for when a
@@ -232,7 +232,7 @@ incorrect use hard.
 
 **Distillation.** The 97-Things essay frames SRP at unit scope: gather things that change for the same reason, separate things that change for different reasons. The same axis-of-change test applies at the module boundary. An exported `Repository` with fourteen methods serving three callers, each of whom uses two, has handed out one surface where it should have handed out three. The cohesion failure is not the implementation's — it is the contract's. The fix is the dual of decision 3's "encapsulate behavior on the type that owns the state": the exported surface should bundle one coherent reason for callers to depend on it. ISP ("clients shouldn't depend on methods they don't use") is one consequence of running this check at the API boundary, not a synonym; ISP also covers role-based interface segregation (`Customer` vs `Auditor` views of the same object), which decision 6 (state types) and decision 7 (vocabulary) gesture at separately. Adjacency with `Ousterhout/DeepModules`: deep modules is about *interface/implementation ratio* — a small surface hiding a lot. SRP-at-boundary is about *cohesion of the exported surface* — whatever its size, one reason for callers to depend on it. Different observations, both worth keeping.
 
-**Agent application.** Source for the boundary-level cohesion bullet in decision 3 ("encapsulate behavior, not just state") and the Red Flag about wedging a second concern onto a class because "it's already imported here." Reuses `97/76` from `writing-clean-code`, where the unit-level discipline lives — citation reuse across skills is precedented (`97/30` appears in both `writing-clean-code` and `before-you-refactor`). The unit-level form fires while writing the function; this boundary-level form fires while designing the export.
+**Agent application.** Source for the boundary-level cohesion bullet in decision 3 ("encapsulate behavior, not just state") and the Red Flag about wedging a second concern onto a class because "it's already imported here." Reuses `97/76` from `clean-code`, where the unit-level discipline lives — citation reuse across skills is precedented (`97/30` appears in both `clean-code` and `before-you-refactor`). The unit-level form fires while writing the function; this boundary-level form fires while designing the export.
 
 ---
 

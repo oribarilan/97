@@ -1,4 +1,4 @@
-# error-and-correctness-traps — principles
+# correctness-traps — principles
 
 Long-form per-principle distillations. The summary in `SKILL.md` is what the
 agent loads on trigger; this file is the on-demand reference for when a

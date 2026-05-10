@@ -1,15 +1,13 @@
 ---
 name: before-you-refactor
-description: Use when about to refactor, restructure, rename across files, or "clean up" existing code
+description: Use when considering, evaluating, or performing a refactor, restructure, cross-file rename, or cleanup
 ---
 
 # Before You Refactor
 
 ## Overview
 
-Refactoring without a plan is how working systems become broken systems. **Stop. Read the code that already exists. Understand the tests that protect it. Take small steps. Keep the tests green.** This skill enforces a pre-flight checklist drawn from five contributors to *97 Things Every Programmer Should Know* (CC-BY-3.0; see `principles.md` for citations and links).
-
-This is a **rigid** skill. Run the checklist. Don't skip steps. If you can't satisfy a step, stop and tell the user what's blocking you.
+**Stop. Read the code that already exists. Understand the tests that protect it. Take small steps. Keep the tests green.** This is a **rigid** skill. Run the checklist; don't skip steps. When assessing code (not actively refactoring), steps 1–2 and 6 are the assessment; report findings without editing.
 
 ## When to invoke
 
@@ -20,13 +18,15 @@ Invoke when you're about to:
 - Rewrite a function or module because the existing one feels ugly, outdated, or wrong
 - Replace an existing implementation with a "better" one
 - Restructure tests, fixtures, or shared helpers used in more than one place
+- Assess whether existing code needs refactoring (reading for smells, coupling, complexity)
+- Review a refactoring proposal or PR that restructures code
 
 If you're touching ≥3 lines of existing non-trivial logic to change its **shape** (not its behavior), invoke this skill.
 
 ### Non-triggers — do NOT invoke for
 
 - Fixing a one-line bug where the change is obvious and the test exists
-- Adding a brand-new function in a brand-new file (use `writing-clean-code` instead)
+- Adding a brand-new function in a brand-new file (use `clean-code` instead)
 - Renaming a single local variable inside one function
 - Fixing a typo in a comment, string, or doc
 - Formatting-only changes (whitespace, import order) handled by a formatter
@@ -38,7 +38,7 @@ If you're not sure whether a change counts as a refactor, **invoke anyway** — 
 
 Run every step in order. Do not start editing until step 5 is satisfied.
 
-1. **Read the existing code.** Read it through once. Then read it again. The code in front of you is the result of decisions, bug fixes, and edge-case handling you don't yet understand. *(Attapattu, 97/6 — "Take stock of the existing codebase.")*
+1. **Read the existing code.** Read it through once, then again. Assume it encodes decisions, bug fixes, and edge-case handling you don't yet understand. *(Attapattu, 97/6.)*
 2. **Find the tests that already cover it.** List them. Run them. Confirm they pass on `main` before you change anything. If there are no tests, **stop and add a characterization test that pins down current behavior** before touching the code. *(Attapattu, 97/6 — "Ensure existing tests pass after each iteration.")*
 3. **State the goal in one sentence.** "I am restructuring X so that Y." If you can't write that sentence, you don't have a refactor — you have a wish. Stop. Talk to the user.
 4. **Check the goal isn't ego or fashion.** Are you refactoring because the code is genuinely blocking work, or because the style offends you, or because there's a newer framework? *Personal preference, ego, and "new tech is shiny" are not valid reasons.* *(Attapattu, 97/6.)* If the answer is fashion, stop and propose the change to the user explicitly with cost and benefit; do not silently rewrite.
@@ -62,7 +62,7 @@ These thoughts mean STOP — restart the checklist:
 | "The tests are failing but it's just flaky — I'll keep going." | Failing tests during a refactor mean the refactor changed behavior. Stop, investigate, fix or revert. Don't push through. (97/6) |
 | "Estimating is too hard — I'll figure it out as I go." | Open-ended refactors balloon. Identify the coupling hotspots up front and re-estimate. If it's now bigger than the ask, escalate. (97/74) |
 | "I'll just rename some variables — the function isn't *that* long." | If the function scrolls, renaming alone won't help. Extract helpers whose names explain the *why*; the body shrinks to a sequence of named steps. (`Fowler/LongMethod`) |
-| "The function does X *and also* Y, but they're related." | If you needed "and also" to describe the unit, it has more than one reason to change — the SRP refactoring trigger. State the unit's responsibility in one sentence; if you can't without "and also," split. See `writing-clean-code` decision 4 for the discipline of writing the result. (97/76) |
+| "The function does X *and also* Y, but they're related." | If you needed "and also" to describe the unit, it has more than one reason to change — the SRP refactoring trigger. State the unit's responsibility in one sentence; if you can't without "and also," split. See `clean-code` decision 4 for the discipline of writing the result. (97/76) |
 | "The same change keeps forcing me to edit the same eight files." | Shotgun surgery: the behavior is conceptually one thing, physically scattered. Move related fields and methods together until the next instance of the change is one file. (`Fowler/ShotgunSurgery`) |
 | "This function already takes seven primitives — I'll just add an eighth." | Data clump. The fields are a missing type. Extract a class / dataclass / parameter object before adding the eighth. (`Fowler/DataClumps`) |
 | "Everything lives in one file — it's easier to find when it's all together." | Co-location by import convenience is not a single responsibility. If the pieces change for different reasons, split the module along the axes of change. (97/76) |

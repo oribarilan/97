@@ -8,7 +8,7 @@
     },
     {
       "phrase": "I'm writing a new function that parses user-supplied dates. Help me write clean code for it.",
-      "expectedSkill": "writing-clean-code"
+      "expectedSkill": "clean-code"
     },
     {
       "phrase": "I need to write tests for a payment processor. What should the test data and assertions look like?",
@@ -16,11 +16,11 @@
     },
     {
       "phrase": "I'm designing a public API for a new SDK. Help me think through the function signatures and module boundaries.",
-      "expectedSkill": "api-and-interface-design"
+      "expectedSkill": "api-design"
     },
     {
       "phrase": "I just finished implementing a feature and I'm about to commit. Walk me through a self-review.",
-      "expectedSkill": "pre-commit-self-review"
+      "expectedSkill": "self-review"
     },
     {
       "_comment": "Action-target prompt — the failure mode users actually report. Currently expected to fail against the published bootstrap; should pass after the imperative-force fix ships.",

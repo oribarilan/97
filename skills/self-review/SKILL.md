@@ -1,5 +1,5 @@
 ---
-name: pre-commit-self-review
+name: self-review
 description: Use when about to commit, finish a task, open a PR, summarize work for the user, or when the user asks for a review or summary — NOT just on autonomous commits, which are rare in OpenCode usage
 ---
 
@@ -7,9 +7,9 @@ description: Use when about to commit, finish a task, open a PR, summarize work 
 
 ## Overview
 
-Before claiming a task is complete, pause and read what you wrote as a stranger would. **Most defects you would catch in your own code are still in your own code because you never looked.** Draws on nine contributors to *97 Things Every Programmer Should Know* (CC-BY-3.0; see `principles.md` for citations and links).
+**Pause and read what you wrote as a stranger would before claiming completion.** This skill covers review of your own work. For domain-specific review of any code (security, correctness, API quality), invoke the matching domain skill.
 
-This is a **rigid** skill. Run the checklist in order. If you can't satisfy a step, fix it or call it out in your summary to the user.
+Run the checklist in order. If you can't satisfy a step, fix it or call it out in your summary.
 
 ## When to invoke
 
@@ -54,8 +54,7 @@ Run every step before you commit, hand off, or claim completion.
 5. **Clean the build before you leave it.** New compiler warnings, lint errors, or deprecation notices introduced by this change get fixed now, not later. A noisy build hides the warning that actually matters. *(Brodwall, 97/42.)*
 6. **Audit the logs you added.** Every new log line: is its level right? Will it fire once per significant event, or per inner-loop iteration? Would you want to be paged for an ERROR-level message you wrote? If not, downgrade it. *(Brodwall, 97/90.)*
 7. **Re-read the comments.** Header comments should let the next reader use the code without reading the body. Inline comments should explain *why*, not narrate *what*. Delete comments that have drifted from the code. Never paste anything into a comment you would not want quoted back in a meeting. *(Evans, 97/16.)*
-8. **Step away if you're stuck on a smell.** If something feels off but you can't say why, stop typing. Walk, switch tasks, sleep on it. The creative side surfaces the problem once the logical side stops talking. Do not commit a change you are uneasy about because you are tired. *(Hufnagel, 97/69.)*
-9. **Frame your summary as a review, not a defense.** When you summarize for the user, mention the trade-offs, the parts you are least sure about, and any debt you incurred. Reviews exist for knowledge sharing, not for catching you out — invite scrutiny rather than deflect it. *(Karlsson, 97/14.)*
+8. **Frame your summary as a review, not a defense.** When you summarize for the user, mention the trade-offs, the parts you are least sure about, and any debt you incurred. Reviews exist for knowledge sharing, not for catching you out — invite scrutiny rather than deflect it. *(Karlsson, 97/14.)*
 
 ## Red Flags
 
@@ -71,7 +70,6 @@ These thoughts mean STOP — do not commit yet:
 | "There are a few new warnings, but the build still passes." | Today's ignored warning hides tomorrow's real one. Fix warnings as they appear, not in a future cleanup pass. (97/42) |
 | "More logging is safer." | A log flooded with INFO drowns the ERROR that wakes you at 3am. Audit log levels before committing. (97/90) |
 | "The code is obvious, no comments needed." | Obvious to you today is opaque to the next reader. Header comment for *how to use*, inline comment for *why*. (97/16) |
-| "I'm tired but let me push this through." | Tired commits are the ones you regret. Step away; the answer is usually obvious after a break. (97/69) |
 | "I'll just downplay the messy parts in the summary." | The summary is for knowledge sharing, not self-defense. Name the trade-offs and the parts you're unsure about. (97/14) |
 
 ## What "done" looks like

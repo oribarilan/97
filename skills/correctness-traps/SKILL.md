@@ -1,13 +1,13 @@
 ---
-name: error-and-correctness-traps
-description: Use when adding error handling to a call that can fail, comparing or calculating with floating-point numbers, writing concurrent or parallel code, calling a remote process or another service, adding a singleton or globally-shared mutable state, choosing a data structure for a hot path, or adding/changing log statements
+name: correctness-traps
+description: Use when writing or reviewing error handling, floating-point math, concurrent code, remote calls, singletons/globals, hot-path data structures, or high-volume log statements
 ---
 
 # Error and Correctness Traps
 
 ## Overview
 
-Common bugs grouped by domain: floats that won't compare equal, retries that hammer a downed service, singletons that wreck testability, and others. **When you write code in one of these domains, stop and run the matching checks before you commit.** Draws on nine contributors to *97 Things Every Programmer Should Know* (CC-BY-3.0; see `principles.md` for citations and links).
+Common bugs grouped by domain: floats that won't compare equal, retries that hammer a downed service, singletons that wreck testability, and others. **When you write code in one of these domains, stop and run the matching checks before you commit.**
 
 This is a **rigid** skill. Jump to the sub-section that matches what you're writing and run that sub-section's checks.
 
@@ -24,6 +24,7 @@ Invoke when you're about to:
 - Introduce a singleton or any globally-shared mutable state
 - Choose a data structure or algorithm on a path that runs often or on large inputs
 - Add or change log statements that may fire at high volume
+- Review code that handles errors, floats, concurrency, remote calls, singletons, or hot-path data structures
 
 ### Non-triggers — do NOT invoke for
 
@@ -32,7 +33,7 @@ Invoke when you're about to:
 - Fixing a typo in a comment
 - Formatting-only changes handled by a formatter
 - Adjusting a config value in a config file with no logic change
-- Reading code without modifying it
+- Skimming code for context without producing findings or edits
 - An early-stage MVP or prototype where the architecture is still in flux
 - An internal dev tool, debugging endpoint, or one-off script
 - Throwaway code expected to be replaced before reaching users

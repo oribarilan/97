@@ -1,15 +1,15 @@
 ---
 name: domain-modeling
-description: Use when introducing a new top-level type, table, or domain concept; renaming an existing domain concept; or choosing where state lives (in-memory vs persistent)
+description: Use when introducing, reviewing, or renaming a top-level type, table, or domain concept; or choosing where state lives (in-memory vs persistent)
 ---
 
 # Domain Modeling
 
 ## Overview
 
-The names and shapes you give the concepts in your code *are* the design. **When you introduce a new domain concept, name it for what it means in the user's world, give it a real type, and decide where its state lives — before you write the methods that act on it.** This skill enforces a short set of decisions to make at the moment a new domain concept enters the codebase. It draws on five contributors to *97 Things Every Programmer Should Know* (CC-BY-3.0; see `principles.md` for citations and links).
+The names and shapes you give the concepts in your code *are* the design. **When you introduce a new domain concept, name it for what it means in the user's world, give it a real type, and decide where its state lives — before you write the methods that act on it.**
 
-This is a **rigid** skill. Run the decisions in order. If you can't satisfy one, stop and tell the user what's blocking you. When the concept is exposed across a module/package/service boundary, also invoke `api-and-interface-design` (overlap on type design and value-vs-identity).
+This is a **rigid** skill. Run the decisions in order. If you can't satisfy one, stop and tell the user what's blocking you. When the concept is exposed across a module/package/service boundary, also invoke `api-design` (overlap on type design and value-vs-identity).
 
 ## When to invoke
 
@@ -21,6 +21,7 @@ Invoke when you're about to:
 - Decide whether a chunk of state should live in memory, in a file, in a key-value store, or in a relational database
 - Replace primitive-typed data (`int`, `string`, `Map<int, Map<int, int>>`) with named domain types
 - Sketch the data model for a new feature, area, or service
+- Evaluate whether an existing domain model is well-structured, or review naming and type choices
 
 If you're not sure whether a change introduces a *new domain concept* (vs. a local helper), **invoke anyway** — the decisions are cheap, mismodeled domain concepts are not.
 
@@ -30,8 +31,8 @@ If you're not sure whether a change introduces a *new domain concept* (vs. a loc
 - Renaming a private helper function or internal-only struct that doesn't represent a domain concept
 - Adding a new field to an existing type when the field is not itself a new domain concept (a new `lastModified` timestamp on `Booking` — no; a new `CancellationPolicy` type referenced from `Booking` — yes)
 - Adjusting an existing type's representation without changing its meaning (switching `int` user IDs to `long`)
-- Adding a method to an existing domain type (use `writing-clean-code` instead)
-- Defining a DTO that mirrors an existing domain type one-to-one for transport (use `api-and-interface-design`)
+- Adding a method to an existing domain type (use `clean-code` instead)
+- Defining a DTO that mirrors an existing domain type one-to-one for transport (use `api-design`)
 
 ### Language guard
 

@@ -131,7 +131,7 @@ generalizes to any refactor.
 
 **Distillation.** SRP at unit scope: a function, class, or module should have no more than one reason to change. As a refactoring trigger, the test is verbal — can you state the unit's responsibility in one sentence with no "and also"? "Computes the schedule *and also* logs it *and also* persists it" is three reasons to change wearing one name. Each reason has its own dependents who suffer for the others. The trigger fires before the refactor starts: notice the "and also," decide whether to split, then split along the axes of change rather than along axes of "things that share a noun."
 
-**Agent application.** Source for the SRP Red Flag in `SKILL.md` ("function does X *and also* Y"). Pairs with `writing-clean-code` decision 4: this skill names the trigger to *consider* the split on existing code; that skill names the discipline of *writing* the result. Reuses `97/76` across skills — already precedented for `97/30` (DRY), which lives canonically in `writing-clean-code` and is referenced in this skill's preamble below.
+**Agent application.** Source for the SRP Red Flag in `SKILL.md` ("function does X *and also* Y"). Pairs with `clean-code` decision 4: this skill names the trigger to *consider* the split on existing code; that skill names the discipline of *writing* the result. Reuses `97/76` across skills — already precedented for `97/30` (DRY), which lives canonically in `clean-code` and is referenced in this skill's preamble below.
 
 ---
 
@@ -148,7 +148,7 @@ Three additional smells live under their canonical homes elsewhere in
 the bundle — `Fowler/PrimitiveObsession` is owned by `domain-modeling`
 (introducing a domain concept is a stronger trigger than the refactor
 itself); duplicated code is covered by the existing `97/30` (DRY) in
-`writing-clean-code`; long parameter lists fold into the data-clumps
+`clean-code`; long parameter lists fold into the data-clumps
 response below.
 
 ---

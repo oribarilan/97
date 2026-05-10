@@ -7,7 +7,7 @@ This skill is the project's **one acknowledged "97-inspired plus
 extension"** — the book has thin direct coverage of modern security
 practice. Two principles from the book generalize cleanly to
 trust-boundary discipline, but per `CITATION-SCHEME.md`'s ID-uniqueness
-rule their canonical home is `error-and-correctness-traps`. They are
+rule their canonical home is `correctness-traps`. They are
 surfaced in this skill's `SKILL.md` as Red Flags and cross-references
 only; the canonical entries live one skill over. The rest of the skill
 content (concrete trap domains, worked examples, language-specific code
@@ -20,7 +20,7 @@ See `CONTENT-LICENSE.md` for the licensing posture.
 
 ## (cross-reference) 97/26 — Don't Ignore That Error!
 
-Canonical entry in `error-and-correctness-traps/principles.md`.
+Canonical entry in `correctness-traps/principles.md`.
 Surfaced here in `SKILL.md` because untrusted-input handling routinely
 produces ignored errors at the boundary: the missing `validate(...)` is
 the security analog of the swallowed exception. Don't ignore the trust
@@ -33,7 +33,7 @@ returns the input unchanged.
 
 ## (cross-reference) 97/29 — Don't Rely on "Magic Happens Here"
 
-Canonical entry in `error-and-correctness-traps/principles.md`.
+Canonical entry in `correctness-traps/principles.md`.
 Surfaced here in `SKILL.md` because security controls are exactly the
 kind of code that "just works" without scrutiny — until it doesn't.
 The default-secure framework decorator, the WAF rule, the

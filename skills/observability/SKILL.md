@@ -1,13 +1,13 @@
 ---
 name: observability
-description: Use when adding a request handler, RPC, or background job that will run in production; adding tracing, metrics, or structured-log calls; or making cross-process diagnosability decisions
+description: Use when writing or reviewing request handlers, RPCs, or background jobs for production; adding tracing, metrics, or structured-log calls; or making diagnosability decisions
 ---
 
 # Observability
 
 ## Overview
 
-Code that runs fine in dev and goes inert in production is the dominant operational failure mode for modern services. **When you add code that will run for users, you also add the diagnosability of that code: structured logs, trace context across process boundaries, metrics with bounded cardinality, signals an operator can read without your help.** Sources are Google's *Site Reliability Engineering*, the OpenTelemetry semantic conventions, and *Observability Engineering* (Majors et al.). See `principles.md` for citations and the `CONTENT-LICENSE.md` posture (predominantly original commentary).
+Code that runs fine in dev and goes inert in production is the dominant operational failure mode for modern services. **When you add code that will run for users, you also add the diagnosability of that code: structured logs, trace context across process boundaries, metrics with bounded cardinality, signals an operator can read without your help.**
 
 This is a **rigid** skill. Jump to the sub-section that matches what you're writing and run that sub-section's checks.
 
@@ -22,6 +22,7 @@ Invoke when you're about to:
 - Add tracing instrumentation, span creation, or trace-context propagation
 - Add or change a metric (counter, gauge, histogram), especially one with labels
 - Make a diagnosability decision that crosses process boundaries (logging across services, distributed traces, error correlation)
+- Review observability coverage, log/metric/trace quality, or diagnosability of existing code
 
 ### Non-triggers — do NOT invoke for
 

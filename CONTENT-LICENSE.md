@@ -62,11 +62,11 @@ those labels are the source's vocabulary for the concept.
   V (build/release/run), VI (processes, paired with VIII concurrency),
   and XI (logs). Also cites Jez Humble & David Farley, *Continuous
   Delivery* (Addison-Wesley, 2010), ch. 5, for pipeline-as-code.
-- `error-and-correctness-traps` cites Michael Nygard, *Release It!*
+- `correctness-traps` cites Michael Nygard, *Release It!*
   (2nd ed., Pragmatic Bookshelf, 2018), ch. 5 — for the timeout,
   circuit-breaker, bulkhead, backpressure / bounded-queues, and
   fail-fast stability patterns.
-- `api-and-interface-design` cites John Ousterhout, *A Philosophy of
+- `api-design` cites John Ousterhout, *A Philosophy of
   Software Design* (2nd ed., Yaknyam Press, 2021), chapters 4 and 10
   — for deep modules and define-errors-out-of-existence. Also cites
   Barbara Liskov, "Data Abstraction and Hierarchy" (CACM, 1987), for
@@ -100,7 +100,7 @@ The `security-and-trust-boundaries` skill is the project's one acknowledged
 security practice. Two book principles generalize cleanly to
 trust-boundary discipline and are surfaced in the skill's `SKILL.md`
 as Red Flags and cross-references; their canonical entries live in
-`error-and-correctness-traps/principles.md` per the ID-uniqueness rule
+`correctness-traps/principles.md` per the ID-uniqueness rule
 in `CITATION-SCHEME.md`:
 
 - **`97/26`** ("Don't Ignore That Error!", Pete Goodliffe) — generalized to

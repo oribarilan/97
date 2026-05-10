@@ -18,6 +18,18 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ### Changed
 
+- Trimmed human-team advice and boilerplate from all skills. Cut
+  content agents can't act on (manager pushback, QA scheduling,
+  stakeholder conversations, sleep-on-it breaks). Kept reasoning
+  that explains severity.
+- Broadened every trigger to fire on reviewing code, not just
+  writing it. `before-you-refactor` covers assessment mode;
+  `correctness-traps` no longer excludes reading.
+- Renamed four skills: `writing-clean-code` → `clean-code`,
+  `pre-commit-self-review` → `self-review`,
+  `api-and-interface-design` → `api-design`,
+  `error-and-correctness-traps` → `correctness-traps`.
+
 - Surfaced KISS, SRP, and SOLID acronyms where their substance already
   lived, for grep discoverability. Added a module-scope SRP Red Flag
   to `before-you-refactor`. No behavioral changes to existing guidance.

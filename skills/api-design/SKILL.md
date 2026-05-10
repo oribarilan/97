@@ -1,13 +1,13 @@
 ---
-name: api-and-interface-design
-description: Use when designing a public API, an exported function signature, a module boundary, an exported type/interface, or any contract other code will depend on
+name: api-design
+description: Use when designing or reviewing a public API, exported function signature, module boundary, exported type/interface, or any contract other code depends on
 ---
 
 # API and Interface Design
 
 ## Overview
 
-The headline rule, from Scott Meyers (97/55), governs everything else: **make interfaces easy to use correctly and hard to use incorrectly.** Every other decision below is a tactic for that rule — encapsulate behavior so callers can't reach past the contract, lean on the type system so wrong calls fail at compile time. Draws on ten contributors to *97 Things Every Programmer Should Know* (CC-BY-3.0; see `principles.md` for citations and links).
+The headline rule, from Scott Meyers (97/55), governs everything else: **make interfaces easy to use correctly and hard to use incorrectly.** Every other decision below is a tactic for that rule — encapsulate behavior so callers can't reach past the contract, lean on the type system so wrong calls fail at compile time.
 
 This is a **rigid** skill. Run the decisions in order. If you can't satisfy one, stop and tell the user what's blocking you.
 
@@ -22,6 +22,7 @@ Invoke when you're about to:
 - Change an existing public signature (parameter order, optionality, return type, thrown errors)
 - Add or remove a configuration flag, CLI option, or env-var contract that other code reads
 - Decide what to make `public`, `internal`, `final`, `sealed`, or `private`
+- Review an API design, interface, or public contract for usability, correctness, or ergonomics
 
 If you're not sure whether a change is "public," ask: *will any code outside this file depend on the shape of what I'm about to write?* If yes, invoke.
 

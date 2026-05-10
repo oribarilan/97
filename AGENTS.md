@@ -191,7 +191,7 @@ do not need to add a changelog entry. When in doubt, add one.
 If the need arises:
 
 1. Read an existing skill end-to-end as a template — `domain-modeling` is
-   the smallest, `writing-clean-code` is the largest.
+   the smallest, `clean-code` is the largest.
 2. Each skill has two files: `SKILL.md` (loaded into agent context on
    trigger) and `principles.md` (long-form reference, loaded only when the
    agent needs the deep cut).
