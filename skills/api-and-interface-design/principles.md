@@ -334,6 +334,9 @@ type the caller cannot construct from invalid input.
 **Source:** "Data Abstraction and Hierarchy", CACM 1987
 **License:** fair-use commentary
 
+LSP is the L in SOLID (Single Responsibility, Open/Closed, Liskov
+Substitution, Interface Segregation, Dependency Inversion).
+
 **Distillation.** A subtype must be substitutable for its supertype
 without breaking caller assumptions. If overriding a method
 strengthens preconditions ("only accepts non-empty input now"),

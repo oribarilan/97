@@ -268,6 +268,9 @@ are no longer entangled, and Dependency Inversion can break the residual
 coupling when needed. SRP is what makes a system into independently
 deployable components rather than a single monolithic mass.
 
+SRP is the S in SOLID (Single Responsibility, Open/Closed, Liskov
+Substitution, Interface Segregation, Dependency Inversion).
+
 **Agent application.** Source for decision 5 ("one reason to change per
 unit") and the Red Flags about long-but-cohesive functions and "every method
 shares a noun." The principle's force is in the *axis-of-change* test —

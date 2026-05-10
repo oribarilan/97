@@ -34,7 +34,7 @@ If you're unsure whether the change is non-trivial, ask: *would a reviewer pause
 
 Each decision pairs with a **check** — a property a reviewer can verify by reading the diff.
 
-1. **Reach simplicity by removing, not adding.** *(Homer, 97/75.)* The reflex when code misbehaves is to add another variable, branch, or comment. Try the opposite — delete a line and see what breaks. Bad code that is close to working is worth saving; bad code that is far from working should be discarded and retyped from memory.
+1. **Reach simplicity by removing, not adding.** (KISS) *(Homer, 97/75.)* The reflex when code misbehaves is to add another variable, branch, or comment. Try the opposite — delete a line and see what breaks. Bad code that is close to working is worth saving; bad code that is far from working should be discarded and retyped from memory.
    *Check:* you tried deleting at least one line you initially wrote on this hunk, and the code is better for what survived.
 
 2. **Reason about each block in short sections.** *(Kimchi, 97/15.)* Write code in chunks — a single line up to under ten — that you could defend to a sceptical peer. The endpoints of each section should be describable as state properties (a generalized pre/postcondition or invariant). When you intend to reason about the code, the structure improves on its own: smaller scopes, fewer mutable globals, narrower interfaces, getters that don't leak internal state.
@@ -43,7 +43,7 @@ Each decision pairs with a **check** — a property a reviewer can verify by rea
 3. **Find examples in domain terms before writing the function.** *(Braithwaite, 97/94.)* A function with an `int` parameter has billions of input cases; a function with a `LibertyCount = {1,2,3,4}` parameter has four. Pick the types that make the function checkable by example, then write it.
    *Check:* every parameter that could be a domain type is one (or there's a named reason it's not — measured perf, language limitation, deferred to a tracked issue).
 
-4. **One reason to change per unit.** *(Martin, 97/76.)* The Single Responsibility Principle: a function, class, or module should have one reason to change. An `Employee` class with `calculatePay`, `reportHours`, and `save` has three reasons to change and three sets of dependents who suffer for each. Split along axes of change, not axes of "things that share a noun." See `before-you-refactor` for when to *trigger* a split on existing code.
+4. **One reason to change per unit.** *(Martin, 97/76.)* The Single Responsibility Principle (SRP): a function, class, or module should have one reason to change. An `Employee` class with `calculatePay`, `reportHours`, and `save` has three reasons to change and three sets of dependents who suffer for each. Split along axes of change, not axes of "things that share a noun." See `before-you-refactor` for when to *trigger* a split on existing code.
    *Check:* the responsibility of each function/class/module fits in one sentence with no "and also."
 
 5. **Treat layout as a tool for the reader, not for the parser.** *(Freeman, 97/13.)* Standardize accidental complexity (formatter handles the basics) so domain content stands out. Use line breaks to express intention. Compact, scannable code beats sparse ceremonial code on every metric the reader cares about.

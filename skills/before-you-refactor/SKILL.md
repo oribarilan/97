@@ -65,6 +65,7 @@ These thoughts mean STOP — restart the checklist:
 | "The function does X *and also* Y, but they're related." | If you needed "and also" to describe the unit, it has more than one reason to change — the SRP refactoring trigger. State the unit's responsibility in one sentence; if you can't without "and also," split. See `writing-clean-code` decision 4 for the discipline of writing the result. (97/76) |
 | "The same change keeps forcing me to edit the same eight files." | Shotgun surgery: the behavior is conceptually one thing, physically scattered. Move related fields and methods together until the next instance of the change is one file. (`Fowler/ShotgunSurgery`) |
 | "This function already takes seven primitives — I'll just add an eighth." | Data clump. The fields are a missing type. Extract a class / dataclass / parameter object before adding the eighth. (`Fowler/DataClumps`) |
+| "Everything lives in one file — it's easier to find when it's all together." | Co-location by import convenience is not a single responsibility. If the pieces change for different reasons, split the module along the axes of change. (97/76) |
 
 ## What "done" looks like
 
@@ -89,7 +90,7 @@ If any box is unchecked, you are not done. Either finish, or revert and re-plan.
 | 97/24 | Don't Be Afraid to Break Things | Mike Lewis |
 | 97/31 | Don't Touch That Code! | Cal Evans |
 | 97/74 | The Road to Performance Is Littered with Dirty Code Bombs | Kirk Pepperdine |
-| 97/76 | The Single Responsibility Principle (refactoring trigger) | Robert C. Martin |
+| 97/76 | The Single Responsibility Principle / SRP (refactoring trigger) | Robert C. Martin |
 | `Fowler/LongMethod` | Long Method → Extract Function | Martin Fowler |
 | `Fowler/FeatureEnvy` | Feature Envy → Move Method | Martin Fowler |
 | `Fowler/ShotgunSurgery` | Shotgun Surgery → Move Field / Inline Class | Martin Fowler |

@@ -16,6 +16,12 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [Unreleased]
 
+### Changed
+
+- Surfaced KISS, SRP, and SOLID acronyms where their substance already
+  lived, for grep discoverability. Added a module-scope SRP Red Flag
+  to `before-you-refactor`. No behavioral changes to existing guidance.
+
 ## [0.7.0] — 2026-05-08
 
 A voice cleanup pass. Skills, README, AGENTS.md, and CONTRIBUTE.md
