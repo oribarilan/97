@@ -154,6 +154,10 @@ runs 15 times on two arms: with 97 and without. An independent judge
 (claude-opus-4.7) compares both diffs blindly on correctness, code
 quality, and skill-specific criteria.
 
+With 97, agents write code that is **equal or better 77–95%** of the
+time, and **strictly better in 62–77%** of cases, across 11 dimensions
+including security, observability, testing, and API design.
+
 | | Wins | Never worse |
 |---|---|---|
 | **claude-opus-4.6** | **77%** | **95%** |
