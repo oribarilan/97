@@ -11,6 +11,7 @@
 <p align="center">
   <a href="#install">Install</a> ·
   <a href="#whats-inside">What's inside</a> ·
+  <a href="#does-it-work">Does it work?</a> ·
   <a href="#faq">FAQ</a> ·
   <a href="#credits">Credits</a> ·
   <a href="#development">Development</a>
@@ -138,6 +139,48 @@ principles point back to the books and essays they came from.
 The `security-and-trust-boundaries` and `observability` skills are
 mostly written for this project, drawing on sources outside *97 Things*;
 see `CONTENT-LICENSE.md`.
+
+## Does it work?
+
+Standard coding benchmarks (e.g., SWE-bench) test
+whether an agent produces *working* code: pass the tests, fix the bug,
+return the right answer. An agent can score 100% on SWE-bench with
+f-string SQL and a god-function. Those benchmarks don't measure what 97
+targets: whether the agent writes code a senior engineer would approve.
+
+We built a craft-quality eval instead. 11 scenarios (one per skill),
+each with a latent craft issue the skill should catch. Each scenario
+runs 15 times on two arms: with 97 and without. An independent judge
+(claude-opus-4.7) compares both diffs blindly on correctness, code
+quality, and skill-specific criteria.
+
+| | Wins | Never worse |
+|---|---|---|
+| **claude-opus-4.6** | **77%** | **95%** |
+| **gpt-5.5** | **62%** | **77%** |
+
+Per-skill results — win rate with ties in parentheses:
+
+| Skill | gpt-5.5 | opus-4.6 |
+|---|---|---|
+| observability | 93% (7%) | 100% |
+| security | 87% | 27% (67%) |
+| api-design | 70% (3%) | 93% |
+| clean-code | 70% (10%) | 70% (17%) |
+| build-deploy | 67% (23%) | 100% |
+| domain-modeling | 67% (27%) | 80% (3%) |
+| working-with-users | 63% (7%) | 100% |
+| before-you-refactor | 60% (3%) | 93% (7%) |
+| self-review | 50% (3%) | 20% (80%) |
+| testing-discipline | 50% (3%) | 90% |
+| correctness-traps | 3% (77%) | 77% (20%) |
+
+These scenarios started as an internal eval to avoid regressions and
+track progress across 97 versions. They're custom-built to surface
+each skill's value, not pulled from an established benchmark, but the
+results felt worth sharing. If you know of a benchmark that would be a
+good fit, please [open an issue](https://github.com/oribarilan/97/issues)
+and I'll run it.
 
 ## FAQ
 
