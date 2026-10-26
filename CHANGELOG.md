@@ -16,6 +16,12 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [Unreleased]
 
+### Changed
+
+- `self-review` no longer asks for an `Adjacent issues: none found`
+  line after a clean scan. The line appears only when the scan finds
+  something, and summaries leave out checks that came up clean.
+
 ## [0.8.0] — 2026-05-10
 
 Agent-first pass. Skills fire on reviewing code (not just writing),

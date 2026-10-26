@@ -47,14 +47,14 @@ Run every step before you commit, hand off, or claim completion.
 
    **Test fixtures, mocks, and example values inside `tests/`, `test_*.py`, `*.spec.*`, `fixtures/`, or files with names containing `mock`, `fake`, or `stub` are intentional test data, not unsafe code.** Skip them.
 
-   When you find one of these in the surrounding code (not in your diff), **surface it in your summary to the user — do not silently rewrite the file outside the scope you were asked to change.** Add an `Adjacent issues` line to your summary naming the file, line, and pattern (e.g. `Adjacent issues: src/billing/charge.py:142 — string-built SQL with f-string interpolation`). If you find none, say so explicitly: `Adjacent issues: none found in ±20 lines of touched hunks.` The named artifact is the verification — agents that skipped the scan have nothing to write on this line. *(Rising, 97/58.)*
+   When you find one of these in the surrounding code (not in your diff), **surface it in your summary to the user — do not silently rewrite the file outside the scope you were asked to change.** Add an `Adjacent issues` line to your summary naming the file, line, and pattern (e.g. `Adjacent issues: src/billing/charge.py:142 — string-built SQL with f-string interpolation`). If the scan finds nothing, leave the line out. *(Rising, 97/58.)*
 2. **Suspect your own code first.** Before you blame the framework, the library, or the flaky test, assume the bug is yours. It almost always is. Walk the code path with the failing input in mind; confirm assumptions about types, ordering, null cases, and shared state. Reach for "compiler bug" only after you have ruled out yours. *(Kelly, 97/9.)*
 3. **Know what your next commit is.** State, in one sentence, what this commit does. If the sentence contains "and also" or "various", the commit is two commits. Split it. If you cannot name a clear, bounded change, you are committing speculation — throw the speculative parts away and re-scope. *(Bergh Johnsson, 97/47.)*
 4. **Check for deliberate technical debt.** Did you take a shortcut to ship? Name it. File a follow-up note (issue, todo, line in your summary) so the debt is visible. Untracked debt accrues silent interest. *(Rose, 97/1.)*
 5. **Clean the build before you leave it.** New compiler warnings, lint errors, or deprecation notices introduced by this change get fixed now, not later. A noisy build hides the warning that actually matters. *(Brodwall, 97/42.)*
 6. **Audit the logs you added.** Every new log line: is its level right? Will it fire once per significant event, or per inner-loop iteration? Would you want to be paged for an ERROR-level message you wrote? If not, downgrade it. *(Brodwall, 97/90.)*
 7. **Re-read the comments.** Header comments should let the next reader use the code without reading the body. Inline comments should explain *why*, not narrate *what*. Delete comments that have drifted from the code. Never paste anything into a comment you would not want quoted back in a meeting. *(Evans, 97/16.)*
-8. **Frame your summary as a review, not a defense.** When you summarize for the user, mention the trade-offs, the parts you are least sure about, and any debt you incurred. Reviews exist for knowledge sharing, not for catching you out — invite scrutiny rather than deflect it. *(Karlsson, 97/14.)*
+8. **Frame your summary as a review, not a defense.** When you summarize for the user, mention the trade-offs, the parts you are least sure about, and any debt you incurred. Write the summary in this order: what changed; trade-offs, uncertainties, and debt; adjacent issues, if the scan found any. Checks that came up clean aren't part of it. Reviews exist for knowledge sharing, not for catching you out — invite scrutiny rather than deflect it. *(Karlsson, 97/14.)*
 
 ## Red Flags
 
@@ -63,7 +63,7 @@ These thoughts mean STOP — do not commit yet:
 | Thought | Reality |
 |---|---|
 | "It works on my machine — shipping it." | "Works" is the verification gate, not the review gate. Re-read the diff as a stranger before claiming done. (97/58) |
-| "I'll skip the ±20 line scan — my diff doesn't touch security code." | The point of the scan is to find unsafe code you didn't author. Hardcoded credentials, string-built SQL, and unsafe deserialization in code adjacent to your edit will ship under your name if you don't surface them. The `Adjacent issues:` line is mandatory; "none found" is a valid value, "I didn't look" is not. (97/58) |
+| "I'll skip the ±20 line scan — my diff doesn't touch security code." | The point of the scan is to find unsafe code you didn't author. Hardcoded credentials, string-built SQL, and unsafe deserialization in code adjacent to your edit will ship under your name if you don't surface them. (97/58) |
 | "Must be a bug in the library." | Mature libraries used by many people are usually fine. Suspect your code first; reach for "library bug" only after ruling yours out. (97/9) |
 | "I'll squash this giant commit and figure out the message later." | If you can't state the commit in one sentence now, the commit is speculation. Split it or throw the speculative parts away. (97/47) |
 | "I took a shortcut, I'll come back and fix it." | The promise is sincere and rarely kept. Track the debt explicitly — issue, todo, summary note — or pay it now. (97/1) |
@@ -78,7 +78,7 @@ You are done when **all** of the following are true:
 
 - [ ] You ruled out your own code as the source of any unresolved oddness before blaming external systems.
 - [ ] The diff was re-read top-to-bottom as a stranger, and the ±20 lines around every hunk were scanned for the six unsafe patterns (hardcoded credentials, string-built SQL/shell, unsafe deserialization, swallowed exceptions, TOCTOU, mutable default).
-- [ ] The summary contains an `Adjacent issues:` line — either naming surfaced issues (file, line, pattern) or stating `none found` after an actual scan.
+- [ ] Any unsafe pattern the scan found is named on an `Adjacent issues:` line (file, line, pattern).
 - [ ] The commit (or summary) can be described in one sentence with no "and also."
 - [ ] Any shortcut taken is named in a tracked follow-up.
 - [ ] Build is clean — no new warnings, lint errors, or deprecation notices introduced.
