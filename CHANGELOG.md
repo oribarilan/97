@@ -16,6 +16,11 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [Unreleased]
 
+## [0.8.1] — 2026-10-27
+
+Smaller `self-review` summaries. Agents stop reporting checks that
+came up clean.
+
 ### Changed
 
 - `self-review` no longer asks for an `Adjacent issues: none found`
@@ -481,7 +486,9 @@ your coding agent invokes automatically.
 - Per-skill `principles.md` — long-form distillations with author
   attribution and links to the canonical CC-BY-3.0 source mirror.
 
-[Unreleased]: https://github.com/oribarilan/97/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/oribarilan/97/compare/v0.8.1...HEAD
+[0.8.1]: https://github.com/oribarilan/97/releases/tag/v0.8.1
+[0.8.0]: https://github.com/oribarilan/97/releases/tag/v0.8.0
 [0.7.0]: https://github.com/oribarilan/97/releases/tag/v0.7.0
 [0.6.0]: https://github.com/oribarilan/97/releases/tag/v0.6.0
 [0.5.1]: https://github.com/oribarilan/97/releases/tag/v0.5.1
