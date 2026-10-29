@@ -58,7 +58,7 @@ the policy can be revisited.
 97/
 ├── .github/
 │   └── workflows/
-│       ├── test.yml       # CI: lint + smoke on push/PR (Linux/macOS/Windows × Node 18/20/22)
+│       ├── test.yml       # CI: lint + smoke on PR and main (Linux × Node 18/20/22)
 │       └── release.yml    # CI: GitHub Release on v* tag
 ├── .claude-plugin/        # Claude Code + Copilot CLI manifests
 │   ├── plugin.json
@@ -156,8 +156,8 @@ formatted automatically:
 
 ### Cross-platform support
 
-CI runs the test suite on Ubuntu, macOS, and Windows across Node 18, 20, and
-22 (matrix in `.github/workflows/test.yml`). Code paths that touch the
+CI runs the test suite on Linux only, across Node 18, 20, and 22 (matrix in
+`.github/workflows/test.yml`). macOS and Windows aren't tested in CI. Code paths that touch the
 filesystem use platform-aware resolution. `hooks/run-hook.cmd` is the
 reference cross-platform pattern: a polyglot file that's a Windows batch
 script in one frame and a bash no-op in the other, locating Git for
@@ -377,17 +377,16 @@ features:
 
 Two GitHub Actions workflows.
 
-### `.github/workflows/test.yml` — runs on every push and PR
+### `.github/workflows/test.yml` — runs on PRs and pushes to `main`
 
-Triggers: push to any branch, pull request to `main`.
+Triggers: push to `main`, pull request to `main`.
 Jobs:
 - Checkout
 - Set up Node (matrix: 18, 20, 22 — the OpenCode-supported range)
 - `npm ci` (zero deps, but ensures clean state)
 - `npm test` (lint + smoke, including manifest version equality and the `AGENTS.md`-only single-source rule)
 
-Matrix: Ubuntu, macOS, Windows. A red CI job on any platform blocks merge to
-`main`.
+Runs on Ubuntu only. A red CI job blocks merge to `main`.
 
 ### `.github/workflows/release.yml` — runs on `v*` tag push
 
@@ -449,7 +448,7 @@ similar to superpowers: weekly to monthly).
 
 The trade-off: a bad commit on `main` ships immediately to all OpenCode
 users on next restart. The mitigation is CI. Every PR runs the full test
-suite on Linux, macOS, and Windows across Node 18, 20, and 22, and every
+suite on Linux across Node 18, 20, and 22, and every
 release commit re-runs it before tagging.
 
 ---
@@ -469,8 +468,8 @@ If a bad commit lands on `main`:
    release. Cut a new one.
 
 This is the model superpowers uses. It works because the test matrix
-(three OSes × three Node versions, run before merge) catches almost
-everything that would warrant a rollback.
+(three Node versions on Linux, run before merge) catches most of what
+would warrant a rollback. macOS- and Windows-only breaks are the gap.
 
 ---
 

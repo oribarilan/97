@@ -66,10 +66,10 @@ hooks under `hooks/`, tooling under `scripts/`.
 
 ## Cross-platform discipline
 
-CI runs `npm test` on Ubuntu, macOS, and Windows across Node 18, 20, and 22.
-A red Windows job blocks merge just like a red Ubuntu job. Anything you
-write that touches the filesystem, the environment, or a shell command must
-work on all three.
+CI runs `npm test` on Linux only, across Node 18, 20, and 22, so nothing
+automated catches a macOS or Windows break. Anything you write that touches
+the filesystem, the environment, or a shell command must still work on all
+three; the pitfalls below are the guard.
 
 ### Four common pitfalls
 
