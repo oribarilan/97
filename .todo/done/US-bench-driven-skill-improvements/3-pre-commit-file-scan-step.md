@@ -145,7 +145,7 @@ diff-anchored review.
 - [x] Test fixtures, example/seed code, and obviously fake
   values get an explicit carve-out: a file under `tests/`,
   `fixtures/`, `examples/` containing `password = "test"`
-  or `API_KEY = "fake-key-for-testing"` should not trigger
+  or `API_KEY = "<placeholder>"` should not trigger
   the scan's report. Likely shape: *"Obvious test
   fixtures and example/seed code with placeholder values
   do not need to be flagged."*

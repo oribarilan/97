@@ -16,6 +16,12 @@ the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [Unreleased]
 
+### Security
+
+- Added `SECURITY.md` with how to report a vulnerability privately.
+  CI now pins GitHub Actions to commit hashes, kept current by
+  Dependabot.
+
 ## [0.8.1] — 2026-10-27
 
 Smaller `self-review` summaries. Agents stop reporting checks that
